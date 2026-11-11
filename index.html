@@ -1331,8 +1331,8 @@
   // =========================================================================
   const GOOGLE_SCRIPT_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwwMaiiSEkLp2852z-PjrFUxg1B_et6zZFEFcHkv-lemIc6nufMF0_bU8IdhgLtvUA_6w/exec";
 
-  // Chu kỳ tự động làm mới dữ liệu từ Google Sheets (12000ms = 12 giây, nằm trong khoảng 10-15 giây)
-  const AUTO_SYNC_INTERVAL_MS = 12000;
+  // Chu kỳ tự động làm mới dữ liệu từ Google Sheets & Đám mây trực tuyến (8000ms = 8 giây liên tục)
+  const AUTO_SYNC_INTERVAL_MS = 8000;
 
   // Biểu tượng SVG dự phòng tự động nếu trình duyệt chưa tìm thấy file logo.png
   window.DEFAULT_CN23_LOGO_SVG = "data:image/svg+xml;utf8," + encodeURIComponent(`
@@ -1545,6 +1545,7 @@
       title: userObj.title || (userObj.role === "Admin" ? "Quản trị" : "Chuyên viên thụ lý")
     };
     sessionStorage.setItem('cn23_logged_user_v5', JSON.stringify(currentUserSession));
+    try { localStorage.setItem('cn23_logged_user_v5_persist', JSON.stringify(currentUserSession)); } catch (e) {}
 
     const isAdmin = currentUserSession.role === "Admin";
     const roleBadgeText = isAdmin ? "Cấp 1: Admin" : "Cấp 2: Chuyên viên";
@@ -1609,6 +1610,7 @@
     currentUserSession = null;
     sessionStorage.removeItem('cn23_logged_user_v5');
     sessionStorage.removeItem('cn23_logged_user');
+    try { localStorage.removeItem('cn23_logged_user_v5_persist'); } catch (e) {}
     document.getElementById('login-screen').style.display = 'flex';
   }
 
@@ -1632,58 +1634,147 @@
     { id: 12, name: "Võ Tường Lam",         active: true, hardPct: 8,  capPct: 100, wardGroup: "ALL", prevTotal: 0, newReceived: 0, lastReceivedDate: "" }
   ];
 
-  // Dữ liệu gốc 20 bộ hồ sơ đã lưu (Khôi phục nguyên vẹn 100% từ bản lưu lúc 10/11/2026 13:12)
+  // Dữ liệu gốc 67 bộ hồ sơ đã lưu (4 đợt tách bạch: 20 - 11 - 12 - 24 bộ, giữ nguyên tên biến RECOVERED_20_STATE)
   const RECOVERED_20_STATE = {
-    syncVersion: 1794291138500,
-    updatedAt: "10/11/2026 13:12",
+    syncVersion: 1794399480000,
+    updatedAt: "11/11/2026 17:38",
     staff12: [
-      { id: 1,  name: "Nguyễn Tiến Thịnh",    active: true, hardPct: 10, capPct: 100, wardGroup: "ALL", prevTotal: 0, newReceived: 2, lastReceivedDate: "10/11/2026 13:12", lastCodesList: "261110-0595 (CH), 261110-1076 (PL)" },
-      { id: 2,  name: "Hoàng Minh Tú",        active: true, hardPct: 10, capPct: 100, wardGroup: "ALL", prevTotal: 0, newReceived: 2, lastReceivedDate: "10/11/2026 13:12", lastCodesList: "261110-0747 (PL), 261110-0971 (TDM)" },
-      { id: 3,  name: "Huỳnh Thị Ái Nhi",     active: true, hardPct: 8,  capPct: 100, wardGroup: "ALL", prevTotal: 0, newReceived: 2, lastReceivedDate: "10/11/2026 13:12", lastCodesList: "261110-1069 (PA), 261110-0914 (TDM)" },
-      { id: 4,  name: "Trần Nguyễn Hoài Lam", active: true, hardPct: 8,  capPct: 100, wardGroup: "ALL", prevTotal: 0, newReceived: 1, lastReceivedDate: "10/11/2026 13:12", lastCodesList: "261110-0893 (TDM)" },
-      { id: 5,  name: "Nguyễn Văn Khánh",     active: true, hardPct: 10, capPct: 100, wardGroup: "ALL", prevTotal: 0, newReceived: 2, lastReceivedDate: "10/11/2026 13:12", lastCodesList: "261110-0494 (CH), 261110-1411 (TDM)" },
-      { id: 6,  name: "Trần Thị Thùy Trang",  active: true, hardPct: 8,  capPct: 100, wardGroup: "ALL", prevTotal: 0, newReceived: 2, lastReceivedDate: "10/11/2026 13:12", lastCodesList: "261110-1278 (CH), 261110-0906 (TDM)" },
-      { id: 7,  name: "Tạ Nguyễn Bích Trang", active: true, hardPct: 8,  capPct: 100, wardGroup: "ALL", prevTotal: 0, newReceived: 1, lastReceivedDate: "10/11/2026 13:12", lastCodesList: "261110-0451 (PA)" },
-      { id: 8,  name: "Phạm Nguyễn Lan Anh",  active: true, hardPct: 8,  capPct: 100, wardGroup: "ALL", prevTotal: 0, newReceived: 2, lastReceivedDate: "10/11/2026 13:12", lastCodesList: "261110-0737 (PL), 261110-0469 (BD)" },
-      { id: 9,  name: "Nguyễn Trần Thảo Vy",  active: true, hardPct: 7,  capPct: 100, wardGroup: "ALL", prevTotal: 0, newReceived: 2, lastReceivedDate: "10/11/2026 13:12", lastCodesList: "261110-0581 (PL), 261110-0958 (CH)" },
-      { id: 10, name: "Lê Sơn Thanh",         active: true, hardPct: 8,  capPct: 100, wardGroup: "ALL", prevTotal: 0, newReceived: 1, lastReceivedDate: "10/11/2026 13:12", lastCodesList: "261110-0501 (TDM)" },
-      { id: 11, name: "Nguyễn Trung Thành",   active: true, hardPct: 7,  capPct: 100, wardGroup: "ALL", prevTotal: 0, newReceived: 2, lastReceivedDate: "10/11/2026 13:12", lastCodesList: "261110-0140 (PA), 261110-1126 (CH)" },
-      { id: 12, name: "Võ Tường Lam",         active: true, hardPct: 8,  capPct: 100, wardGroup: "ALL", prevTotal: 0, newReceived: 1, lastReceivedDate: "10/11/2026 13:12", lastCodesList: "261110-1210 (PL)" }
+      { id: 1,  name: "Nguyễn Tiến Thịnh",    active: true, hardPct: 10, capPct: 100, wardGroup: "ALL", prevTotal: 3, newReceived: 2, lastReceivedDate: "11/11/2026 17:38", lastCodesList: "261111-3020 (BD), 261111-2993 (PL)" },
+      { id: 2,  name: "Hoàng Minh Tú",        active: true, hardPct: 10, capPct: 100, wardGroup: "ALL", prevTotal: 3, newReceived: 3, lastReceivedDate: "11/11/2026 17:38", lastCodesList: "261111-0960 (PL), 261111-2622 (PL), 261111-2582 (PL)" },
+      { id: 3,  name: "Huỳnh Thị Ái Nhi",     active: true, hardPct: 8,  capPct: 100, wardGroup: "ALL", prevTotal: 4, newReceived: 2, lastReceivedDate: "11/11/2026 17:38", lastCodesList: "261111-2910 (TDM), 261111-2423 (TDM)" },
+      { id: 4,  name: "Trần Nguyễn Hoài Lam", active: true, hardPct: 8,  capPct: 100, wardGroup: "ALL", prevTotal: 4, newReceived: 3, lastReceivedDate: "11/11/2026 17:38", lastCodesList: "261111-2015 (BD), 261111-1928 (CH), 261111-2887 (BD)" },
+      { id: 5,  name: "Nguyễn Văn Khánh",     active: true, hardPct: 10, capPct: 100, wardGroup: "ALL", prevTotal: 4, newReceived: 2, lastReceivedDate: "11/11/2026 17:38", lastCodesList: "261111-1808 (CH), 261111-2326 (PA)" },
+      { id: 6,  name: "Trần Thị Thùy Trang",  active: true, hardPct: 8,  capPct: 100, wardGroup: "ALL", prevTotal: 4, newReceived: 2, lastReceivedDate: "11/11/2026 17:38", lastCodesList: "261111-2460 (PA), 261111-3073 (TDM)" },
+      { id: 7,  name: "Tạ Nguyễn Bích Trang", active: true, hardPct: 8,  capPct: 100, wardGroup: "ALL", prevTotal: 3, newReceived: 3, lastReceivedDate: "11/11/2026 17:38", lastCodesList: "261111-2919 (TDM), 261111-2775 (PL), 261111-1988 (TDM)" },
+      { id: 8,  name: "Phạm Nguyễn Lan Anh",  active: true, hardPct: 8,  capPct: 100, wardGroup: "ALL", prevTotal: 2, newReceived: 0, lastReceivedDate: "11/11/2026 11:40", lastCodesList: "" },
+      { id: 9,  name: "Nguyễn Trần Thảo Vy",  active: true, hardPct: 7,  capPct: 100, wardGroup: "ALL", prevTotal: 4, newReceived: 2, lastReceivedDate: "11/11/2026 17:38", lastCodesList: "261111-2341 (PA), 261111-2646 (PL)" },
+      { id: 10, name: "Lê Sơn Thanh",         active: true, hardPct: 8,  capPct: 100, wardGroup: "ALL", prevTotal: 4, newReceived: 1, lastReceivedDate: "11/11/2026 17:38", lastCodesList: "261111-0410 (PA)" },
+      { id: 11, name: "Nguyễn Trung Thành",   active: true, hardPct: 7,  capPct: 100, wardGroup: "ALL", prevTotal: 4, newReceived: 2, lastReceivedDate: "11/11/2026 17:38", lastCodesList: "261111-2797 (PL), 261111-1787 (BD)" },
+      { id: 12, name: "Võ Tường Lam",         active: true, hardPct: 8,  capPct: 100, wardGroup: "ALL", prevTotal: 4, newReceived: 2, lastReceivedDate: "11/11/2026 17:38", lastCodesList: "261111-2602 (PL), 261111-2678 (PL)" }
     ],
     trackingFiles: [
-      { id: 1794290532236, code: "261110-1210", fullCode: "H29.14.10.62-261110-1210", ward: "PL",  owner: "Vũ Thị Hồng Gấm",                          type: "Đăng ký biến động (30A)",                       diff: "NORM",    isLanAnhSpecial: false, assignee: "Võ Tường Lam",         receiveDate: "2026-11-10", dueDate: "2026-11-20", syncedAt: "10/11/2026 13:12", batchLabel: "Đợt 1 (01/BBBG-ĐKCG)", status: "PROCESSING" },
-      { id: 1794290536920, code: "261110-0737", fullCode: "H29.14.10.62-261110-0737", ward: "PL",  owner: "Võ Thị Mỹ Hạnh",                           type: "Đính chính GCN (26 - 8 ngày)",                  diff: "NORM",    isLanAnhSpecial: false, assignee: "Phạm Nguyễn Lan Anh",  receiveDate: "2026-11-10", dueDate: "2026-11-20", syncedAt: "10/11/2026 13:12", batchLabel: "Đợt 1 (01/BBBG-ĐKCG)", status: "PROCESSING" },
-      { id: 1794290542806, code: "261110-0595", fullCode: "H29.14.10.62-261110-0595", ward: "CH",  owner: "Võ Lan Hương",                             type: "Cấp đổi GCN (23B - 10 ngày)",                   diff: "NORM",    isLanAnhSpecial: false, assignee: "Nguyễn Tiến Thịnh",    receiveDate: "2026-11-10", dueDate: "2026-11-24", syncedAt: "10/11/2026 13:12", batchLabel: "Đợt 1 (01/BBBG-ĐKCG)", status: "PROCESSING" },
-      { id: 1794290549517, code: "261110-0494", fullCode: "H29.14.10.62-261110-0494", ward: "CH",  owner: "Trần Vạn Thọ",                             type: "Cấp đổi GCN (23B - 10 ngày)",                   diff: "NORM",    isLanAnhSpecial: false, assignee: "Nguyễn Văn Khánh",     receiveDate: "2026-11-10", dueDate: "2026-11-24", syncedAt: "10/11/2026 13:12", batchLabel: "Đợt 1 (01/BBBG-ĐKCG)", status: "PROCESSING" },
-      { id: 1794290638853, code: "261110-1069", fullCode: "H29.14.10.62-261110-1069", ward: "PA",  owner: "Nguyễn Thanh Phong + Nguyễn Thị Hồng Quế", type: "Đăng ký biến động (30A)",                       diff: "NORM",    isLanAnhSpecial: false, assignee: "Huỳnh Thị Ái Nhi",     receiveDate: "2026-11-10", dueDate: "2026-11-20", syncedAt: "10/11/2026 13:12", batchLabel: "Đợt 1 (01/BBBG-ĐKCG)", status: "PROCESSING" },
-      { id: 1794290703353, code: "261110-1278", fullCode: "H29.14.10.62-261110-1278", ward: "CH",  owner: "Nguyễn Thị Vân",                           type: "Đăng ký biến động (30A)",                       diff: "NORM",    isLanAnhSpecial: false, assignee: "Trần Thị Thùy Trang",  receiveDate: "2026-11-10", dueDate: "2026-11-20", syncedAt: "10/11/2026 13:12", batchLabel: "Đợt 1 (01/BBBG-ĐKCG)", status: "PROCESSING" },
-      { id: 1794290739148, code: "261110-0451", fullCode: "H29.14.10.62-261110-0451", ward: "PA",  owner: "Nguyễn Thanh Ba",                          type: "Đăng ký biến động (30A)",                       diff: "NORM",    isLanAnhSpecial: false, assignee: "Tạ Nguyễn Bích Trang", receiveDate: "2026-11-10", dueDate: "2026-11-20", syncedAt: "10/11/2026 13:12", batchLabel: "Đợt 1 (01/BBBG-ĐKCG)", status: "PROCESSING" },
-      { id: 1794290750522, code: "261110-0140", fullCode: "H29.14.10.62-261110-0140", ward: "PA",  owner: "Ngô Thanh Hà",                             type: "Đăng ký biến động (30A)",                       diff: "NORM",    isLanAnhSpecial: false, assignee: "Nguyễn Trung Thành",   receiveDate: "2026-11-10", dueDate: "2026-11-20", syncedAt: "10/11/2026 13:12", batchLabel: "Đợt 1 (01/BBBG-ĐKCG)", status: "PROCESSING" },
-      { id: 1794290758160, code: "261110-0469", fullCode: "H29.14.10.62-261110-0469", ward: "BD",  owner: "Lê Văn Tiền",                              type: "Xóa ghi nợ tiền SDĐ, lệ phí trước bạ (1.115929)", diff: "LAN_ANH", isLanAnhSpecial: true,  assignee: "Phạm Nguyễn Lan Anh",  receiveDate: "2026-11-10", dueDate: "2026-11-18", syncedAt: "10/11/2026 13:12", batchLabel: "Đợt 1 (01/BBBG-ĐKCG)", status: "PROCESSING" },
-      { id: 1794290767926, code: "261110-0581", fullCode: "H29.14.10.62-261110-0581", ward: "PL",  owner: "Lê Trung An",                              type: "Đăng ký biến động (30A)",                       diff: "NORM",    isLanAnhSpecial: false, assignee: "Nguyễn Trần Thảo Vy",  receiveDate: "2026-11-10", dueDate: "2026-11-20", syncedAt: "10/11/2026 13:12", batchLabel: "Đợt 1 (01/BBBG-ĐKCG)", status: "PROCESSING" },
-      { id: 1794290767927, code: "261110-0747", fullCode: "H29.14.10.62-261110-0747", ward: "PL",  owner: "Nguyễn Thị Mỹ Dung",                       type: "Đăng ký biến động (30A)",                       diff: "NORM",    isLanAnhSpecial: false, assignee: "Hoàng Minh Tú",        receiveDate: "2026-11-10", dueDate: "2026-11-20", syncedAt: "10/11/2026 13:12", batchLabel: "Đợt 1 (01/BBBG-ĐKCG)", status: "PROCESSING" },
-      { id: 1794290809801, code: "261110-0501", fullCode: "H29.14.10.62-261110-0501", ward: "TDM", owner: "Trịnh Đình Gắng",                          type: "Cấp đổi GCN (23B - 10 ngày)",                   diff: "NORM",    isLanAnhSpecial: false, assignee: "Lê Sơn Thanh",         receiveDate: "2026-11-10", dueDate: "2026-11-24", syncedAt: "10/11/2026 13:12", batchLabel: "Đợt 1 (01/BBBG-ĐKCG)", status: "PROCESSING" },
-      { id: 1794290809802, code: "261110-0958", fullCode: "H29.14.10.62-261110-0958", ward: "CH",  owner: "Nguyễn Phi Công",                          type: "Cấp đổi GCN (23A - 5 ngày)",                    diff: "NORM",    isLanAnhSpecial: false, assignee: "Nguyễn Trần Thảo Vy",  receiveDate: "2026-11-10", dueDate: "2026-11-17", syncedAt: "10/11/2026 13:12", batchLabel: "Đợt 1 (01/BBBG-ĐKCG)", status: "PROCESSING" },
-      { id: 1794290809803, code: "261110-0971", fullCode: "H29.14.10.62-261110-0971", ward: "TDM", owner: "Mai Đức Anh",                              type: "Cấp đổi GCN (23A - 5 ngày)",                    diff: "NORM",    isLanAnhSpecial: false, assignee: "Hoàng Minh Tú",        receiveDate: "2026-11-10", dueDate: "2026-11-17", syncedAt: "10/11/2026 13:12", batchLabel: "Đợt 1 (01/BBBG-ĐKCG)", status: "PROCESSING" },
-      { id: 1794290809804, code: "261110-0914", fullCode: "H29.14.10.62-261110-0914", ward: "TDM", owner: "Đỗ Tấn Phát",                              type: "Đăng ký biến động (30A)",                       diff: "NORM",    isLanAnhSpecial: false, assignee: "Huỳnh Thị Ái Nhi",     receiveDate: "2026-11-10", dueDate: "2026-11-20", syncedAt: "10/11/2026 13:12", batchLabel: "Đợt 1 (01/BBBG-ĐKCG)", status: "PROCESSING" },
-      { id: 1794290809805, code: "261110-0906", fullCode: "H29.14.10.62-261110-0906", ward: "TDM", owner: "Đỗ Tấn Phát",                              type: "Đăng ký biến động (30A)",                       diff: "NORM",    isLanAnhSpecial: false, assignee: "Trần Thị Thùy Trang",  receiveDate: "2026-11-10", dueDate: "2026-11-20", syncedAt: "10/11/2026 13:12", batchLabel: "Đợt 1 (01/BBBG-ĐKCG)", status: "PROCESSING" },
-      { id: 1794290809806, code: "261110-0893", fullCode: "H29.14.10.62-261110-0893", ward: "TDM", owner: "Đỗ Tấn Phát",                              type: "Đăng ký biến động (30A)",                       diff: "NORM",    isLanAnhSpecial: false, assignee: "Trần Nguyễn Hoài Lam", receiveDate: "2026-11-10", dueDate: "2026-11-20", syncedAt: "10/11/2026 13:12", batchLabel: "Đợt 1 (01/BBBG-ĐKCG)", status: "PROCESSING" },
-      { id: 1794290809807, code: "261110-1076", fullCode: "H29.14.10.62-261110-1076", ward: "PL",  owner: "Khúc Mạnh Tùng",                           type: "Đăng ký biến động (30A)",                       diff: "NORM",    isLanAnhSpecial: false, assignee: "Nguyễn Tiến Thịnh",    receiveDate: "2026-11-10", dueDate: "2026-11-20", syncedAt: "10/11/2026 13:12", batchLabel: "Đợt 1 (01/BBBG-ĐKCG)", status: "PROCESSING" },
-      { id: 1794290809808, code: "261110-1126", fullCode: "H29.14.10.62-261110-1126", ward: "CH",  owner: "Nguyễn Thúy An",                           type: "Đăng ký biến động (30A)",                       diff: "NORM",    isLanAnhSpecial: false, assignee: "Nguyễn Trung Thành",   receiveDate: "2026-11-10", dueDate: "2026-11-20", syncedAt: "10/11/2026 13:12", batchLabel: "Đợt 1 (01/BBBG-ĐKCG)", status: "PROCESSING" },
-      { id: 1794290809809, code: "261110-1411", fullCode: "H29.14.10.62-261110-1411", ward: "TDM", owner: "Hồ Yến Quỳnh",                             type: "Đăng ký biến động (30A)",                       diff: "NORM",    isLanAnhSpecial: false, assignee: "Nguyễn Văn Khánh",     receiveDate: "2026-11-10", dueDate: "2026-11-20", syncedAt: "10/11/2026 13:12", batchLabel: "Đợt 1 (01/BBBG-ĐKCG)", status: "PROCESSING" }
+      // --- ĐỢT 1: 20 BỘ (10/11/2026 13:12) ---
+      { id: 1794290532236, code: "261110-1210", fullCode: "H29.14.10.62-261110-1210", ward: "PL",  owner: "Vũ Thị Hồng Gấm",                          rawProc: "CNVPDK_30A. Đăng ký biến động quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất (8 ngày làm việc)", type: "Đăng ký biến động QSDĐ (8 ngày)", diff: "NORM",    isLanAnhSpecial: false, assignee: "Võ Tường Lam",         receiveDate: "2026-11-10", dueDate: "2026-11-20", syncedAt: "10/11/2026 13:12", batchLabel: "Đợt 1 - Chiều 10/11 (01/BBBG-ĐKCG)", status: "PROCESSING" },
+      { id: 1794290536920, code: "261110-0737", fullCode: "H29.14.10.62-261110-0737", ward: "PL",  owner: "Võ Thị Mỹ Hạnh",                           rawProc: "CNVPDK_26. Đính chính Giấy chứng nhận đã cấp (8 ngày làm việc)",                                           type: "Đính chính Giấy chứng nhận (8 ngày)", diff: "NORM", isLanAnhSpecial: false, assignee: "Lê Sơn Thanh",         receiveDate: "2026-11-10", dueDate: "2026-11-20", syncedAt: "10/11/2026 13:12", batchLabel: "Đợt 1 - Chiều 10/11 (01/BBBG-ĐKCG)", status: "PROCESSING" },
+      { id: 1794290542806, code: "261110-0595", fullCode: "H29.14.10.62-261110-0595", ward: "CH",  owner: "Võ Lan Hương",                             rawProc: "CNVPDK_23B. (10 ngày) Cấp đổi Giấy chứng nhận quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất",   type: "Cấp đổi Giấy chứng nhận (10 ngày)", diff: "NORM",   isLanAnhSpecial: false, assignee: "Nguyễn Tiến Thịnh",    receiveDate: "2026-11-10", dueDate: "2026-11-24", syncedAt: "10/11/2026 13:12", batchLabel: "Đợt 1 - Chiều 10/11 (01/BBBG-ĐKCG)", status: "PROCESSING" },
+      { id: 1794290549517, code: "261110-0494", fullCode: "H29.14.10.62-261110-0494", ward: "CH",  owner: "Trần Vạn Thọ",                             rawProc: "CNVPDK_23B. (10 ngày) Cấp đổi Giấy chứng nhận quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất",   type: "Cấp đổi Giấy chứng nhận (10 ngày)", diff: "NORM",   isLanAnhSpecial: false, assignee: "Nguyễn Văn Khánh",     receiveDate: "2026-11-10", dueDate: "2026-11-24", syncedAt: "10/11/2026 13:12", batchLabel: "Đợt 1 - Chiều 10/11 (01/BBBG-ĐKCG)", status: "PROCESSING" },
+      { id: 1794290638853, code: "261110-1069", fullCode: "H29.14.10.62-261110-1069", ward: "PA",  owner: "Nguyễn Thanh Phong + Nguyễn Thị Hồng Quế", rawProc: "CNVPDK_30A. Đăng ký biến động quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất (8 ngày làm việc)", type: "Đăng ký biến động QSDĐ (8 ngày)", diff: "NORM",    isLanAnhSpecial: false, assignee: "Huỳnh Thị Ái Nhi",     receiveDate: "2026-11-10", dueDate: "2026-11-20", syncedAt: "10/11/2026 13:12", batchLabel: "Đợt 1 - Chiều 10/11 (01/BBBG-ĐKCG)", status: "PROCESSING" },
+      { id: 1794290703353, code: "261110-1278", fullCode: "H29.14.10.62-261110-1278", ward: "CH",  owner: "Nguyễn Thị Vân",                           rawProc: "CNVPDK_30A. Đăng ký biến động quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất (8 ngày làm việc)", type: "Đăng ký biến động QSDĐ (8 ngày)", diff: "NORM",    isLanAnhSpecial: false, assignee: "Trần Thị Thùy Trang",  receiveDate: "2026-11-10", dueDate: "2026-11-20", syncedAt: "10/11/2026 13:12", batchLabel: "Đợt 1 - Chiều 10/11 (01/BBBG-ĐKCG)", status: "PROCESSING" },
+      { id: 1794290739148, code: "261110-0451", fullCode: "H29.14.10.62-261110-0451", ward: "PA",  owner: "Nguyễn Thanh Ba",                          rawProc: "CNVPDK_30A. Đăng ký biến động quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất (8 ngày làm việc)", type: "Đăng ký biến động QSDĐ (8 ngày)", diff: "NORM",    isLanAnhSpecial: false, assignee: "Tạ Nguyễn Bích Trang", receiveDate: "2026-11-10", dueDate: "2026-11-20", syncedAt: "10/11/2026 13:12", batchLabel: "Đợt 1 - Chiều 10/11 (01/BBBG-ĐKCG)", status: "PROCESSING" },
+      { id: 1794290750522, code: "261110-0140", fullCode: "H29.14.10.62-261110-0140", ward: "PA",  owner: "Ngô Thanh Hà",                             rawProc: "CNVPDK_30A. Đăng ký biến động quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất (8 ngày làm việc)", type: "Đăng ký biến động QSDĐ (8 ngày)", diff: "NORM",    isLanAnhSpecial: false, assignee: "Nguyễn Trung Thành",   receiveDate: "2026-11-10", dueDate: "2026-11-20", syncedAt: "10/11/2026 13:12", batchLabel: "Đợt 1 - Chiều 10/11 (01/BBBG-ĐKCG)", status: "PROCESSING" },
+      { id: 1794290758160, code: "261110-0469", fullCode: "H29.14.10.62-261110-0469", ward: "BD",  owner: "Lê Văn Tiền",                              rawProc: "1.115929 - Xóa ghi nợ tiền sử dụng đất, lệ phí trước bạ trên Giấy chứng nhận đã cấp (6 ngày làm việc)",     type: "Xóa ghi nợ tiền SDĐ (6 ngày)",    diff: "LAN_ANH", isLanAnhSpecial: true,  assignee: "Phạm Nguyễn Lan Anh",  receiveDate: "2026-11-10", dueDate: "2026-11-18", syncedAt: "10/11/2026 13:12", batchLabel: "Đợt 1 - Chiều 10/11 (01/BBBG-ĐKCG)", status: "PROCESSING" },
+      { id: 1794290767926, code: "261110-0581", fullCode: "H29.14.10.62-261110-0581", ward: "PL",  owner: "Lê Trung An",                              rawProc: "CNVPDK_30A. Đăng ký biến động quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất (8 ngày làm việc)", type: "Đăng ký biến động QSDĐ (8 ngày)", diff: "NORM",    isLanAnhSpecial: false, assignee: "Nguyễn Trần Thảo Vy",  receiveDate: "2026-11-10", dueDate: "2026-11-20", syncedAt: "10/11/2026 13:12", batchLabel: "Đợt 1 - Chiều 10/11 (01/BBBG-ĐKCG)", status: "PROCESSING" },
+      { id: 1794290767927, code: "261110-0747", fullCode: "H29.14.10.62-261110-0747", ward: "PL",  owner: "Nguyễn Thị Mỹ Dung",                       rawProc: "CNVPDK_30A. Đăng ký biến động quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất (8 ngày làm việc)", type: "Đăng ký biến động QSDĐ (8 ngày)", diff: "NORM",    isLanAnhSpecial: false, assignee: "Hoàng Minh Tú",        receiveDate: "2026-11-10", dueDate: "2026-11-20", syncedAt: "10/11/2026 13:12", batchLabel: "Đợt 1 - Chiều 10/11 (01/BBBG-ĐKCG)", status: "PROCESSING" },
+      { id: 1794290809801, code: "261110-0501", fullCode: "H29.14.10.62-261110-0501", ward: "TDM", owner: "Trịnh Đình Gắng",                          rawProc: "CNVPDK_23B. (10 ngày) Cấp đổi Giấy chứng nhận quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất",   type: "Cấp đổi Giấy chứng nhận (10 ngày)", diff: "NORM",   isLanAnhSpecial: false, assignee: "Lê Sơn Thanh",         receiveDate: "2026-11-10", dueDate: "2026-11-24", syncedAt: "10/11/2026 13:12", batchLabel: "Đợt 1 - Chiều 10/11 (01/BBBG-ĐKCG)", status: "PROCESSING" },
+      { id: 1794290809802, code: "261110-0958", fullCode: "H29.14.10.62-261110-0958", ward: "CH",  owner: "Nguyễn Phi Công",                          rawProc: "CNVPDK_23A. (5 ngày) Cấp đổi Giấy chứng nhận quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất",    type: "Cấp đổi Giấy chứng nhận (5 ngày)", diff: "NORM",    isLanAnhSpecial: false, assignee: "Nguyễn Trần Thảo Vy",  receiveDate: "2026-11-10", dueDate: "2026-11-17", syncedAt: "10/11/2026 13:12", batchLabel: "Đợt 1 - Chiều 10/11 (01/BBBG-ĐKCG)", status: "PROCESSING" },
+      { id: 1794290809803, code: "261110-0971", fullCode: "H29.14.10.62-261110-0971", ward: "TDM", owner: "Mai Đức Anh",                              rawProc: "CNVPDK_23A. (5 ngày) Cấp đổi Giấy chứng nhận quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất",    type: "Cấp đổi Giấy chứng nhận (5 ngày)", diff: "NORM",    isLanAnhSpecial: false, assignee: "Hoàng Minh Tú",        receiveDate: "2026-11-10", dueDate: "2026-11-17", syncedAt: "10/11/2026 13:12", batchLabel: "Đợt 1 - Chiều 10/11 (01/BBBG-ĐKCG)", status: "PROCESSING" },
+      { id: 1794290809804, code: "261110-0914", fullCode: "H29.14.10.62-261110-0914", ward: "TDM", owner: "Đỗ Tấn Phát",                              rawProc: "CNVPDK_30A. Đăng ký biến động quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất (8 ngày làm việc)", type: "Đăng ký biến động QSDĐ (8 ngày)", diff: "NORM",    isLanAnhSpecial: false, assignee: "Huỳnh Thị Ái Nhi",     receiveDate: "2026-11-10", dueDate: "2026-11-20", syncedAt: "10/11/2026 13:12", batchLabel: "Đợt 1 - Chiều 10/11 (01/BBBG-ĐKCG)", status: "PROCESSING" },
+      { id: 1794290809805, code: "261110-0906", fullCode: "H29.14.10.62-261110-0906", ward: "TDM", owner: "Đỗ Tấn Phát",                              rawProc: "CNVPDK_30A. Đăng ký biến động quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất (8 ngày làm việc)", type: "Đăng ký biến động QSDĐ (8 ngày)", diff: "NORM",    isLanAnhSpecial: false, assignee: "Trần Thị Thùy Trang",  receiveDate: "2026-11-10", dueDate: "2026-11-20", syncedAt: "10/11/2026 13:12", batchLabel: "Đợt 1 - Chiều 10/11 (01/BBBG-ĐKCG)", status: "PROCESSING" },
+      { id: 1794290809806, code: "261110-0893", fullCode: "H29.14.10.62-261110-0893", ward: "TDM", owner: "Đỗ Tấn Phát",                              rawProc: "CNVPDK_30A. Đăng ký biến động quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất (8 ngày làm việc)", type: "Đăng ký biến động QSDĐ (8 ngày)", diff: "NORM",    isLanAnhSpecial: false, assignee: "Trần Nguyễn Hoài Lam", receiveDate: "2026-11-10", dueDate: "2026-11-20", syncedAt: "10/11/2026 13:12", batchLabel: "Đợt 1 - Chiều 10/11 (01/BBBG-ĐKCG)", status: "PROCESSING" },
+      { id: 1794290809807, code: "261110-1076", fullCode: "H29.14.10.62-261110-1076", ward: "PL",  owner: "Khúc Mạnh Tùng",                           rawProc: "CNVPDK_30A. Đăng ký biến động quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất (8 ngày làm việc)", type: "Đăng ký biến động QSDĐ (8 ngày)", diff: "NORM",    isLanAnhSpecial: false, assignee: "Nguyễn Tiến Thịnh",    receiveDate: "2026-11-10", dueDate: "2026-11-20", syncedAt: "10/11/2026 13:12", batchLabel: "Đợt 1 - Chiều 10/11 (01/BBBG-ĐKCG)", status: "PROCESSING" },
+      { id: 1794290809808, code: "261110-1126", fullCode: "H29.14.10.62-261110-1126", ward: "CH",  owner: "Nguyễn Thúy An",                           rawProc: "CNVPDK_30A. Đăng ký biến động quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất (8 ngày làm việc)", type: "Đăng ký biến động QSDĐ (8 ngày)", diff: "NORM",    isLanAnhSpecial: false, assignee: "Nguyễn Trung Thành",   receiveDate: "2026-11-10", dueDate: "2026-11-20", syncedAt: "10/11/2026 13:12", batchLabel: "Đợt 1 - Chiều 10/11 (01/BBBG-ĐKCG)", status: "PROCESSING" },
+      { id: 1794290809809, code: "261110-1411", fullCode: "H29.14.10.62-261110-1411", ward: "TDM", owner: "Hồ Yến Quỳnh",                             rawProc: "CNVPDK_30A. Đăng ký biến động quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất (8 ngày làm việc)", type: "Đăng ký biến động QSDĐ (8 ngày)", diff: "NORM",    isLanAnhSpecial: false, assignee: "Nguyễn Văn Khánh",     receiveDate: "2026-11-10", dueDate: "2026-11-20", syncedAt: "10/11/2026 13:12", batchLabel: "Đợt 1 - Chiều 10/11 (01/BBBG-ĐKCG)", status: "PROCESSING" },
+
+      // --- ĐỢT 2: 11 BỘ MỚI (10/11/2026 17:25) ---
+      { id: 1794306300001, code: "261110-3273", fullCode: "H29.14.10.62-261110-3273", ward: "PL",  owner: "Theo HS 1 cửa",                            rawProc: "CNVPDK_30A. Đăng ký biến động quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất (8 ngày làm việc)", type: "Đăng ký biến động QSDĐ (8 ngày)", diff: "NORM",    isLanAnhSpecial: false, assignee: "Hoàng Minh Tú",        receiveDate: "2026-11-10", dueDate: "2026-11-20", syncedAt: "10/11/2026 17:25", batchLabel: "Đợt 2 - Chiều 10/11 (02/BBBG-ĐKCG)", status: "PROCESSING" },
+      { id: 1794306300002, code: "261110-2479", fullCode: "H29.14.10.62-261110-2479", ward: "TDM", owner: "Theo HS 1 cửa",                            rawProc: "CNVPDK_30A. Đăng ký biến động quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất (8 ngày làm việc)", type: "Đăng ký biến động QSDĐ (8 ngày)", diff: "NORM",    isLanAnhSpecial: false, assignee: "Huỳnh Thị Ái Nhi",     receiveDate: "2026-11-10", dueDate: "2026-11-20", syncedAt: "10/11/2026 17:25", batchLabel: "Đợt 2 - Chiều 10/11 (02/BBBG-ĐKCG)", status: "PROCESSING" },
+      { id: 1794306300003, code: "261110-1937", fullCode: "H29.14.10.62-261110-1937", ward: "CH",  owner: "Theo HS 1 cửa",                            rawProc: "CNVPDK_30A. Đăng ký biến động quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất (8 ngày làm việc)", type: "Đăng ký biến động QSDĐ (8 ngày)", diff: "NORM",    isLanAnhSpecial: false, assignee: "Trần Nguyễn Hoài Lam", receiveDate: "2026-11-10", dueDate: "2026-11-20", syncedAt: "10/11/2026 17:25", batchLabel: "Đợt 2 - Chiều 10/11 (02/BBBG-ĐKCG)", status: "PROCESSING" },
+      { id: 1794306300004, code: "261110-2892", fullCode: "H29.14.10.62-261110-2892", ward: "TDM", owner: "Theo HS 1 cửa",                            rawProc: "CNVPDK_30A. Đăng ký biến động quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất (8 ngày làm việc)", type: "Đăng ký biến động QSDĐ (8 ngày)", diff: "NORM",    isLanAnhSpecial: false, assignee: "Nguyễn Văn Khánh",     receiveDate: "2026-11-10", dueDate: "2026-11-20", syncedAt: "10/11/2026 17:25", batchLabel: "Đợt 2 - Chiều 10/11 (02/BBBG-ĐKCG)", status: "PROCESSING" },
+      { id: 1794306300005, code: "261110-3430", fullCode: "H29.14.10.62-261110-3430", ward: "CH",  owner: "Tạ Thị Ngọc Lệ",                           rawProc: "CNVPDK_30A. Đăng ký biến động quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất (8 ngày làm việc)", type: "Đăng ký biến động QSDĐ (8 ngày)", diff: "NORM",    isLanAnhSpecial: false, assignee: "Trần Thị Thùy Trang",  receiveDate: "2026-11-10", dueDate: "2026-11-20", syncedAt: "10/11/2026 17:25", batchLabel: "Đợt 2 - Chiều 10/11 (02/BBBG-ĐKCG)", status: "PROCESSING" },
+      { id: 1794306300006, code: "261110-1868", fullCode: "H29.14.10.62-261110-1868", ward: "PA",  owner: "Theo HS 1 cửa",                            rawProc: "CNVPDK_30A. Đăng ký biến động quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất (8 ngày làm việc)", type: "Đăng ký biến động QSDĐ (8 ngày)", diff: "NORM",    isLanAnhSpecial: false, assignee: "Tạ Nguyễn Bích Trang", receiveDate: "2026-11-10", dueDate: "2026-11-20", syncedAt: "10/11/2026 17:25", batchLabel: "Đợt 2 - Chiều 10/11 (02/BBBG-ĐKCG)", status: "PROCESSING" },
+      { id: 1794306300007, code: "261110-2285", fullCode: "H29.14.10.62-261110-2285", ward: "PL",  owner: "Theo HS 1 cửa",                            rawProc: "CNVPDK_30A. Đăng ký biến động quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất (8 ngày làm việc)", type: "Đăng ký biến động QSDĐ (8 ngày)", diff: "NORM",    isLanAnhSpecial: false, assignee: "Nguyễn Trần Thảo Vy",  receiveDate: "2026-11-10", dueDate: "2026-11-20", syncedAt: "10/11/2026 17:25", batchLabel: "Đợt 2 - Chiều 10/11 (02/BBBG-ĐKCG)", status: "PROCESSING" },
+      { id: 1794306300008, code: "261110-1979", fullCode: "H29.14.10.62-261110-1979", ward: "TDM", owner: "Theo HS 1 cửa",                            rawProc: "CNVPDK_30A. Đăng ký biến động quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất (8 ngày làm việc)", type: "Đăng ký biến động QSDĐ (8 ngày)", diff: "NORM",    isLanAnhSpecial: false, assignee: "Lê Sơn Thanh",         receiveDate: "2026-11-10", dueDate: "2026-11-20", syncedAt: "10/11/2026 17:25", batchLabel: "Đợt 2 - Chiều 10/11 (02/BBBG-ĐKCG)", status: "PROCESSING" },
+      { id: 1794306300009, code: "261110-2937", fullCode: "H29.14.10.62-261110-2937", ward: "PL",  owner: "Theo HS 1 cửa",                            rawProc: "CNVPDK_30A. Đăng ký biến động quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất (8 ngày làm việc)", type: "Đăng ký biến động QSDĐ (8 ngày)", diff: "NORM",    isLanAnhSpecial: false, assignee: "Lê Sơn Thanh",         receiveDate: "2026-11-10", dueDate: "2026-11-20", syncedAt: "10/11/2026 17:25", batchLabel: "Đợt 2 - Chiều 10/11 (02/BBBG-ĐKCG)", status: "PROCESSING" },
+      { id: 1794306300010, code: "261110-2542", fullCode: "H29.14.10.62-261110-2542", ward: "CH",  owner: "Theo HS 1 cửa",                            rawProc: "CNVPDK_30A. Đăng ký biến động quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất (8 ngày làm việc)", type: "Đăng ký biến động QSDĐ (8 ngày)", diff: "NORM",    isLanAnhSpecial: false, assignee: "Nguyễn Trung Thành",   receiveDate: "2026-11-10", dueDate: "2026-11-20", syncedAt: "10/11/2026 17:25", batchLabel: "Đợt 2 - Chiều 10/11 (02/BBBG-ĐKCG)", status: "PROCESSING" },
+      { id: 1794306300011, code: "261110-2669", fullCode: "H29.14.10.62-261110-2669", ward: "BD",  owner: "Theo HS 1 cửa",                            rawProc: "CNVPDK_30A. Đăng ký biến động quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất (8 ngày làm việc)", type: "Đăng ký biến động QSDĐ (8 ngày)", diff: "NORM",    isLanAnhSpecial: false, assignee: "Võ Tường Lam",         receiveDate: "2026-11-10", dueDate: "2026-11-20", syncedAt: "10/11/2026 17:25", batchLabel: "Đợt 2 - Chiều 10/11 (02/BBBG-ĐKCG)", status: "PROCESSING" },
+
+      // --- ĐỢT 3: 12 BỘ MỚI (11/11/2026 11:40) ---
+      { id: 1794372000001, code: "261111-0317", fullCode: "H29.14.10.62-261111-0317", ward: "TDM", owner: "Theo HS 1 cửa",                            rawProc: "CNVPDK_30A. Đăng ký biến động quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất (8 ngày làm việc)", type: "Đăng ký biến động QSDĐ (8 ngày)", diff: "NORM",    isLanAnhSpecial: false, assignee: "Nguyễn Tiến Thịnh",    receiveDate: "2026-11-11", dueDate: "2026-11-23", syncedAt: "11/11/2026 11:40", batchLabel: "Đợt 3 - Sáng 11/11 (03/BBBG-ĐKCG)", status: "PROCESSING" },
+      { id: 1794372000002, code: "261111-0785", fullCode: "H29.14.10.62-261111-0785", ward: "TDM", owner: "Theo HS 1 cửa",                            rawProc: "CNVPDK_30A. Đăng ký biến động quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất (8 ngày làm việc)", type: "Đăng ký biến động QSDĐ (8 ngày)", diff: "NORM",    isLanAnhSpecial: false, assignee: "Huỳnh Thị Ái Nhi",     receiveDate: "2026-11-11", dueDate: "2026-11-23", syncedAt: "11/11/2026 11:40", batchLabel: "Đợt 3 - Sáng 11/11 (03/BBBG-ĐKCG)", status: "PROCESSING" },
+      { id: 1794372000003, code: "261111-0746", fullCode: "H29.14.10.62-261111-0746", ward: "BD",  owner: "Theo HS 1 cửa",                            rawProc: "CNVPDK_30A. Đăng ký biến động quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất (8 ngày làm việc)", type: "Đăng ký biến động QSDĐ (8 ngày)", diff: "NORM",    isLanAnhSpecial: false, assignee: "Trần Nguyễn Hoài Lam", receiveDate: "2026-11-11", dueDate: "2026-11-23", syncedAt: "11/11/2026 11:40", batchLabel: "Đợt 3 - Sáng 11/11 (03/BBBG-ĐKCG)", status: "PROCESSING" },
+      { id: 1794372000004, code: "261111-0734", fullCode: "H29.14.10.62-261111-0734", ward: "CH",  owner: "Theo HS 1 cửa",                            rawProc: "CNVPDK_30A. Đăng ký biến động quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất (8 ngày làm việc)", type: "Đăng ký biến động QSDĐ (8 ngày)", diff: "NORM",    isLanAnhSpecial: false, assignee: "Trần Nguyễn Hoài Lam", receiveDate: "2026-11-11", dueDate: "2026-11-23", syncedAt: "11/11/2026 11:40", batchLabel: "Đợt 3 - Sáng 11/11 (03/BBBG-ĐKCG)", status: "PROCESSING" },
+      { id: 1794372000005, code: "261111-0691", fullCode: "H29.14.10.62-261111-0691", ward: "PA",  owner: "Theo HS 1 cửa",                            rawProc: "CNVPDK_30A. Đăng ký biến động quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất (8 ngày làm việc)", type: "Đăng ký biến động QSDĐ (8 ngày)", diff: "NORM",    isLanAnhSpecial: false, assignee: "Nguyễn Văn Khánh",     receiveDate: "2026-11-11", dueDate: "2026-11-23", syncedAt: "11/11/2026 11:40", batchLabel: "Đợt 3 - Sáng 11/11 (03/BBBG-ĐKCG)", status: "PROCESSING" },
+      { id: 1794372000006, code: "261111-0416", fullCode: "H29.14.10.62-261111-0416", ward: "CH",  owner: "Theo HS 1 cửa",                            rawProc: "CNVPDK_30A. Đăng ký biến động quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất (8 ngày làm việc)", type: "Đăng ký biến động QSDĐ (8 ngày)", diff: "NORM",    isLanAnhSpecial: false, assignee: "Trần Thị Thùy Trang",  receiveDate: "2026-11-11", dueDate: "2026-11-23", syncedAt: "11/11/2026 11:40", batchLabel: "Đợt 3 - Sáng 11/11 (03/BBBG-ĐKCG)", status: "PROCESSING" },
+      { id: 1794372000007, code: "261111-1116", fullCode: "H29.14.10.62-261111-1116", ward: "PA",  owner: "Theo HS 1 cửa",                            rawProc: "CNVPDK_30A. Đăng ký biến động quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất (8 ngày làm việc)", type: "Đăng ký biến động QSDĐ (8 ngày)", diff: "NORM",    isLanAnhSpecial: false, assignee: "Tạ Nguyễn Bích Trang", receiveDate: "2026-11-11", dueDate: "2026-11-23", syncedAt: "11/11/2026 11:40", batchLabel: "Đợt 3 - Sáng 11/11 (03/BBBG-ĐKCG)", status: "PROCESSING" },
+      { id: 1794372000008, code: "261111-0885", fullCode: "H29.14.10.62-261111-0885", ward: "PL",  owner: "Võ Văn Hùng",                              rawProc: "1.013833 - Đăng ký biến động đối với trường hợp đổi tên hoặc thay đổi thông tin về người sử dụng đất (4 ngày làm việc)", type: "Đổi tên / thông tin NSDĐ (4 ngày)", diff: "LAN_ANH", isLanAnhSpecial: true, assignee: "Phạm Nguyễn Lan Anh", receiveDate: "2026-11-11", dueDate: "2026-11-19", syncedAt: "11/11/2026 11:40", batchLabel: "Đợt 3 - Sáng 11/11 (03/BBBG-ĐKCG)", status: "PROCESSING" },
+      { id: 1794372000009, code: "261111-0750", fullCode: "H29.14.10.62-261111-0750", ward: "TDM", owner: "Phan Hoàng Thị Khánh Dung",                rawProc: "CNVPDK_30A. Đăng ký biến động quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất (8 ngày làm việc)", type: "Đăng ký biến động QSDĐ (8 ngày)", diff: "NORM",    isLanAnhSpecial: false, assignee: "Nguyễn Trần Thảo Vy",  receiveDate: "2026-11-11", dueDate: "2026-11-23", syncedAt: "11/11/2026 11:40", batchLabel: "Đợt 3 - Sáng 11/11 (03/BBBG-ĐKCG)", status: "PROCESSING" },
+      { id: 1794372000010, code: "261111-1005", fullCode: "H29.14.10.62-261111-1005", ward: "PA",  owner: "Mai Đình Hạ",                              rawProc: "CNVPDK_23A. (5 ngày) Cấp đổi Giấy chứng nhận quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất",    type: "Cấp đổi Giấy chứng nhận (5 ngày)", diff: "NORM",    isLanAnhSpecial: false, assignee: "Nguyễn Trung Thành",   receiveDate: "2026-11-11", dueDate: "2026-11-18", syncedAt: "11/11/2026 11:40", batchLabel: "Đợt 3 - Sáng 11/11 (03/BBBG-ĐKCG)", status: "PROCESSING" },
+      { id: 1794372000011, code: "261111-0806", fullCode: "H29.14.10.62-261111-0806", ward: "BD",  owner: "Nguyễn Thị Phượng",                        rawProc: "CNVPDK_23B. (10 ngày) Cấp đổi Giấy chứng nhận quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất",   type: "Cấp đổi Giấy chứng nhận (10 ngày)", diff: "NORM",   isLanAnhSpecial: false, assignee: "Võ Tường Lam",         receiveDate: "2026-11-11", dueDate: "2026-11-27", syncedAt: "11/11/2026 11:40", batchLabel: "Đợt 3 - Sáng 11/11 (03/BBBG-ĐKCG)", status: "PROCESSING" },
+      { id: 1794372000012, code: "261111-1083", fullCode: "H29.14.10.62-261111-1083", ward: "TDM", owner: "Uông Thị Nguyệt Thảo",                     rawProc: "CNVPDK_30A. Đăng ký biến động quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất (8 ngày làm việc)", type: "Đăng ký biến động QSDĐ (8 ngày)", diff: "NORM",    isLanAnhSpecial: false, assignee: "Võ Tường Lam",         receiveDate: "2026-11-11", dueDate: "2026-11-23", syncedAt: "11/11/2026 11:40", batchLabel: "Đợt 3 - Sáng 11/11 (03/BBBG-ĐKCG)", status: "PROCESSING" },
+
+      // --- ĐỢT 4: 24 BỘ MỚI (11/11/2026 17:38) ---
+      { id: 1794393480001, code: "261111-3020", fullCode: "H29.14.10.62-261111-3020", ward: "BD",  owner: "Theo HS 1 cửa",                            rawProc: "CNVPDK_30A. Đăng ký biến động quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất (8 ngày làm việc)", type: "Đăng ký biến động QSDĐ (8 ngày)", diff: "NORM",    isLanAnhSpecial: false, assignee: "Nguyễn Tiến Thịnh",    receiveDate: "2026-11-11", dueDate: "2026-11-23", syncedAt: "11/11/2026 17:38", batchLabel: "Đợt 4 - Chiều 11/11 (04/BBBG-ĐKCG)", status: "PROCESSING" },
+      { id: 1794393480002, code: "261111-2993", fullCode: "H29.14.10.62-261111-2993", ward: "PL",  owner: "Theo HS 1 cửa",                            rawProc: "CNVPDK_30A. Đăng ký biến động quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất (8 ngày làm việc)", type: "Đăng ký biến động QSDĐ (8 ngày)", diff: "NORM",    isLanAnhSpecial: false, assignee: "Nguyễn Tiến Thịnh",    receiveDate: "2026-11-11", dueDate: "2026-11-23", syncedAt: "11/11/2026 17:38", batchLabel: "Đợt 4 - Chiều 11/11 (04/BBBG-ĐKCG)", status: "PROCESSING" },
+      { id: 1794393480003, code: "261111-0960", fullCode: "H29.14.10.62-261111-0960", ward: "PL",  owner: "Theo HS 1 cửa",                            rawProc: "CNVPDK_30A. Đăng ký biến động quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất (8 ngày làm việc)", type: "Đăng ký biến động QSDĐ (8 ngày)", diff: "NORM",    isLanAnhSpecial: false, assignee: "Hoàng Minh Tú",        receiveDate: "2026-11-11", dueDate: "2026-11-23", syncedAt: "11/11/2026 17:38", batchLabel: "Đợt 4 - Chiều 11/11 (04/BBBG-ĐKCG)", status: "PROCESSING" },
+      { id: 1794393480004, code: "261111-2622", fullCode: "H29.14.10.62-261111-2622", ward: "PL",  owner: "Theo HS 1 cửa",                            rawProc: "CNVPDK_30A. Đăng ký biến động quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất (8 ngày làm việc)", type: "Đăng ký biến động QSDĐ (8 ngày)", diff: "NORM",    isLanAnhSpecial: false, assignee: "Hoàng Minh Tú",        receiveDate: "2026-11-11", dueDate: "2026-11-23", syncedAt: "11/11/2026 17:38", batchLabel: "Đợt 4 - Chiều 11/11 (04/BBBG-ĐKCG)", status: "PROCESSING" },
+      { id: 1794393480005, code: "261111-2582", fullCode: "H29.14.10.62-261111-2582", ward: "PL",  owner: "Theo HS 1 cửa",                            rawProc: "CNVPDK_30A. Đăng ký biến động quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất (8 ngày làm việc)", type: "Đăng ký biến động QSDĐ (8 ngày)", diff: "NORM",    isLanAnhSpecial: false, assignee: "Hoàng Minh Tú",        receiveDate: "2026-11-11", dueDate: "2026-11-23", syncedAt: "11/11/2026 17:38", batchLabel: "Đợt 4 - Chiều 11/11 (04/BBBG-ĐKCG)", status: "PROCESSING" },
+      { id: 1794393480006, code: "261111-2910", fullCode: "H29.14.10.62-261111-2910", ward: "TDM", owner: "Theo HS 1 cửa",                            rawProc: "CNVPDK_30A. Đăng ký biến động quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất (8 ngày làm việc)", type: "Đăng ký biến động QSDĐ (8 ngày)", diff: "NORM",    isLanAnhSpecial: false, assignee: "Huỳnh Thị Ái Nhi",     receiveDate: "2026-11-11", dueDate: "2026-11-23", syncedAt: "11/11/2026 17:38", batchLabel: "Đợt 4 - Chiều 11/11 (04/BBBG-ĐKCG)", status: "PROCESSING" },
+      { id: 1794393480007, code: "261111-2423", fullCode: "H29.14.10.62-261111-2423", ward: "TDM", owner: "Theo HS 1 cửa",                            rawProc: "CNVPDK_30A. Đăng ký biến động quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất (8 ngày làm việc)", type: "Đăng ký biến động QSDĐ (8 ngày)", diff: "NORM",    isLanAnhSpecial: false, assignee: "Huỳnh Thị Ái Nhi",     receiveDate: "2026-11-11", dueDate: "2026-11-23", syncedAt: "11/11/2026 17:38", batchLabel: "Đợt 4 - Chiều 11/11 (04/BBBG-ĐKCG)", status: "PROCESSING" },
+      { id: 1794393480008, code: "261111-2015", fullCode: "H29.14.10.62-261111-2015", ward: "BD",  owner: "Theo HS 1 cửa",                            rawProc: "CNVPDK_30A. Đăng ký biến động quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất (8 ngày làm việc)", type: "Đăng ký biến động QSDĐ (8 ngày)", diff: "NORM",    isLanAnhSpecial: false, assignee: "Trần Nguyễn Hoài Lam", receiveDate: "2026-11-11", dueDate: "2026-11-23", syncedAt: "11/11/2026 17:38", batchLabel: "Đợt 4 - Chiều 11/11 (04/BBBG-ĐKCG)", status: "PROCESSING" },
+      { id: 1794393480009, code: "261111-1928", fullCode: "H29.14.10.62-261111-1928", ward: "CH",  owner: "Theo HS 1 cửa",                            rawProc: "CNVPDK_30A. Đăng ký biến động quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất (8 ngày làm việc)", type: "Đăng ký biến động QSDĐ (8 ngày)", diff: "NORM",    isLanAnhSpecial: false, assignee: "Trần Nguyễn Hoài Lam", receiveDate: "2026-11-11", dueDate: "2026-11-23", syncedAt: "11/11/2026 17:38", batchLabel: "Đợt 4 - Chiều 11/11 (04/BBBG-ĐKCG)", status: "PROCESSING" },
+      { id: 1794393480010, code: "261111-2887", fullCode: "H29.14.10.62-261111-2887", ward: "BD",  owner: "Theo HS 1 cửa",                            rawProc: "CNVPDK_30A. Đăng ký biến động quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất (8 ngày làm việc)", type: "Đăng ký biến động QSDĐ (8 ngày)", diff: "NORM",    isLanAnhSpecial: false, assignee: "Trần Nguyễn Hoài Lam", receiveDate: "2026-11-11", dueDate: "2026-11-23", syncedAt: "11/11/2026 17:38", batchLabel: "Đợt 4 - Chiều 11/11 (04/BBBG-ĐKCG)", status: "PROCESSING" },
+      { id: 1794393480011, code: "261111-1808", fullCode: "H29.14.10.62-261111-1808", ward: "CH",  owner: "Theo HS 1 cửa",                            rawProc: "CNVPDK_30A. Đăng ký biến động quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất (8 ngày làm việc)", type: "Đăng ký biến động QSDĐ (8 ngày)", diff: "NORM",    isLanAnhSpecial: false, assignee: "Nguyễn Văn Khánh",     receiveDate: "2026-11-11", dueDate: "2026-11-23", syncedAt: "11/11/2026 17:38", batchLabel: "Đợt 4 - Chiều 11/11 (04/BBBG-ĐKCG)", status: "PROCESSING" },
+      { id: 1794393480012, code: "261111-2326", fullCode: "H29.14.10.62-261111-2326", ward: "PA",  owner: "Theo HS 1 cửa",                            rawProc: "CNVPDK_30A. Đăng ký biến động quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất (8 ngày làm việc)", type: "Đăng ký biến động QSDĐ (8 ngày)", diff: "NORM",    isLanAnhSpecial: false, assignee: "Nguyễn Văn Khánh",     receiveDate: "2026-11-11", dueDate: "2026-11-23", syncedAt: "11/11/2026 17:38", batchLabel: "Đợt 4 - Chiều 11/11 (04/BBBG-ĐKCG)", status: "PROCESSING" },
+      { id: 1794393480013, code: "261111-2460", fullCode: "H29.14.10.62-261111-2460", ward: "PA",  owner: "Theo HS 1 cửa",                            rawProc: "CNVPDK_30A. Đăng ký biến động quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất (8 ngày làm việc)", type: "Đăng ký biến động QSDĐ (8 ngày)", diff: "NORM",    isLanAnhSpecial: false, assignee: "Trần Thị Thùy Trang",  receiveDate: "2026-11-11", dueDate: "2026-11-23", syncedAt: "11/11/2026 17:38", batchLabel: "Đợt 4 - Chiều 11/11 (04/BBBG-ĐKCG)", status: "PROCESSING" },
+      { id: 1794393480014, code: "261111-3073", fullCode: "H29.14.10.62-261111-3073", ward: "TDM", owner: "Theo HS 1 cửa",                            rawProc: "CNVPDK_30A. Đăng ký biến động quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất (8 ngày làm việc)", type: "Đăng ký biến động QSDĐ (8 ngày)", diff: "NORM",    isLanAnhSpecial: false, assignee: "Trần Thị Thùy Trang",  receiveDate: "2026-11-11", dueDate: "2026-11-23", syncedAt: "11/11/2026 17:38", batchLabel: "Đợt 4 - Chiều 11/11 (04/BBBG-ĐKCG)", status: "PROCESSING" },
+      { id: 1794393480015, code: "261111-2919", fullCode: "H29.14.10.62-261111-2919", ward: "TDM", owner: "Theo HS 1 cửa",                            rawProc: "CNVPDK_30A. Đăng ký biến động quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất (8 ngày làm việc)", type: "Đăng ký biến động QSDĐ (8 ngày)", diff: "NORM",    isLanAnhSpecial: false, assignee: "Tạ Nguyễn Bích Trang", receiveDate: "2026-11-11", dueDate: "2026-11-23", syncedAt: "11/11/2026 17:38", batchLabel: "Đợt 4 - Chiều 11/11 (04/BBBG-ĐKCG)", status: "PROCESSING" },
+      { id: 1794393480016, code: "261111-2775", fullCode: "H29.14.10.62-261111-2775", ward: "PL",  owner: "Theo HS 1 cửa",                            rawProc: "CNVPDK_30A. Đăng ký biến động quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất (8 ngày làm việc)", type: "Đăng ký biến động QSDĐ (8 ngày)", diff: "NORM",    isLanAnhSpecial: false, assignee: "Tạ Nguyễn Bích Trang", receiveDate: "2026-11-11", dueDate: "2026-11-23", syncedAt: "11/11/2026 17:38", batchLabel: "Đợt 4 - Chiều 11/11 (04/BBBG-ĐKCG)", status: "PROCESSING" },
+      { id: 1794393480017, code: "261111-1988", fullCode: "H29.14.10.62-261111-1988", ward: "TDM", owner: "Theo HS 1 cửa",                            rawProc: "CNVPDK_30A. Đăng ký biến động quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất (8 ngày làm việc)", type: "Đăng ký biến động QSDĐ (8 ngày)", diff: "NORM",    isLanAnhSpecial: false, assignee: "Tạ Nguyễn Bích Trang", receiveDate: "2026-11-11", dueDate: "2026-11-23", syncedAt: "11/11/2026 17:38", batchLabel: "Đợt 4 - Chiều 11/11 (04/BBBG-ĐKCG)", status: "PROCESSING" },
+      { id: 1794393480018, code: "261111-2341", fullCode: "H29.14.10.62-261111-2341", ward: "PA",  owner: "Theo HS 1 cửa",                            rawProc: "CNVPDK_30A. Đăng ký biến động quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất (8 ngày làm việc)", type: "Đăng ký biến động QSDĐ (8 ngày)", diff: "NORM",    isLanAnhSpecial: false, assignee: "Nguyễn Trần Thảo Vy",  receiveDate: "2026-11-11", dueDate: "2026-11-23", syncedAt: "11/11/2026 17:38", batchLabel: "Đợt 4 - Chiều 11/11 (04/BBBG-ĐKCG)", status: "PROCESSING" },
+      { id: 1794393480019, code: "261111-2646", fullCode: "H29.14.10.62-261111-2646", ward: "PL",  owner: "Theo HS 1 cửa",                            rawProc: "CNVPDK_30A. Đăng ký biến động quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất (8 ngày làm việc)", type: "Đăng ký biến động QSDĐ (8 ngày)", diff: "NORM",    isLanAnhSpecial: false, assignee: "Nguyễn Trần Thảo Vy",  receiveDate: "2026-11-11", dueDate: "2026-11-23", syncedAt: "11/11/2026 17:38", batchLabel: "Đợt 4 - Chiều 11/11 (04/BBBG-ĐKCG)", status: "PROCESSING" },
+      { id: 1794393480020, code: "261111-0410", fullCode: "H29.14.10.62-261111-0410", ward: "PA",  owner: "Theo HS 1 cửa",                            rawProc: "CNVPDK_30A. Đăng ký biến động quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất (8 ngày làm việc)", type: "Đăng ký biến động QSDĐ (8 ngày)", diff: "NORM",    isLanAnhSpecial: false, assignee: "Lê Sơn Thanh",         receiveDate: "2026-11-11", dueDate: "2026-11-23", syncedAt: "11/11/2026 17:38", batchLabel: "Đợt 4 - Chiều 11/11 (04/BBBG-ĐKCG)", status: "PROCESSING" },
+      { id: 1794393480021, code: "261111-2797", fullCode: "H29.14.10.62-261111-2797", ward: "PL",  owner: "NGUYỄN PHÙNG MAI LYNH",                    rawProc: "CNVPDK_23B. (10 ngày) Cấp đổi Giấy chứng nhận quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất",   type: "Cấp đổi Giấy chứng nhận (10 ngày)", diff: "NORM",   isLanAnhSpecial: false, assignee: "Nguyễn Trung Thành",   receiveDate: "2026-11-11", dueDate: "2026-11-24", syncedAt: "11/11/2026 17:38", batchLabel: "Đợt 4 - Chiều 11/11 (04/BBBG-ĐKCG)", status: "PROCESSING" },
+      { id: 1794393480022, code: "261111-1787", fullCode: "H29.14.10.62-261111-1787", ward: "BD",  owner: "NGUYỄN VŨ KHÁNH LINH",                     rawProc: "CNVPDK_30A. Đăng ký biến động quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất (8 ngày làm việc) _ Trường hợp chuyển nhượng...", type: "Đăng ký biến động - Chuyển nhượng (8 ngày)", diff: "NORM", isLanAnhSpecial: false, assignee: "Nguyễn Trung Thành", receiveDate: "2026-11-11", dueDate: "2026-11-23", syncedAt: "11/11/2026 17:38", batchLabel: "Đợt 4 - Chiều 11/11 (04/BBBG-ĐKCG)", status: "PROCESSING" },
+      { id: 1794393480023, code: "261111-2602", fullCode: "H29.14.10.62-261111-2602", ward: "PL",  owner: "Theo HS 1 cửa",                            rawProc: "CNVPDK_30A. Đăng ký biến động quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất (8 ngày làm việc)", type: "Đăng ký biến động QSDĐ (8 ngày)", diff: "NORM",    isLanAnhSpecial: false, assignee: "Võ Tường Lam",         receiveDate: "2026-11-11", dueDate: "2026-11-23", syncedAt: "11/11/2026 17:38", batchLabel: "Đợt 4 - Chiều 11/11 (04/BBBG-ĐKCG)", status: "PROCESSING" },
+      { id: 1794393480024, code: "261111-2678", fullCode: "H29.14.10.62-261111-2678", ward: "PL",  owner: "Theo HS 1 cửa",                            rawProc: "CNVPDK_30A. Đăng ký biến động quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất (8 ngày làm việc)", type: "Đăng ký biến động QSDĐ (8 ngày)", diff: "NORM",    isLanAnhSpecial: false, assignee: "Võ Tường Lam",         receiveDate: "2026-11-11", dueDate: "2026-11-23", syncedAt: "11/11/2026 17:38", batchLabel: "Đợt 4 - Chiều 11/11 (04/BBBG-ĐKCG)", status: "PROCESSING" }
     ]
   };
-  RECOVERED_20_STATE.historyLogs = [{
-    logId: 1794291138200,
-    seqNum: 1,
-    batchNameOnly: "Đợt 1",
-    docNoOnly: "01/BBBG-ĐKCG",
-    timestamp: "10/11/2026 13:12",
-    batchLabel: "Đợt 1 (01/BBBG-ĐKCG)",
-    totalFiles: 20,
-    summaryText: "Nguyễn Tiến Thịnh (261110-0595 (CH), 261110-1076 (PL)); Hoàng Minh Tú (261110-0747 (PL), 261110-0971 (TDM)); Huỳnh Thị Ái Nhi (261110-1069 (PA), 261110-0914 (TDM)); Trần Nguyễn Hoài Lam (261110-0893 (TDM)); Nguyễn Văn Khánh (261110-0494 (CH), 261110-1411 (TDM)); Trần Thị Thùy Trang (261110-1278 (CH), 261110-0906 (TDM)); Tạ Nguyễn Bích Trang (261110-0451 (PA)); Phạm Nguyễn Lan Anh (261110-0737 (PL), 261110-0469 (BD)); Nguyễn Trần Thảo Vy (261110-0581 (PL), 261110-0958 (CH)); Lê Sơn Thanh (261110-0501 (TDM)); Nguyễn Trung Thành (261110-0140 (PA), 261110-1126 (CH)); Võ Tường Lam (261110-1210 (PL))",
-    snapshotBatch: JSON.parse(JSON.stringify(RECOVERED_20_STATE.trackingFiles))
-  }];
+  RECOVERED_20_STATE.historyLogs = [
+    {
+      logId: 1794393480200,
+      seqNum: 4,
+      batchNameOnly: "Đợt 4 - Chiều 11/11",
+      docNoOnly: "04/BBBG-ĐKCG",
+      timestamp: "11/11/2026 17:38",
+      batchLabel: "Đợt 4 - Chiều 11/11 (04/BBBG-ĐKCG)",
+      totalFiles: 24,
+      summaryText: "Nguyễn Tiến Thịnh (261111-3020 (BD), 261111-2993 (PL)); Hoàng Minh Tú (261111-0960 (PL), 261111-2622 (PL), 261111-2582 (PL)); Huỳnh Thị Ái Nhi (261111-2910 (TDM), 261111-2423 (TDM)); Trần Nguyễn Hoài Lam (261111-2015 (BD), 261111-1928 (CH), 261111-2887 (BD)); Nguyễn Văn Khánh (261111-1808 (CH), 261111-2326 (PA)); Trần Thị Thùy Trang (261111-2460 (PA), 261111-3073 (TDM)); Tạ Nguyễn Bích Trang (261111-2919 (TDM), 261111-2775 (PL), 261111-1988 (TDM)); Nguyễn Trần Thảo Vy (261111-2341 (PA), 261111-2646 (PL)); Lê Sơn Thanh (261111-0410 (PA)); Nguyễn Trung Thành (261111-2797 (PL), 261111-1787 (BD)); Võ Tường Lam (261111-2602 (PL), 261111-2678 (PL))",
+      snapshotBatch: JSON.parse(JSON.stringify(RECOVERED_20_STATE.trackingFiles.slice(43, 67)))
+    },
+    {
+      logId: 1794372000200,
+      seqNum: 3,
+      batchNameOnly: "Đợt 3 - Sáng 11/11",
+      docNoOnly: "03/BBBG-ĐKCG",
+      timestamp: "11/11/2026 11:40",
+      batchLabel: "Đợt 3 - Sáng 11/11 (03/BBBG-ĐKCG)",
+      totalFiles: 12,
+      summaryText: "Nguyễn Tiến Thịnh (261111-0317 (TDM)); Huỳnh Thị Ái Nhi (261111-0785 (TDM)); Trần Nguyễn Hoài Lam (261111-0746 (BD), 261111-0734 (CH)); Nguyễn Văn Khánh (261111-0691 (PA)); Trần Thị Thùy Trang (261111-0416 (CH)); Tạ Nguyễn Bích Trang (261111-1116 (PA)); Phạm Nguyễn Lan Anh (261111-0885 (PL)); Nguyễn Trần Thảo Vy (261111-0750 (TDM)); Nguyễn Trung Thành (261111-1005 (PA)); Võ Tường Lam (261111-0806 (BD), 261111-1083 (TDM))",
+      snapshotBatch: JSON.parse(JSON.stringify(RECOVERED_20_STATE.trackingFiles.slice(31, 43)))
+    },
+    {
+      logId: 1794306300200,
+      seqNum: 2,
+      batchNameOnly: "Đợt 2 - Chiều 10/11",
+      docNoOnly: "02/BBBG-ĐKCG",
+      timestamp: "10/11/2026 17:25",
+      batchLabel: "Đợt 2 - Chiều 10/11 (02/BBBG-ĐKCG)",
+      totalFiles: 11,
+      summaryText: "Hoàng Minh Tú (261110-3273 (PL)); Huỳnh Thị Ái Nhi (261110-2479 (TDM)); Trần Nguyễn Hoài Lam (261110-1937 (CH)); Nguyễn Văn Khánh (261110-2892 (TDM)); Trần Thị Thùy Trang (261110-3430 (CH)); Tạ Nguyễn Bích Trang (261110-1868 (PA)); Nguyễn Trần Thảo Vy (261110-2285 (PL)); Lê Sơn Thanh (261110-1979 (TDM), 261110-2937 (PL)); Nguyễn Trung Thành (261110-2542 (CH)); Võ Tường Lam (261110-2669 (BD))",
+      snapshotBatch: JSON.parse(JSON.stringify(RECOVERED_20_STATE.trackingFiles.slice(20, 31)))
+    },
+    {
+      logId: 1794291138200,
+      seqNum: 1,
+      batchNameOnly: "Đợt 1 - Chiều 10/11",
+      docNoOnly: "01/BBBG-ĐKCG",
+      timestamp: "10/11/2026 13:12",
+      batchLabel: "Đợt 1 - Chiều 10/11 (01/BBBG-ĐKCG)",
+      totalFiles: 20,
+      summaryText: "Nguyễn Tiến Thịnh (261110-0595 (CH), 261110-1076 (PL)); Hoàng Minh Tú (261110-0747 (PL), 261110-0971 (TDM)); Huỳnh Thị Ái Nhi (261110-1069 (PA), 261110-0914 (TDM)); Trần Nguyễn Hoài Lam (261110-0893 (TDM)); Nguyễn Văn Khánh (261110-0494 (CH), 261110-1411 (TDM)); Trần Thị Thùy Trang (261110-1278 (CH), 261110-0906 (TDM)); Tạ Nguyễn Bích Trang (261110-0451 (PA)); Phạm Nguyễn Lan Anh (261110-0469 (BD)); Nguyễn Trần Thảo Vy (261110-0581 (PL), 261110-0958 (CH)); Lê Sơn Thanh (261110-0737 (PL), 261110-0501 (TDM)); Nguyễn Trung Thành (261110-0140 (PA), 261110-1126 (CH)); Võ Tường Lam (261110-1210 (PL))",
+      snapshotBatch: JSON.parse(JSON.stringify(RECOVERED_20_STATE.trackingFiles.slice(0, 20)))
+    }
+  ];
 
   let embeddedData = null;
   try {
@@ -1703,14 +1794,47 @@
   let historyLogs = (embeddedData && embeddedData.historyLogs) || JSON.parse(localStorage.getItem('cn23_v4_history')) || [];
 
   const wasExplicitlyResetByUser = localStorage.getItem('cn23_v4_explicit_reset') === '1';
-  if (trackingFiles.length === 0 && currentBatch.length === 0 && !wasExplicitlyResetByUser) {
-    staff12 = JSON.parse(JSON.stringify(RECOVERED_20_STATE.staff12));
-    trackingFiles = JSON.parse(JSON.stringify(RECOVERED_20_STATE.trackingFiles));
-    historyLogs = JSON.parse(JSON.stringify(RECOVERED_20_STATE.historyLogs));
-    localStorage.setItem('cn23_v4_staff12', JSON.stringify(staff12));
-    localStorage.setItem('cn23_v4_tracking', JSON.stringify(trackingFiles));
-    localStorage.setItem('cn23_v4_history', JSON.stringify(historyLogs));
-    localStorage.setItem('cn23_v4_sync_ver', String(RECOVERED_20_STATE.syncVersion));
+  if (!wasExplicitlyResetByUser) {
+    if (trackingFiles.length === 0 && currentBatch.length === 0) {
+      staff12 = JSON.parse(JSON.stringify(RECOVERED_20_STATE.staff12));
+      trackingFiles = JSON.parse(JSON.stringify(RECOVERED_20_STATE.trackingFiles));
+      historyLogs = JSON.parse(JSON.stringify(RECOVERED_20_STATE.historyLogs));
+      localStorage.setItem('cn23_v4_staff12', JSON.stringify(staff12));
+      localStorage.setItem('cn23_v4_tracking', JSON.stringify(trackingFiles));
+      localStorage.setItem('cn23_v4_history', JSON.stringify(historyLogs));
+      localStorage.setItem('cn23_v4_sync_ver', String(RECOVERED_20_STATE.syncVersion));
+    } else if (trackingFiles.length < RECOVERED_20_STATE.trackingFiles.length) {
+      // Bổ sung an toàn các hồ sơ còn thiếu từ bộ 67 hồ sơ chuẩn mà tuyệt đối không làm mất dữ liệu đang có trên máy
+      const existingByCode = new Map();
+      trackingFiles.forEach(f => {
+        if (f && f.code) existingByCode.set(String(f.code).trim(), f);
+      });
+      RECOVERED_20_STATE.trackingFiles.forEach(baseFile => {
+        const c = String(baseFile.code).trim();
+        const localFile = existingByCode.get(c);
+        if (!localFile) {
+          trackingFiles.push(JSON.parse(JSON.stringify(baseFile)));
+        } else {
+          if ((!localFile.owner || localFile.owner === "Theo HS 1 cửa") && baseFile.owner && baseFile.owner !== "Theo HS 1 cửa") {
+            localFile.owner = baseFile.owner;
+          }
+          if ((!localFile.rawProc || !localFile.rawProc.includes("CNVPDK_")) && baseFile.rawProc) {
+            localFile.rawProc = baseFile.rawProc;
+          }
+        }
+      });
+      if (!Array.isArray(historyLogs) || historyLogs.length < RECOVERED_20_STATE.historyLogs.length) {
+        const existingDocNos = new Set((historyLogs || []).map(h => h && h.docNoOnly));
+        RECOVERED_20_STATE.historyLogs.forEach(baseH => {
+          if (!existingDocNos.has(baseH.docNoOnly)) {
+            historyLogs.push(JSON.parse(JSON.stringify(baseH)));
+          }
+        });
+        historyLogs.sort((a, b) => (Number(b.seqNum) || 0) - (Number(a.seqNum) || 0));
+      }
+      localStorage.setItem('cn23_v4_tracking', JSON.stringify(trackingFiles));
+      localStorage.setItem('cn23_v4_history', JSON.stringify(historyLogs));
+    }
   }
 
   // =========================================================================
@@ -2540,6 +2664,25 @@
         (Array.isArray(remote.historyLogs) && remote.historyLogs.length > 1 && remote.historyLogs.some(h => !String(h.batchNameOnly || "").includes(" - ") || Number(h.totalFiles) > 30)) ||
         (Array.isArray(remote.trackingFiles) && remote.trackingFiles.some(f => String(f.type || "").includes("CNVPDK_") || String(f.type || "").includes("1.013") || String(f.type || "").includes("1.115")));
 
+      // Bảo toàn tên Chủ sử dụng & Tên quy trình gốc phong phú đang có trên máy trước khi nhận bản đồng bộ
+      const richLocalByCode = new Map();
+      if (typeof RECOVERED_20_STATE !== "undefined" && Array.isArray(RECOVERED_20_STATE.trackingFiles)) {
+        RECOVERED_20_STATE.trackingFiles.forEach(f => {
+          if (f && f.code) richLocalByCode.set(String(f.code).trim(), f);
+        });
+      }
+      if (Array.isArray(trackingFiles)) {
+        trackingFiles.forEach(f => {
+          if (f && f.code) {
+            const c = String(f.code).trim();
+            const prev = richLocalByCode.get(c);
+            if (!prev || (f.owner && f.owner !== "Theo HS 1 cửa")) {
+              richLocalByCode.set(c, f);
+            }
+          }
+        });
+      }
+
       isApplyingRemoteState = true;
       if (remote.staff12.length > 0) staff12 = remote.staff12;
       if (remote.algoSettings && typeof remote.algoSettings === 'object') {
@@ -2548,7 +2691,19 @@
         syncAlgoInputsFromSettings();
       }
       currentBatch = Array.isArray(remote.currentBatch) ? remote.currentBatch : [];
-      trackingFiles = Array.isArray(remote.trackingFiles) ? remote.trackingFiles : [];
+      trackingFiles = (Array.isArray(remote.trackingFiles) ? remote.trackingFiles : []).map(rf => {
+        if (!rf || !rf.code) return rf;
+        const rich = richLocalByCode.get(String(rf.code).trim());
+        if (rich) {
+          if ((!rf.owner || rf.owner === "Theo HS 1 cửa") && rich.owner && rich.owner !== "Theo HS 1 cửa") {
+            rf.owner = rich.owner;
+          }
+          if ((!rf.rawProc || (!rf.rawProc.includes("CNVPDK_") && !rf.rawProc.includes("1.013") && !rf.rawProc.includes("1.115"))) && rich.rawProc) {
+            rf.rawProc = rich.rawProc;
+          }
+        }
+        return rf;
+      });
       historyLogs = Array.isArray(remote.historyLogs) ? remote.historyLogs : [];
       sanitizeAndFixAllFileDates();
       recalculateStaffStatsFromTracking();
@@ -2849,7 +3004,7 @@
   function startRealtimeCloudSyncEngine() {
     initFirebaseIfConfigured();
 
-    // 1. Kết nối Cơ sở dữ liệu trực tuyến Google Sheets (Web App API) + Tự động làm mới (Auto-sync mỗi 12 giây)
+    // 1. Kết nối Cơ sở dữ liệu trực tuyến Google Sheets (Web App API) + Tự động làm mới liên tục (mỗi 8 giây + khi mở/chuyển cửa sổ)
     if (IS_RUNNING_IN_GAS || getActiveGoogleScriptUrl()) {
       pullStateFromGoogleSheets(false);
     }
@@ -2860,7 +3015,26 @@
       }
     }, AUTO_SYNC_INTERVAL_MS);
 
-    // 2. Kết nối kênh đồng bộ tức thì 0ms giữa các tab trên cùng máy
+    window.addEventListener("focus", () => {
+      if (IS_RUNNING_IN_GAS || getActiveGoogleScriptUrl()) {
+        pullStateFromGoogleSheets(false);
+      }
+    });
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "visible" && (IS_RUNNING_IN_GAS || getActiveGoogleScriptUrl())) {
+        pullStateFromGoogleSheets(false);
+      }
+    });
+    window.addEventListener("online", () => {
+      if (IS_RUNNING_IN_GAS || getActiveGoogleScriptUrl()) {
+        pullStateFromGoogleSheets(false);
+      }
+      if (trackingFiles.length > 0 || currentBatch.length > 0) {
+        pushStateToCloud(false);
+      }
+    });
+
+    // 2. Kết nối kênh đồng bộ tức thì 0ms giữa các tab/cửa sổ App trên cùng máy
     if (typeof BroadcastChannel !== "undefined") {
       try {
         localBroadcastChan = new BroadcastChannel("cn23_local_sync_v9");
@@ -2872,6 +3046,19 @@
         };
       } catch (e) {}
     }
+    window.addEventListener("storage", evt => {
+      if (!evt || !evt.key || isApplyingRemoteState) return;
+      if (evt.key === "cn23_v4_tracking" || evt.key === "cn23_v4_history" || evt.key === "cn23_v4_staff12" || evt.key === "cn23_v4_batch") {
+        try {
+          staff12 = JSON.parse(localStorage.getItem("cn23_v4_staff12")) || staff12;
+          trackingFiles = JSON.parse(localStorage.getItem("cn23_v4_tracking")) || trackingFiles;
+          historyLogs = JSON.parse(localStorage.getItem("cn23_v4_history")) || historyLogs;
+          currentBatch = JSON.parse(localStorage.getItem("cn23_v4_batch")) || currentBatch;
+          recalculateStaffStatsFromTracking();
+          renderAll();
+        } catch (e) {}
+      }
+    });
 
     // 3. Kết nối song song 3 cụm máy chủ Đám mây trực tuyến (EMQX, HiveMQ, Mosquitto WebSockets) với chế độ Retained
     if (typeof mqtt !== "undefined" && typeof mqtt.connect === "function") {
@@ -2889,10 +3076,10 @@
               if (!err) {
                 setCloudStatusBadge("🟢 Trực tuyến: Đã kết nối Đám mây (" + getNowTimestampVN() + ")");
                 setTimeout(() => {
-                  if (trackingFiles.length > 0 || currentBatch.length > 0) {
+                  if (!hasReceivedInitialCloudRetain && (trackingFiles.length > 0 || currentBatch.length > 0)) {
                     pushStateToCloud(false);
                   }
-                }, 800);
+                }, 2200);
               }
             });
           });
@@ -4841,9 +5028,9 @@
     ingestOneStopRows(rows);
   }
 
-  // Khởi tạo giao diện ban đầu & Bật động cơ Đồng Bộ Google Sheets + Đám Mây Trực Tuyến
+  // Khởi tạo giao diện ban đầu & Bật động cơ Đồng Bộ Google Sheets + Đám Mây Trực Tuyến Liên Tục
   try {
-    const savedSessionStr = sessionStorage.getItem('cn23_logged_user_v5');
+    const savedSessionStr = sessionStorage.getItem('cn23_logged_user_v5') || localStorage.getItem('cn23_logged_user_v5_persist');
     if (savedSessionStr) {
       const parsedUser = JSON.parse(savedSessionStr);
       if (parsedUser && parsedUser.username && parsedUser.role) {
@@ -4854,21 +5041,23 @@
   syncAlgoInputsFromSettings();
   recalculateStaffStatsFromTracking();
   sanitizeAndFixAllFileDates();
+  try {
+    localStorage.setItem('cn23_v4_staff12', JSON.stringify(staff12));
+    localStorage.setItem('cn23_v4_tracking', JSON.stringify(trackingFiles));
+    localStorage.setItem('cn23_v4_history', JSON.stringify(historyLogs));
+  } catch (e) {}
   renderAll();
   startRealtimeCloudSyncEngine();
-  if (localStorage.getItem('cn23_cleaned_batches_v8') !== '1') {
-    localStorage.setItem('cn23_cleaned_batches_v8', '1');
-    saveStateToStorage(false, false, true);
+  if (localStorage.getItem('cn23_cleaned_batches_v9') !== '1') {
+    localStorage.setItem('cn23_cleaned_batches_v9', '1');
     setTimeout(() => {
-      pushStateToCloud(false, true);
-      pushStateToGoogleSheets(false, false, true);
-    }, 1500);
-  } else {
-    try {
-      localStorage.setItem('cn23_v4_staff12', JSON.stringify(staff12));
-      localStorage.setItem('cn23_v4_tracking', JSON.stringify(trackingFiles));
-      localStorage.setItem('cn23_v4_history', JSON.stringify(historyLogs));
-    } catch (e) {}
+      if (trackingFiles.length >= 67) {
+        lastKnownSyncVersion = Math.max(Date.now(), Number(lastKnownSyncVersion || 0) + 1000);
+        localStorage.setItem('cn23_v4_sync_ver', String(lastKnownSyncVersion));
+        pushStateToCloud(false, true);
+        pushStateToGoogleSheets(false, false, true);
+      }
+    }, 1800);
   }
 </script>
 </body>
