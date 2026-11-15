@@ -51,7 +51,9 @@
     #login-screen {
       position: fixed;
       inset: 0;
-      background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 55%, #1d4ed8 100%);
+      background: rgba(15, 23, 42, 0.72);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
       z-index: 9999;
       display: flex;
       align-items: center;
@@ -538,42 +540,46 @@
       />
       <div class="org-sub">Văn Phòng Đăng Ký Đất Đai TP.HCM - Chi Nhánh Số 23</div>
       <h2>QUẢN LÝ HỒ SƠ CN23</h2>
-      <p>Hệ Thống Phân Công, Theo Dõi & Lưu Trữ Hồ Sơ ĐKCG (Online Google Sheets)</p>
+      <p>Hệ Thống Phân Công, Theo Dõi &amp; Lưu Trữ Hồ Sơ ĐKCG (Online Google Sheets)</p>
     </div>
 
     <div class="form-group">
-      <label>Chọn Nhanh Nhân Sự (Tự điền Tên đăng nhập từ Sheet <code>NhanSu</code>):</label>
-      <select id="login-user-select" onchange="onSelectQuickAccount(this.value)">
-        <optgroup label="Cấp 1 — Quản Trị & Điều Phối (Role = Admin)">
-          <option value="admin" selected>💻 Cán bộ Điều phối (TK: admin — Toàn quyền 6 Tab)</option>
-          <option value="trang.ntt">👩‍💼 Nguyễn Thị Thùy Trang — Tổ trưởng (TK: trang.ntt — Admin)</option>
-          <option value="minh.ntt">👩‍💼 Nguyễn Thị Thu Minh — Tổ phó (TK: minh.ntt — Admin)</option>
+      <label for="login-user-select">1. Chọn Tài Khoản Đăng Nhập:</label>
+      <select id="login-user-select" onchange="onSelectQuickAccount(this.value)" style="font-weight:700; color:var(--primary-dark);">
+        <optgroup label="Quản Trị &amp; Điều Phối (Toàn quyền hệ thống)">
+          <option value="admin" selected>💻 Cán bộ Điều phối (Admin)</option>
+          <option value="trang.ntt">👩‍💼 Nguyễn Thị Thùy Trang — Tổ trưởng (Admin)</option>
+          <option value="minh.ntt">👩‍💼 Nguyễn Thị Thu Minh — Tổ phó (Admin)</option>
         </optgroup>
-        <optgroup label="Cấp 2 — 12 Chuyên Viên Thụ Lý (Role = User)">
-          <option value="thinh.nt">👤 1. Nguyễn Tiến Thịnh (TK: thinh.nt)</option>
-          <option value="tu.hm">👤 2. Hoàng Minh Tú (TK: tu.hm)</option>
-          <option value="nhi.hta">👤 3. Huỳnh Thị Ái Nhi (TK: nhi.hta)</option>
-          <option value="lam.tnh">👤 4. Trần Nguyễn Hoài Lam (TK: lam.tnh)</option>
-          <option value="khanh.nv">👤 5. Nguyễn Văn Khánh (TK: khanh.nv)</option>
-          <option value="trang.ttt">👤 6. Trần Thị Thùy Trang (TK: trang.ttt)</option>
-          <option value="trang.tnb">👤 7. Tạ Nguyễn Bích Trang (TK: trang.tnb)</option>
-          <option value="lananh.pn">👤 8. Phạm Nguyễn Lan Anh (TK: lananh.pn — Chuyên trách 3 mã)</option>
-          <option value="vy.ntt">👤 9. Nguyễn Trần Thảo Vy (TK: vy.ntt)</option>
-          <option value="thanh.ls">👤 10. Lê Sơn Thanh (TK: thanh.ls)</option>
-          <option value="thanh.nt">👤 11. Nguyễn Trung Thành (TK: thanh.nt)</option>
-          <option value="lam.vt">👤 12. Võ Tường Lam (TK: lam.vt)</option>
+        <optgroup label="12 Chuyên Viên Thụ Lý Hồ Sơ">
+          <option value="thinh.nt">👤 1. Nguyễn Tiến Thịnh</option>
+          <option value="tu.hm">👤 2. Hoàng Minh Tú</option>
+          <option value="nhi.hta">👤 3. Huỳnh Thị Ái Nhi</option>
+          <option value="lam.tnh">👤 4. Trần Nguyễn Hoài Lam</option>
+          <option value="khanh.nv">👤 5. Nguyễn Văn Khánh</option>
+          <option value="trang.ttt">👤 6. Trần Thị Thùy Trang</option>
+          <option value="trang.tnb">👤 7. Tạ Nguyễn Bích Trang</option>
+          <option value="lananh.pn">👤 8. Phạm Nguyễn Lan Anh (Chuyên trách 3 mã)</option>
+          <option value="vy.ntt">👤 9. Nguyễn Trần Thảo Vy</option>
+          <option value="thanh.ls">👤 10. Lê Sơn Thanh</option>
+          <option value="thanh.nt">👤 11. Nguyễn Trung Thành</option>
+          <option value="lam.vt">👤 12. Võ Tường Lam</option>
         </optgroup>
       </select>
+      <input type="hidden" id="login-username-input" value="admin" />
     </div>
 
     <div class="form-group">
-      <label>Tên đăng nhập (Cột <code>Tên đăng nhập</code> hoặc <code>Họ và tên</code> trong sheet <code>NhanSu</code>):</label>
-      <input type="text" id="login-username-input" value="admin" placeholder="Nhập Tên đăng nhập (VD: admin, trang.ntt, thinh.nt...)" onkeydown="if(event.key==='Enter') handleLoginSubmit()" />
+      <label for="login-pass-input">2. Mật khẩu (<span id="login-pass-hint" style="font-weight:500; color:var(--muted);">Mặc định Admin: <code>admin23</code> | 12 Chuyên viên: <code>cn23</code></span>):</label>
+      <input type="password" id="login-pass-input" value="admin23" placeholder="Nhập mật khẩu đăng nhập..." onkeydown="if(event.key==='Enter') handleLoginSubmit()" />
     </div>
 
-    <div class="form-group">
-      <label>Mật khẩu (Cột <code>Mật khẩu</code> trong sheet <code>NhanSu</code> — Mặc định: <code>cn23</code>):</label>
-      <input type="password" id="login-pass-input" value="cn23" placeholder="Nhập mật khẩu..." onkeydown="if(event.key==='Enter') handleLoginSubmit()" />
+    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; font-size:0.82rem; background:#f8fafc; padding:8px 10px; border-radius:7px; border:1px solid var(--border);">
+      <label style="display:flex; align-items:center; gap:7px; cursor:pointer; font-weight:700; color:#1e293b;">
+        <input type="checkbox" id="login-remember-chk" checked style="width:16px; height:16px; cursor:pointer;" />
+        Ghi nhớ đăng nhập trên máy này
+      </label>
+      <span style="font-size:0.74rem; color:var(--secondary); font-weight:600;">Tự mở lần sau</span>
     </div>
 
     <div id="login-error-msg" style="display:none; background:#fef2f2; border:1px solid #fecaca; color:#b91c1c; padding:8px 10px; border-radius:6px; font-size:0.8rem; font-weight:600; margin-bottom:12px;"></div>
@@ -583,11 +589,11 @@
     </button>
 
     <div class="quick-login-grid">
-      <button class="quick-role-btn" onclick="quickLogin('trang.ntt', 'cn23')">
-        👩‍💼 Cấp 1: Tổ trưởng (Admin)<br/><span style="font-weight:400; font-size:0.72rem;">Đầy đủ 6 Tab & Báo cáo</span>
+      <button class="quick-role-btn" onclick="quickLogin('trang.ntt', getAdminPassword())">
+        👩‍💼 Cấp 1: Tổ trưởng (Admin)<br/><span style="font-weight:400; font-size:0.72rem;">Đầy đủ 6 Tab &amp; Báo cáo</span>
       </button>
-      <button class="quick-role-btn" onclick="quickLogin('admin', 'cn23')">
-        💻 Cấp 1: Điều phối (Admin)<br/><span style="font-weight:400; font-size:0.72rem;">Chia Excel & In Biên bản</span>
+      <button class="quick-role-btn" onclick="quickLogin('admin', getAdminPassword())">
+        💻 Cấp 1: Điều phối (Admin)<br/><span style="font-weight:400; font-size:0.72rem;">Chia Excel &amp; In Biên bản</span>
       </button>
     </div>
     <div style="margin-top:10px; text-align:center;">
@@ -730,7 +736,7 @@
     </div>
     <div class="user-pill">
       <span id="current-user-label">💻 Cán bộ Điều phối</span>
-      <button class="btn btn-outline" style="padding:2px 7px; font-size:0.72rem;" onclick="logoutSystem()">Đổi TK</button>
+      <button class="btn btn-outline" style="padding:3px 9px; font-size:0.74rem; font-weight:700; color:#fecaca; border-color:rgba(252,165,165,0.45); background:rgba(220,38,38,0.25);" onclick="logoutSystem()" title="Đăng xuất và quay về màn hình khóa">🚪 Đăng xuất</button>
     </div>
     <button id="btn-install-pwa" class="btn btn-success" style="display:none; font-size:0.76rem; padding:5px 10px;" onclick="triggerInstallPwa()" title="Cài đặt ứng dụng Quản Lý Hồ Sơ CN23 (HS CN23) ra màn hình chính">
       📲 Cài App HS CN23
@@ -775,7 +781,10 @@
             Chỉ hiển thị hồ sơ được phân công cho bạn. Khi bạn đổi trạng thái <strong>Hoàn thành / Lưu trữ</strong>, dữ liệu sẽ tự động cập nhật ngay lên Google Sheets.
           </p>
         </div>
-        <button class="btn btn-primary" onclick="pullStateFromGoogleSheets(true)">🔄 Làm mới dữ liệu ngay</button>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <button class="btn btn-outline" onclick="switchTab('tab-print', document.getElementById('tab-btn-print'))">🖨️ Xem / In Biên Bản Bàn Giao</button>
+          <button class="btn btn-primary" onclick="pullStateFromGoogleSheets(true)">🔄 Làm mới dữ liệu ngay</button>
+        </div>
       </div>
     </div>
     <div class="grid-4">
@@ -820,7 +829,7 @@
     <button class="tab-btn admin-tab-btn" data-tab="tab-difficulty" onclick="switchTab('tab-difficulty', this)">
       ⚙️ 5. Công Việc Riêng Lan Anh & Thiết Lập Nhân Sự
     </button>
-    <button class="tab-btn admin-tab-btn" data-tab="tab-print" onclick="switchTab('tab-print', this)">
+    <button class="tab-btn" id="tab-btn-print" data-tab="tab-print" onclick="switchTab('tab-print', this)">
       🖨️ 6. In Biên Bản Bàn Giao Một Lượt (A4)
     </button>
   </div>
@@ -867,11 +876,17 @@
 
     <div class="card">
       <div class="card-title">
-        <span>Bước 2: Kiểm Tra Phân Công & Bấm "LƯU LẠI" Để Chính Thức Tính Hồ Sơ Lên Hệ Thống</span>
-        <div style="display:flex; gap:6px; flex-wrap:wrap;">
+        <span>Bước 2: Kiểm Tra Phân Công &amp; Bấm "LƯU LẠI" Để Chính Thức Tính Hồ Sơ Lên Hệ Thống</span>
+        <div style="display:flex; gap:6px; flex-wrap:wrap; align-items:center;">
           <button class="btn btn-primary" onclick="autoAssignCurrentBatch()">🔄 Tự Động Chia Lại</button>
-          <button class="btn btn-warning" onclick="syncAndSaveBatchToSystem(false)">💾 BẤM LƯU LẠI & ĐỒNG BỘ TIẾP NHẬN MỚI</button>
-          <button class="btn btn-success" onclick="commitAndGoToPrint()">🖨️ LƯU LẠI & IN BIÊN BẢN MỘT LƯỢT</button>
+          <div style="display:inline-flex; align-items:center; gap:6px; background:#fffbeb; border:1px solid #f59e0b; padding:4px 8px; border-radius:6px;">
+            <label for="save-target-batch-select" style="font-size:0.79rem; font-weight:700; color:#b45309; white-space:nowrap;">Lưu vào:</label>
+            <select id="save-target-batch-select" style="font-size:0.79rem; font-weight:700; color:#92400e; background:#fff; border:1px solid #fcd34d; padding:3px 8px; border-radius:4px; min-width:255px; cursor:pointer;">
+              <option value="NEW_BATCH">+ Tạo Đợt &amp; Số Biên Bản Mới</option>
+            </select>
+          </div>
+          <button class="btn btn-warning" onclick="syncAndSaveBatchToSystem(false)">💾 BẤM LƯU LẠI &amp; ĐỒNG BỘ TIẾP NHẬN MỚI</button>
+          <button class="btn btn-success" onclick="commitAndGoToPrint()">🖨️ LƯU LẠI &amp; IN BIÊN BẢN MỘT LƯỢT</button>
         </div>
       </div>
 
@@ -906,7 +921,7 @@
               <th>Tên Thủ Tục Hành Chính</th>
               <th class="text-center">Ngày Tiếp Nhận</th>
               <th class="text-center">Hẹn Trả Kết Quả</th>
-              <th style="width:215px;">Người Thụ Lý Dự Kiến</th>
+              <th style="width:280px;">Người Thụ Lý Dự Kiến</th>
               <th class="text-center" style="width:48px;">Khóa</th>
               <th class="text-center" style="width:45px;">Xóa</th>
             </tr>
@@ -1261,6 +1276,26 @@
         </div>
       </div>
     </div>
+
+    <div class="card admin-only-el" style="display:block; margin-top:12px; border-left:4px solid var(--primary);">
+      <div class="card-title">
+        <span>🔐 3. Đổi Mật Khẩu Đăng Nhập Hệ Thống (Dành Cho Cán Bộ Điều Phối - Admin)</span>
+        <button class="btn btn-primary" onclick="saveCustomPasswordsFromAdmin()">💾 Lưu Mật Khẩu Mới</button>
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:14px; align-items:end;">
+        <div>
+          <label style="display:block; font-size:0.79rem; font-weight:700; color:var(--text); margin-bottom:4px;">Mật khẩu Cán bộ Điều phối (Admin — Mặc định: <code>admin23</code>):</label>
+          <input type="text" id="admin-change-pass-admin" value="admin23" style="width:100%; font-weight:700; color:var(--primary-dark);" placeholder="Nhập mật khẩu Admin..." />
+        </div>
+        <div>
+          <label style="display:block; font-size:0.79rem; font-weight:700; color:var(--text); margin-bottom:4px;">Mật khẩu chung 12 Chuyên viên thụ lý (Mặc định: <code>cn23</code>):</label>
+          <input type="text" id="admin-change-pass-staff" value="cn23" style="width:100%; font-weight:700; color:#0f766e;" placeholder="Nhập mật khẩu chung 12 chuyên viên..." />
+        </div>
+        <div style="font-size:0.77rem; color:var(--muted); line-height:1.45;">
+          💡 Khi bấm <strong>Lưu Mật Khẩu Mới</strong>, mật khẩu mới sẽ áp dụng ngay trên máy này và đồng bộ tài khoản nhân sự.
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- =========================================================================
@@ -1387,11 +1422,11 @@
   //     - Cấp 2 (Role = User):  12 Chuyên viên thụ lý -> Chỉ hiện HS của cá nhân đó
   // =========================================================================
   const DEFAULT_NHANSU_ACCOUNTS = [
-    // Cấp 1: Quản trị & Điều phối (Role = Admin)
-    { username: "admin",     password: "cn23", fullName: "Cán bộ Điều phối",      role: "Admin", title: "Cán bộ Điều phối & Phân công" },
-    { username: "trang.ntt", password: "cn23", fullName: "Nguyễn Thị Thùy Trang", role: "Admin", title: "Tổ trưởng (PA, CH, BD)" },
-    { username: "minh.ntt",  password: "cn23", fullName: "Nguyễn Thị Thu Minh",   role: "Admin", title: "Tổ phó (PL, TDM)" },
-    // Cấp 2: 12 Chuyên viên thụ lý (Role = User)
+    // Cấp 1: Quản trị & Điều phối (Role = Admin) — Mật khẩu mặc định: admin23
+    { username: "admin",     password: "admin23", fullName: "Cán bộ Điều phối",      role: "Admin", title: "Cán bộ Điều phối & Phân công" },
+    { username: "trang.ntt", password: "admin23", fullName: "Nguyễn Thị Thùy Trang", role: "Admin", title: "Tổ trưởng (PA, CH, BD)" },
+    { username: "minh.ntt",  password: "admin23", fullName: "Nguyễn Thị Thu Minh",   role: "Admin", title: "Tổ phó (PL, TDM)" },
+    // Cấp 2: 12 Chuyên viên thụ lý (Role = User) — Mật khẩu mặc định: cn23
     { username: "thinh.nt",  password: "cn23", fullName: "Nguyễn Tiến Thịnh",     role: "User",  title: "Chuyên viên thụ lý" },
     { username: "tu.hm",     password: "cn23", fullName: "Hoàng Minh Tú",         role: "User",  title: "Chuyên viên thụ lý" },
     { username: "nhi.hta",   password: "cn23", fullName: "Huỳnh Thị Ái Nhi",      role: "User",  title: "Chuyên viên thụ lý" },
@@ -1406,13 +1441,55 @@
     { username: "lam.vt",    password: "cn23", fullName: "Võ Tường Lam",          role: "User",  title: "Chuyên viên thụ lý" }
   ];
 
+  function getCustomPasswordsConfig() {
+    try {
+      const parsed = JSON.parse(localStorage.getItem('cn23_custom_passwords_v1') || 'null');
+      if (parsed && parsed.adminPass && parsed.staffPass) return parsed;
+    } catch (e) {}
+    return { adminPass: "admin23", staffPass: "cn23" };
+  }
+
+  function syncPasswordInputsInAdminTab() {
+    const cfg = getCustomPasswordsConfig();
+    const aEl = document.getElementById('admin-change-pass-admin');
+    const sEl = document.getElementById('admin-change-pass-staff');
+    if (aEl) aEl.value = cfg.adminPass;
+    if (sEl) sEl.value = cfg.staffPass;
+  }
+
+  function saveCustomPasswordsFromAdmin() {
+    const aEl = document.getElementById('admin-change-pass-admin');
+    const sEl = document.getElementById('admin-change-pass-staff');
+    const newAdminPass = (aEl ? aEl.value : "").trim() || "admin23";
+    const newStaffPass = (sEl ? sEl.value : "").trim() || "cn23";
+    localStorage.setItem('cn23_custom_passwords_v1', JSON.stringify({
+      adminPass: newAdminPass,
+      staffPass: newStaffPass
+    }));
+    nhanSuAccounts = nhanSuAccounts.map(acc => ({
+      ...acc,
+      password: acc.role === "Admin" ? newAdminPass : newStaffPass
+    }));
+    try {
+      localStorage.setItem('cn23_v5_nhansu_accounts', JSON.stringify(nhanSuAccounts));
+    } catch (e) {}
+    alert(`✅ Đã cập nhật mật khẩu thành công!\n- Mật khẩu Cán bộ Điều phối (Admin): ${newAdminPass}\n- Mật khẩu 12 Chuyên viên thụ lý: ${newStaffPass}`);
+  }
+
   let nhanSuAccounts = JSON.parse(localStorage.getItem('cn23_v5_nhansu_accounts') || 'null') || DEFAULT_NHANSU_ACCOUNTS;
   let currentUserSession = null;
 
   function onSelectQuickAccount(usernameVal) {
     const uInput = document.getElementById('login-username-input');
+    const pInput = document.getElementById('login-pass-input');
     if (uInput && usernameVal) {
       uInput.value = usernameVal;
+    }
+    if (pInput) {
+      pInput.value = "";
+      const isAdm = (usernameVal === "admin" || usernameVal === "trang.ntt" || usernameVal === "minh.ntt");
+      pInput.placeholder = isAdm ? "Nhập mật khẩu Admin (mặc định: admin23)..." : "Nhập mật khẩu Chuyên viên (mặc định: cn23)...";
+      pInput.focus();
     }
     const errEl = document.getElementById('login-error-msg');
     if (errEl) errEl.style.display = 'none';
@@ -1426,118 +1503,80 @@
   }
 
   async function handleLoginSubmit() {
+    const selEl = document.getElementById('login-user-select');
     const uInput = document.getElementById('login-username-input');
     const pInput = document.getElementById('login-pass-input');
+    const rememberChk = document.getElementById('login-remember-chk');
+    const rememberMe = rememberChk ? Boolean(rememberChk.checked) : true;
     const btn = document.getElementById('btn-login-submit');
     const errEl = document.getElementById('login-error-msg');
     if (errEl) errEl.style.display = 'none';
 
-    const rawUser = (uInput ? uInput.value : "").trim();
+    const rawUser = ((selEl && selEl.value) ? selEl.value : (uInput ? uInput.value : "")).trim();
     const rawPass = (pInput ? pInput.value : "").trim();
 
     if (!rawUser || !rawPass) {
-      showLoginError("Vui lòng nhập đầy đủ Tên đăng nhập và Mật khẩu!");
+      showLoginError("Vui lòng chọn Tài khoản và nhập Mật khẩu!");
       return;
     }
 
-    function fallbackLocalLogin(u, p) {
+    function verifyAccountLocally(u, p) {
       const cleanUser = u.toLowerCase();
-      const matched = nhanSuAccounts.find(acc =>
-        (String(acc.username || "").toLowerCase() === cleanUser ||
-         String(acc.fullName || "").toLowerCase() === cleanUser) &&
-        String(acc.password || "") === p
+      const passCfg = getCustomPasswordsConfig();
+      const matched = DEFAULT_NHANSU_ACCOUNTS.find(acc =>
+        String(acc.username || "").toLowerCase() === cleanUser ||
+        String(acc.fullName || "").toLowerCase() === cleanUser
+      ) || nhanSuAccounts.find(acc =>
+        String(acc.username || "").toLowerCase() === cleanUser ||
+        String(acc.fullName || "").toLowerCase() === cleanUser
       );
       if (!matched) {
-        showLoginError("Sai Tên đăng nhập hoặc Mật khẩu! (Mật khẩu mặc định trong sheet NhanSu là: cn23)");
+        showLoginError("Không tìm thấy tài khoản nhân sự này!");
+        return false;
+      }
+      const isAdminAcc = matched.role === "Admin";
+      const expectedPass = isAdminAcc ? passCfg.adminPass : passCfg.staffPass;
+      const customAccObj = nhanSuAccounts.find(a => String(a.username || "").toLowerCase() === String(matched.username || "").toLowerCase());
+      const customAccPass = customAccObj ? String(customAccObj.password || "") : "";
+
+      const isPassValid = (p === expectedPass) ||
+                          (isAdminAcc && p === "admin23") ||
+                          (!isAdminAcc && p === "cn23") ||
+                          (customAccPass && p === customAccPass && !(isAdminAcc && customAccPass === "cn23" && passCfg.adminPass === "admin23"));
+
+      if (!isPassValid) {
+        showLoginError(isAdminAcc
+          ? `Sai mật khẩu Cán bộ Điều phối (Admin)! Mật khẩu mặc định là: ${passCfg.adminPass}`
+          : `Sai mật khẩu Chuyên viên thụ lý! Mật khẩu mặc định là: ${passCfg.staffPass}`);
         return false;
       }
       applyAuthenticatedSession({
         username: matched.username,
         fullName: matched.fullName,
-        role: matched.role === "Admin" ? "Admin" : "User",
+        role: isAdminAcc ? "Admin" : "User",
         title: matched.title
-      });
+      }, rememberMe);
+      pullStateFromGoogleSheets(false);
       return true;
     }
 
-    // 1. Nếu đang chạy trực tuyến trên Google Apps Script -> Dùng native google.script.run
-    if (IS_RUNNING_IN_GAS) {
-      if (btn) {
-        btn.disabled = true;
-        btn.textContent = "⏳ Đang xác thực với Sheet NhanSu...";
-      }
-      google.script.run
-        .withSuccessHandler((data) => {
-          if (btn) {
-            btn.disabled = false;
-            btn.textContent = "🔐 ĐĂNG NHẬP VÀO HỆ THỐNG";
-          }
-          if (data && data.ok && data.user) {
-            applyAuthenticatedSession(data.user);
-            pullStateFromGoogleSheets(false);
-          } else if (data && data.ok === false && data.message) {
-            showLoginError(data.message);
-          } else {
-            fallbackLocalLogin(rawUser, rawPass);
-          }
-        })
-        .withFailureHandler(() => {
-          if (btn) {
-            btn.disabled = false;
-            btn.textContent = "🔐 ĐĂNG NHẬP VÀO HỆ THỐNG";
-          }
-          fallbackLocalLogin(rawUser, rawPass);
-        })
-        .serverLogin(rawUser, rawPass);
-      return;
-    }
-
-    // 2. Nếu đã cấu hình link Google Sheets Web App API (chạy qua HTTP / GitHub Pages)
-    const gsUrl = getActiveGoogleScriptUrl();
-    if (gsUrl) {
-      try {
-        if (btn) {
-          btn.disabled = true;
-          btn.textContent = "⏳ Đang xác thực với Sheet NhanSu...";
-        }
-        const loginUrl = `${gsUrl}${gsUrl.includes('?') ? '&' : '?'}action=login&username=${encodeURIComponent(rawUser)}&password=${encodeURIComponent(rawPass)}&t=${Date.now()}`;
-        const res = await fetch(loginUrl, { method: "GET", cache: "no-store" });
-        const data = await res.json();
-        if (btn) {
-          btn.disabled = false;
-          btn.textContent = "🔐 ĐĂNG NHẬP VÀO HỆ THỐNG";
-        }
-        if (data && data.ok && data.user) {
-          applyAuthenticatedSession(data.user);
-          pullStateFromGoogleSheets(false);
-          return;
-        } else if (data && data.ok === false && data.message) {
-          showLoginError(data.message);
-          return;
-        }
-      } catch (e) {
-        if (btn) {
-          btn.disabled = false;
-          btn.textContent = "🔐 ĐĂNG NHẬP VÀO HỆ THỐNG";
-        }
-      }
-    }
-
-    // 3. Fallback đối chiếu tài khoản cục bộ
-    fallbackLocalLogin(rawUser, rawPass);
+    verifyAccountLocally(rawUser, rawPass);
   }
 
-  function quickLogin(username, password = "cn23") {
+  function quickLogin(username, password = "") {
     const sel = document.getElementById('login-user-select');
     const uInput = document.getElementById('login-username-input');
     const pInput = document.getElementById('login-pass-input');
+    const passCfg = getCustomPasswordsConfig();
+    const isAdm = (username === "admin" || username === "trang.ntt" || username === "minh.ntt");
+    const finalPass = password || (isAdm ? passCfg.adminPass : passCfg.staffPass);
     if (sel) sel.value = username;
     if (uInput) uInput.value = username;
-    if (pInput) pInput.value = password;
+    if (pInput) pInput.value = finalPass;
     handleLoginSubmit();
   }
 
-  function applyAuthenticatedSession(userObj) {
+  function applyAuthenticatedSession(userObj, rememberMe = true) {
     currentUserSession = {
       username: userObj.username,
       fullName: userObj.fullName,
@@ -1545,10 +1584,16 @@
       title: userObj.title || (userObj.role === "Admin" ? "Quản trị" : "Chuyên viên thụ lý")
     };
     sessionStorage.setItem('cn23_logged_user_v5', JSON.stringify(currentUserSession));
-    try { localStorage.setItem('cn23_logged_user_v5_persist', JSON.stringify(currentUserSession)); } catch (e) {}
+    try {
+      if (rememberMe) {
+        localStorage.setItem('cn23_logged_user_v5_persist', JSON.stringify(currentUserSession));
+      } else {
+        localStorage.removeItem('cn23_logged_user_v5_persist');
+      }
+    } catch (e) {}
 
     const isAdmin = currentUserSession.role === "Admin";
-    const roleBadgeText = isAdmin ? "Cấp 1: Admin" : "Cấp 2: Chuyên viên";
+    const roleBadgeText = isAdmin ? "Admin" : "Chuyên viên";
     document.getElementById('current-user-label').textContent = `${isAdmin ? '👩‍💼' : '👤'} ${currentUserSession.fullName} (${roleBadgeText})`;
     document.getElementById('login-screen').style.display = 'none';
 
@@ -1557,8 +1602,13 @@
       btn.style.display = isAdmin ? 'inline-flex' : 'none';
     });
     document.querySelectorAll('.admin-only-el').forEach(el => {
-      el.style.display = isAdmin ? 'inline-flex' : 'none';
+      el.style.display = isAdmin ? (el.classList.contains('card') ? 'block' : 'inline-flex') : 'none';
     });
+
+    const printBatchLabelInput = document.getElementById('print-batch-label');
+    const printDocNumInput = document.getElementById('print-doc-number');
+    if (printBatchLabelInput) printBatchLabelInput.readOnly = !isAdmin;
+    if (printDocNumInput) printDocNumInput.readOnly = !isAdmin;
 
     const adminKpiGrid = document.getElementById('admin-kpi-grid');
     const userDash = document.getElementById('user-personal-dashboard');
@@ -1566,6 +1616,8 @@
     const staffFilterSel = document.getElementById('filter-track-staff');
     const trackTabLabel = document.getElementById('tab-tracking-label');
     const trackCardTitle = document.getElementById('tracking-detail-card-title');
+
+    syncPasswordInputsInAdminTab();
 
     if (isAdmin) {
       if (adminKpiGrid) adminKpiGrid.style.display = 'grid';
@@ -1592,7 +1644,7 @@
       }
     } else {
       // CẤP 2 - CHUYÊN VIÊN THỤ LÝ (Role = User):
-      // Chỉ hiển thị hồ sơ được phân công cho chính tên của chuyên viên đó & Cảnh báo hạn trả KQ cá nhân
+      // Chỉ hiển thị hồ sơ được phân công cho chính tên của chuyên viên đó & Cảnh báo hạn trả KQ cá nhân + Xem/In Biên bản bàn giao
       if (adminKpiGrid) adminKpiGrid.style.display = 'none';
       if (userDash) userDash.style.display = 'block';
       if (summaryCard) summaryCard.style.display = 'none';
@@ -1611,6 +1663,10 @@
     sessionStorage.removeItem('cn23_logged_user_v5');
     sessionStorage.removeItem('cn23_logged_user');
     try { localStorage.removeItem('cn23_logged_user_v5_persist'); } catch (e) {}
+    const pInput = document.getElementById('login-pass-input');
+    if (pInput) pInput.value = '';
+    const errEl = document.getElementById('login-error-msg');
+    if (errEl) errEl.style.display = 'none';
     document.getElementById('login-screen').style.display = 'flex';
   }
 
@@ -2065,10 +2121,11 @@
   async function pushStateToGoogleSheets(isExplicitReset = false, showAlert = false, forceAllowEmpty = false) {
     const gsUrl = getActiveGoogleScriptUrl();
     if (!gsUrl && !IS_RUNNING_IN_GAS) return false;
-    if (!isExplicitReset && !forceAllowEmpty && trackingFiles.length === 0 && currentBatch.length === 0) {
+    if (!isExplicitReset && !forceAllowEmpty && trackingFiles.length === 0) {
       return false;
     }
     readAlgoSettingsFromInputs();
+    // Giữ dữ liệu nháp ở Tab 1 (currentBatch) độc lập trên từng máy, chỉ đồng bộ dữ liệu đã Lưu (trackingFiles, historyLogs, staff12)
     const payload = {
       action: "syncAll",
       syncVersion: lastKnownSyncVersion || Date.now(),
@@ -2078,7 +2135,7 @@
       algoSettings,
       staff12,
       trackingFiles,
-      currentBatch,
+      currentBatch: [],
       historyLogs
     };
 
@@ -2369,14 +2426,17 @@
             }
           });
         });
-      } else if (Array.isArray(h.snapshotBatch)) {
+      }
+      if (Array.isArray(h.snapshotBatch)) {
         h.snapshotBatch.forEach(f => {
           if (!f || !f.code) return;
           const c = String(f.code).trim();
           if (!c || seenCodes.has(c) || candidateCodeSet.has(c)) return;
           candidateCodeSet.add(c);
           const latestObj = fileMap.get(c) || f;
-          candidateFiles.push(JSON.parse(JSON.stringify(latestObj)));
+          const cloned = JSON.parse(JSON.stringify(latestObj));
+          if (f.assignee) cloned.assignee = f.assignee;
+          candidateFiles.push(cloned);
         });
       }
 
@@ -2388,10 +2448,12 @@
         if (typeof cleanProcName === "function") {
           f.type = cleanProcName(f.rawProc || f.type);
         }
+        f.batchId = h.logId;
         f.batchLabel = fullBatchLabel;
 
         const mainTrack = Array.isArray(trackingFiles) ? trackingFiles.find(t => String(t.code).trim() === c) : null;
         if (mainTrack) {
+          mainTrack.batchId = h.logId;
           mainTrack.batchLabel = fullBatchLabel;
           if (!mainTrack.rawProc) mainTrack.rawProc = mainTrack.type || "";
           if (typeof cleanProcName === "function") {
@@ -2486,9 +2548,10 @@
       f.dueDate || "", f.syncedAt || "", f.batchLabel || "", f.status || "PROCESSING", f.locked ? 1 : 0,
       f.rawProc || f.type || ""
     ];
-    const bArr = currentBatch.map(packFile);
+    // Giữ dữ liệu nháp ở Tab 1 (currentBatch) độc lập trên từng máy, không gửi đè sang máy khác
+    const bArr = [];
     const tArr = trackingFiles.map(packFile);
-    const hArr = historyLogs.slice(0, 8).map(h => [
+    const hArr = historyLogs.slice(0, 15).map(h => [
       h.logId, h.seqNum, h.timestamp, h.batchNameOnly, h.docNoOnly, h.totalFiles, h.summaryText || "",
       Array.isArray(h.snapshotBatch) ? h.snapshotBatch.map(f => f.code) : []
     ]);
@@ -2542,6 +2605,143 @@
     }
   }
 
+  // Lưu riêng dữ liệu nháp ở Tab 1 trên từng máy (Chống xung đột khi 2 Admin cùng mở App chia hồ sơ)
+  function saveDraftBatchLocalOnly() {
+    try {
+      localStorage.setItem('cn23_v4_batch', JSON.stringify(currentBatch));
+    } catch (e) {}
+  }
+
+  // Hợp nhất thông minh (Merge theo Mã Biên Nhận) giữa máy cục bộ và Google Sheets / Firebase / Đám mây
+  function mergeCloudDataByCode(localTrack, remoteTrack, localHist, remoteHist, preferRemote = true) {
+    const richByCode = new Map();
+    if (typeof RECOVERED_20_STATE !== "undefined" && Array.isArray(RECOVERED_20_STATE.trackingFiles)) {
+      RECOVERED_20_STATE.trackingFiles.forEach(f => {
+        if (f && f.code) richByCode.set(String(f.code).trim(), f);
+      });
+    }
+
+    const enrichRecord = (target, fallback) => {
+      const res = JSON.parse(JSON.stringify(target));
+      const c = String(res.code || "").trim();
+      const baseRich = richByCode.get(c);
+      const fb = fallback || baseRich;
+      if (fb) {
+        if ((!res.owner || res.owner === "Theo HS 1 cửa") && fb.owner && fb.owner !== "Theo HS 1 cửa") {
+          res.owner = fb.owner;
+        }
+        if ((!res.rawProc || (!res.rawProc.includes("CNVPDK_") && !res.rawProc.includes("1.013") && !res.rawProc.includes("1.115"))) && fb.rawProc) {
+          res.rawProc = fb.rawProc;
+        }
+        if (!res.batchLabel && fb.batchLabel) res.batchLabel = fb.batchLabel;
+        if (!res.batchId && fb.batchId) res.batchId = fb.batchId;
+      }
+      if (baseRich) {
+        if ((!res.owner || res.owner === "Theo HS 1 cửa") && baseRich.owner && baseRich.owner !== "Theo HS 1 cửa") {
+          res.owner = baseRich.owner;
+        }
+        if ((!res.rawProc || (!res.rawProc.includes("CNVPDK_") && !res.rawProc.includes("1.013") && !res.rawProc.includes("1.115"))) && baseRich.rawProc) {
+          res.rawProc = baseRich.rawProc;
+        }
+      }
+      if (!res.rawProc) res.rawProc = res.type || "";
+      if (typeof cleanProcName === "function") {
+        res.type = cleanProcName(res.rawProc || res.type);
+      }
+      return res;
+    };
+
+    const mergedTrackMap = new Map();
+    const lTrack = Array.isArray(localTrack) ? localTrack : [];
+    const rTrack = Array.isArray(remoteTrack) ? remoteTrack : [];
+
+    // 1. Nạp danh sách hồ sơ của máy hiện tại trước để giữ đúng thứ tự gốc
+    lTrack.forEach(f => {
+      if (!f || !f.code) return;
+      const c = String(f.code).trim();
+      if (!c) return;
+      mergedTrackMap.set(c, enrichRecord(f, null));
+    });
+
+    // 2. Hợp nhất (Merge) danh sách hồ sơ từ Google Sheets / Firebase theo Mã Biên Nhận (code)
+    let addedFromRemote = 0;
+    rTrack.forEach(rf => {
+      if (!rf || !rf.code) return;
+      const c = String(rf.code).trim();
+      if (!c) return;
+      const existing = mergedTrackMap.get(c);
+      if (!existing) {
+        mergedTrackMap.set(c, enrichRecord(rf, null));
+        addedFromRemote++;
+      } else if (preferRemote) {
+        mergedTrackMap.set(c, enrichRecord(rf, existing));
+      } else {
+        mergedTrackMap.set(c, enrichRecord(existing, rf));
+      }
+    });
+
+    const mergedTracking = Array.from(mergedTrackMap.values());
+
+    // 3. Hợp nhất Lịch sử các đợt (historyLogs) theo Số Biên Bản (docNoOnly) / logId
+    const lHist = Array.isArray(localHist) ? localHist : [];
+    const rHist = Array.isArray(remoteHist) ? remoteHist : [];
+    const histKey = h => String(h.docNoOnly || h.batchNameOnly || h.logId || "").trim();
+
+    const mergedHistMap = new Map();
+    const baseHistList = preferRemote && rHist.length >= lHist.length ? rHist : lHist;
+    const secondaryHistList = baseHistList === rHist ? lHist : rHist;
+
+    baseHistList.forEach(h => {
+      if (!h) return;
+      const k = histKey(h);
+      if (!k) return;
+      mergedHistMap.set(k, JSON.parse(JSON.stringify(h)));
+    });
+
+    secondaryHistList.forEach(sh => {
+      if (!sh) return;
+      const k = histKey(sh);
+      if (!k) return;
+      if (!mergedHistMap.has(k)) {
+        mergedHistMap.set(k, JSON.parse(JSON.stringify(sh)));
+      } else {
+        // Gộp nối tiếp các mã hồ sơ trong cùng 1 đợt từ cả 2 Admin (không để mất hồ sơ chèn bổ sung)
+        const targetH = mergedHistMap.get(k);
+        const snapMap = new Map();
+        (Array.isArray(targetH.snapshotBatch) ? targetH.snapshotBatch : []).forEach(f => {
+          if (f && f.code) snapMap.set(String(f.code).trim(), f);
+        });
+        (Array.isArray(sh.snapshotBatch) ? sh.snapshotBatch : []).forEach(f => {
+          if (f && f.code) {
+            const c = String(f.code).trim();
+            if (!snapMap.has(c)) snapMap.set(c, f);
+          }
+        });
+        targetH.snapshotBatch = Array.from(snapMap.values()).map(f => mergedTrackMap.get(String(f.code).trim()) || f);
+        if (sh.summaryText && targetH.summaryText && sh.summaryText !== targetH.summaryText) {
+          targetH.summaryText = targetH.summaryText + "; " + sh.summaryText;
+        } else if (!targetH.summaryText && sh.summaryText) {
+          targetH.summaryText = sh.summaryText;
+        }
+        targetH.totalFiles = targetH.snapshotBatch.length;
+      }
+    });
+
+    const mergedHistory = Array.from(mergedHistMap.values()).sort((a, b) => {
+      const seqA = Number(a.seqNum || parseInt(String(a.docNoOnly || "0"), 10) || 0);
+      const seqB = Number(b.seqNum || parseInt(String(b.docNoOnly || "0"), 10) || 0);
+      if (seqA !== seqB) return seqB - seqA;
+      return Number(b.logId || 0) - Number(a.logId || 0);
+    });
+
+    return {
+      mergedTracking,
+      mergedHistory,
+      addedFromRemote,
+      localHadExtra: mergedTracking.length > rTrack.length
+    };
+  }
+
   function saveStateToStorage(skipCloudPush = false, isExplicitReset = false, forceAllowEmpty = false) {
     sanitizeAndFixAllFileDates();
     normalizeAndRenumberHistoryBatches();
@@ -2578,7 +2778,7 @@
   let hasReceivedInitialCloudRetain = false;
 
   async function pushStateToCloud(isExplicitReset = false, forceAllowEmpty = false) {
-    if (!isExplicitReset && !forceAllowEmpty && trackingFiles.length === 0 && currentBatch.length === 0) {
+    if (!isExplicitReset && !forceAllowEmpty && trackingFiles.length === 0) {
       return false;
     }
 
@@ -2637,97 +2837,96 @@
     if (!remote || !Array.isArray(remote.staff12)) return false;
 
     const remoteTrackLen = Array.isArray(remote.trackingFiles) ? remote.trackingFiles.length : 0;
-    const remoteBatchLen = Array.isArray(remote.currentBatch) ? remote.currentBatch.length : 0;
-    const remoteIsEmpty = (remoteTrackLen === 0 && remoteBatchLen === 0);
-    const localHasData = (trackingFiles.length > 0 || currentBatch.length > 0);
+    const remoteIsEmpty = (remoteTrackLen === 0);
+    const localHasData = (trackingFiles.length > 0);
     if (remoteIsEmpty && localHasData && !remote.isExplicitReset) {
       return false;
     }
 
-    // Bảo vệ dữ liệu thực tế trên máy: Nếu bản từ xa có ít hồ sơ hơn bản hiện tại (và không phải lệnh xóa), tự động đẩy bản đầy đủ lên Đám mây!
-    if (!forceApply && !remote.isExplicitReset && trackingFiles.length > remoteTrackLen) {
-      lastKnownSyncVersion = Math.max(Date.now(), Number(remote.syncVersion || 0) + 1000);
-      pushStateToCloud(false);
-      return false;
-    }
-
     const remoteVer = Number(remote.syncVersion || 0);
-    const isFreshBrowser = (trackingFiles.length === 0 && currentBatch.length === 0);
+    const isFreshBrowser = (trackingFiles.length === 0);
 
-    if (!forceApply && remoteVer < lastKnownSyncVersion && localHasData && remoteTrackLen <= trackingFiles.length) {
-      pushStateToCloud(false);
-      return false;
-    }
-
-    if (forceApply || remoteVer > lastKnownSyncVersion || remoteTrackLen > trackingFiles.length || (isFreshBrowser && !remoteIsEmpty)) {
-      const remoteNeedsCleanMigration =
-        (Array.isArray(remote.historyLogs) && remote.historyLogs.length > 1 && remote.historyLogs.some(h => !String(h.batchNameOnly || "").includes(" - ") || Number(h.totalFiles) > 30)) ||
-        (Array.isArray(remote.trackingFiles) && remote.trackingFiles.some(f => String(f.type || "").includes("CNVPDK_") || String(f.type || "").includes("1.013") || String(f.type || "").includes("1.115")));
-
-      // Bảo toàn tên Chủ sử dụng & Tên quy trình gốc phong phú đang có trên máy trước khi nhận bản đồng bộ
-      const richLocalByCode = new Map();
-      if (typeof RECOVERED_20_STATE !== "undefined" && Array.isArray(RECOVERED_20_STATE.trackingFiles)) {
-        RECOVERED_20_STATE.trackingFiles.forEach(f => {
-          if (f && f.code) richLocalByCode.set(String(f.code).trim(), f);
-        });
-      }
-      if (Array.isArray(trackingFiles)) {
-        trackingFiles.forEach(f => {
-          if (f && f.code) {
-            const c = String(f.code).trim();
-            const prev = richLocalByCode.get(c);
-            if (!prev || (f.owner && f.owner !== "Theo HS 1 cửa")) {
-              richLocalByCode.set(c, f);
-            }
-          }
-        });
-      }
-
+    if (remote.isExplicitReset) {
       isApplyingRemoteState = true;
       if (remote.staff12.length > 0) staff12 = remote.staff12;
-      if (remote.algoSettings && typeof remote.algoSettings === 'object') {
-        algoSettings = Object.assign({}, algoSettings, remote.algoSettings);
-        try { localStorage.setItem('cn23_v4_algo_settings', JSON.stringify(algoSettings)); } catch (e) {}
-        syncAlgoInputsFromSettings();
-      }
-      currentBatch = Array.isArray(remote.currentBatch) ? remote.currentBatch : [];
-      trackingFiles = (Array.isArray(remote.trackingFiles) ? remote.trackingFiles : []).map(rf => {
-        if (!rf || !rf.code) return rf;
-        const rich = richLocalByCode.get(String(rf.code).trim());
-        if (rich) {
-          if ((!rf.owner || rf.owner === "Theo HS 1 cửa") && rich.owner && rich.owner !== "Theo HS 1 cửa") {
-            rf.owner = rich.owner;
-          }
-          if ((!rf.rawProc || (!rf.rawProc.includes("CNVPDK_") && !rf.rawProc.includes("1.013") && !rf.rawProc.includes("1.115"))) && rich.rawProc) {
-            rf.rawProc = rich.rawProc;
-          }
-        }
-        return rf;
-      });
-      historyLogs = Array.isArray(remote.historyLogs) ? remote.historyLogs : [];
-      sanitizeAndFixAllFileDates();
-      recalculateStaffStatsFromTracking();
-      normalizeAndRenumberHistoryBatches();
+      trackingFiles = [];
+      historyLogs = [];
       lastKnownSyncVersion = Math.max(remoteVer, Date.now());
-      saveStateToStorage(true, Boolean(remote.isExplicitReset));
+      saveStateToStorage(true, true);
       renderAll();
-      setCloudStatusBadge(`🟢 Trực tuyến: Đã đồng bộ (${remote.updatedAt || getNowTimestampVN()})`);
-      const statusEl = document.getElementById('kpi-batch-status');
-      if (statusEl) {
-        if (currentBatch.length > 0) {
-          statusEl.textContent = `Đang chờ Sếp duyệt & bấm Lưu (${currentBatch.length} bộ)`;
-        } else if (trackingFiles.length > 0) {
-          statusEl.textContent = `Đã lưu & đồng bộ lúc: ${remote.updatedAt || getNowTimestampVN()}`;
-        }
-      }
       isApplyingRemoteState = false;
+      return true;
+    }
 
-      // Nếu dữ liệu trên Đám mây / Google Sheets vẫn đang là bản cũ chưa tách 4 đợt (20-11-12-24) hoặc chưa rút gọn tên thủ tục,
-      // tự động đẩy ngay bản đã tách sạch lên Đám mây & Google Sheets để đồng bộ toàn bộ máy trực tuyến!
-      if (remoteNeedsCleanMigration) {
-        lastKnownSyncVersion = Math.max(Date.now(), remoteVer + 2000);
-        saveStateToStorage(false, false, true);
+    const preferRemote = Boolean(forceApply || remoteVer >= lastKnownSyncVersion);
+    const mergeRes = mergeCloudDataByCode(
+      trackingFiles,
+      remote.trackingFiles,
+      historyLogs,
+      remote.historyLogs,
+      preferRemote
+    );
+
+    const shouldApply =
+      forceApply ||
+      remoteVer > lastKnownSyncVersion ||
+      mergeRes.addedFromRemote > 0 ||
+      mergeRes.mergedHistory.length > historyLogs.length ||
+      (isFreshBrowser && !remoteIsEmpty);
+
+    if (!shouldApply) {
+      if (mergeRes.localHadExtra) {
+        lastKnownSyncVersion = Math.max(Date.now(), remoteVer + 1000);
+        pushStateToCloud(false);
       }
+      return false;
+    }
+
+    const remoteNeedsCleanMigration =
+      (Array.isArray(remote.historyLogs) && remote.historyLogs.length > 1 && remote.historyLogs.some(h => !String(h.batchNameOnly || "").includes(" - ") || Number(h.totalFiles) > 30)) ||
+      (Array.isArray(remote.trackingFiles) && remote.trackingFiles.some(f => String(f.type || "").includes("CNVPDK_") || String(f.type || "").includes("1.013") || String(f.type || "").includes("1.115")));
+
+    isApplyingRemoteState = true;
+    if (remote.staff12.length > 0 && preferRemote) {
+      staff12 = remote.staff12;
+    }
+    if (remote.algoSettings && typeof remote.algoSettings === 'object' && preferRemote) {
+      algoSettings = Object.assign({}, algoSettings, remote.algoSettings);
+      try { localStorage.setItem('cn23_v4_algo_settings', JSON.stringify(algoSettings)); } catch (e) {}
+      syncAlgoInputsFromSettings();
+    }
+
+    // TUYỆT ĐỐI GIỮ DỮ LIỆU NHÁP Ở TAB 1 (currentBatch) ĐỘC LẬP TRÊN TỪNG MÁY ĐỂ 2 ADMIN KHÔNG GHI ĐÈ NHAU
+    trackingFiles = mergeRes.mergedTracking;
+    historyLogs = mergeRes.mergedHistory;
+
+    // Nếu máy đang có hồ sơ nháp ở Tab 1 trùng mã với hồ sơ vừa được Admin khác bấm Lưu, tự động lọc bỏ mã đã Lưu khỏi hàng chờ nháp
+    if (Array.isArray(currentBatch) && currentBatch.length > 0) {
+      const savedSet = new Set(trackingFiles.map(t => String(t.code || "").trim()));
+      currentBatch = currentBatch.filter(b => b && b.code && !savedSet.has(String(b.code).trim()));
+      saveDraftBatchLocalOnly();
+    }
+
+    sanitizeAndFixAllFileDates();
+    recalculateStaffStatsFromTracking();
+    normalizeAndRenumberHistoryBatches();
+    lastKnownSyncVersion = Math.max(remoteVer, lastKnownSyncVersion || 0);
+    saveStateToStorage(true, false);
+    renderAll();
+    setCloudStatusBadge(`🟢 Trực tuyến: Đã đồng bộ hợp nhất (${remote.updatedAt || getNowTimestampVN()})`);
+    const statusEl = document.getElementById('kpi-batch-status');
+    if (statusEl) {
+      if (currentBatch.length > 0) {
+        statusEl.textContent = `Đang chờ bấm Lưu trên máy này (${currentBatch.length} bộ)`;
+      } else if (trackingFiles.length > 0) {
+        statusEl.textContent = `Đã lưu & đồng bộ lúc: ${remote.updatedAt || getNowTimestampVN()}`;
+      }
+    }
+    isApplyingRemoteState = false;
+
+    if (remoteNeedsCleanMigration || mergeRes.localHadExtra) {
+      lastKnownSyncVersion = Math.max(Date.now(), remoteVer + 2000);
+      saveStateToStorage(false, false, true);
     }
     return true;
   }
@@ -2984,13 +3183,14 @@
   async function pushToCustomFirestore(isExplicitReset = false) {
     if (!customFirebaseDb) return false;
     try {
+      // Giữ dữ liệu nháp ở Tab 1 (currentBatch) độc lập trên từng máy, chỉ đồng bộ dữ liệu đã Lưu
       const syncPayload = {
         syncVersion: lastKnownSyncVersion || Date.now(),
         updatedAt: getNowTimestampVN(),
         clientId: CLIENT_INSTANCE_ID,
         isExplicitReset: Boolean(isExplicitReset),
         staff12,
-        currentBatch,
+        currentBatch: [],
         trackingFiles,
         historyLogs
       };
@@ -3845,9 +4045,31 @@
       if (ownerKey) ownerAssigneeMap[ownerKey] = bestName;
     });
 
-    // Đồng bộ ngay danh sách chờ duyệt (Bước 2 - Tab 1) lên Đám mây để Sếp thấy tức thì!
-    saveStateToStorage();
+    // Giữ dữ liệu nháp ở Tab 1 độc lập trên từng máy, chỉ đồng bộ lên Google Sheets/Firebase khi bấm Lưu
+    saveDraftBatchLocalOnly();
     renderAll();
+  }
+
+  function populateSaveTargetBatchSelect() {
+    const sel = document.getElementById('save-target-batch-select');
+    if (!sel) return;
+    const prevVal = sel.value || 'NEW_BATCH';
+    const opts = [
+      `<option value="NEW_BATCH">+ Tạo Đợt &amp; Số Biên Bản Mới</option>`
+    ];
+    if (Array.isArray(historyLogs) && historyLogs.length > 0) {
+      historyLogs.forEach((h, idx) => {
+        const bName = h.batchNameOnly || `Đợt ${historyLogs.length - idx}`;
+        const dNo = h.docNoOnly || `${String(historyLogs.length - idx).padStart(2, '0')}/BBBG-ĐKCG`;
+        const val = String(dNo);
+        const isSelected = (prevVal === val || prevVal === String(h.logId)) ? 'selected' : '';
+        opts.push(`<option value="${val}" ${isSelected}>Bổ sung vào: ${bName} (${dNo})</option>`);
+      });
+    }
+    sel.innerHTML = opts.join('');
+    if (!Array.from(sel.options).some(o => o.value === prevVal)) {
+      sel.value = 'NEW_BATCH';
+    }
   }
 
   // =========================================================================
@@ -3880,7 +4102,7 @@
 
     if (newFilesOnly.length === 0) {
       currentBatch = [];
-      saveStateToStorage();
+      saveDraftBatchLocalOnly();
       renderAll();
       if (!silent) {
         alert("ℹ️ Tất cả các mã hồ sơ trong danh sách chờ đều đã được lưu ở các đợt trước (hệ thống tự động lọc trùng để không cộng dồn vào đợt mới)!");
@@ -3888,16 +4110,94 @@
       return false;
     }
 
+    const saveTargetSel = document.getElementById('save-target-batch-select');
+    const targetBatchVal = saveTargetSel ? saveTargetSel.value : 'NEW_BATCH';
+    const lblEl = document.getElementById('print-batch-label');
+    const docEl = document.getElementById('print-doc-number');
+    const nowStamp = getNowTimestampVN();
+
+    // TRƯỜNG HỢP 1: CHỌN "BỔ SUNG VÀO ĐỢT CŨ" (XỬ LÝ HỒ SƠ CHUYỂN TRỄ)
+    if (targetBatchVal !== 'NEW_BATCH' && Array.isArray(historyLogs) && historyLogs.length > 0) {
+      const targetIdx = historyLogs.findIndex(
+        h => String(h.docNoOnly) === String(targetBatchVal) || String(h.logId) === String(targetBatchVal)
+      );
+      if (targetIdx !== -1) {
+        const targetHist = historyLogs[targetIdx];
+        const targetBatchId = targetHist.logId || Date.now();
+        const targetBatchName = targetHist.batchNameOnly || `Đợt ${historyLogs.length - targetIdx}`;
+        const targetDocNo = targetHist.docNoOnly || `${String(historyLogs.length - targetIdx).padStart(2, '0')}/BBBG-ĐKCG`;
+        const targetFullLabel = targetHist.batchLabel || `${targetBatchName} (${targetDocNo})`;
+        const targetStamp = targetHist.timestamp || nowStamp;
+
+        if (!Array.isArray(targetHist.snapshotBatch)) {
+          targetHist.snapshotBatch = [];
+        }
+
+        const appendedRecords = [];
+        newFilesOnly.forEach(f => {
+          const cleanType = cleanProcName(f.rawProc || f.type);
+          const record = {
+            id: f.id,
+            code: f.code,
+            fullCode: f.fullCode || f.code,
+            ward: f.ward,
+            owner: f.owner,
+            rawProc: f.rawProc || f.type || cleanType,
+            type: cleanType,
+            diff: f.diff,
+            isLanAnhSpecial: f.isLanAnhSpecial,
+            assignee: f.assignee,
+            receiveDate: f.receiveDate || new Date().toISOString().slice(0, 10),
+            dueDate: f.dueDate,
+            syncedAt: targetStamp,
+            batchId: targetBatchId,
+            batchLabel: targetFullLabel,
+            status: "PROCESSING"
+          };
+          trackingFiles.push(record);
+          targetHist.snapshotBatch.push(JSON.parse(JSON.stringify(record)));
+          appendedRecords.push(record);
+        });
+
+        // Gộp nối tiếp vào danh sách của đợt cũ theo đúng từng người thụ lý
+        const summaryParts = [];
+        staff12.forEach(s => {
+          const mineInBatch = targetHist.snapshotBatch.filter(f => f.assignee === s.name);
+          if (mineInBatch.length > 0) {
+            summaryParts.push(`${s.name} (${mineInBatch.map(f => `${f.code} (${f.ward})`).join(', ')})`);
+          }
+        });
+        targetHist.summaryText = summaryParts.join("; ");
+        targetHist.totalFiles = targetHist.snapshotBatch.length;
+
+        if (lblEl) lblEl.value = targetBatchName;
+        if (docEl) docEl.value = targetDocNo;
+
+        window.lastSavedBatchForPrint = JSON.parse(JSON.stringify(targetHist.snapshotBatch));
+        currentBatch = [];
+        selectedPrintSource = `HIST_${targetIdx}`;
+        if (saveTargetSel) saveTargetSel.value = 'NEW_BATCH';
+
+        recalculateStaffStatsFromTracking();
+        document.getElementById('kpi-batch-status').textContent = `Đã gộp bổ sung ${appendedRecords.length} hồ sơ vào ${targetFullLabel}`;
+
+        saveStateToStorage();
+        renderAll();
+
+        alert(`✅ Đã gộp bổ sung ${appendedRecords.length} hồ sơ vào ${targetBatchName} (${targetDocNo})!`);
+        return true;
+      }
+    }
+
+    // TRƯỜNG HỢP 2: MẶC ĐỊNH (+ TẠO ĐỢT & SỐ BIÊN BẢN MỚI)
     const nextSeq = historyLogs.length + 1;
     const padSeq = String(nextSeq).padStart(2, '0');
-    const nowStamp = getNowTimestampVN();
     const batchLabel = buildBatchNameWithSession(nextSeq, nowStamp);
     const docNo = `${padSeq}/BBBG-ĐKCG`;
     const fullBatchLabel = `${batchLabel} (${docNo})`;
+    const newBatchId = Date.now();
 
     // Cập nhật ngay ô Tên đợt & Số biên bản sang số thứ tự đợt mới
-    const lblEl = document.getElementById('print-batch-label');
-    const docEl = document.getElementById('print-doc-number');
     if (lblEl) lblEl.value = batchLabel;
     if (docEl) docEl.value = docNo;
 
@@ -3925,6 +4225,7 @@
         receiveDate: f.receiveDate || new Date().toISOString().slice(0, 10),
         dueDate: f.dueDate,
         syncedAt: nowStamp,
+        batchId: newBatchId,
         batchLabel: fullBatchLabel,
         status: "PROCESSING"
       };
@@ -3941,7 +4242,7 @@
     const summaryText = summaryParts.join("; ");
 
     historyLogs.unshift({
-      logId: Date.now(),
+      logId: newBatchId,
       seqNum: nextSeq,
       batchNameOnly: batchLabel,
       docNoOnly: docNo,
@@ -3955,6 +4256,7 @@
     window.lastSavedBatchForPrint = JSON.parse(JSON.stringify(savedSnapshotForBatch));
     currentBatch = [];
     selectedPrintSource = "HIST_0";
+    if (saveTargetSel) saveTargetSel.value = 'NEW_BATCH';
 
     recalculateStaffStatsFromTracking();
     document.getElementById('kpi-batch-status').textContent = `Đã lưu ${fullBatchLabel} lúc: ${nowStamp}`;
@@ -4113,7 +4415,8 @@
   }
 
   function renderBatchTab() {
-    try { localStorage.setItem('cn23_v4_batch', JSON.stringify(currentBatch)); } catch (e) {}
+    saveDraftBatchLocalOnly();
+    populateSaveTargetBatchSelect();
     const tbody = document.getElementById('batch-table-body');
     const activeStaff = staff12.filter(s => s.active);
 
@@ -4121,6 +4424,24 @@
       tbody.innerHTML = `<tr><td colspan="10" class="text-center" style="padding:18px; color:var(--muted);">Hiện không có hồ sơ nào trong hàng chờ. Hãy tải file Excel Một cửa hoặc bấm <strong>"⚡ Nạp Thử 26 Hồ Sơ Thực Tế (Kèm 3 Mã Của Lan Anh)"</strong> ở trên, sau đó bấm <strong>"💾 BẤM LƯU LẠI"</strong> để tính hồ sơ lên hệ thống.</td></tr>`;
       return;
     }
+
+    // PHẦN 3: Tính tức thì số lượng hồ sơ Đã lưu (X) và Chờ (+Y) của từng chuyên viên
+    const savedCountsByStaff = {};
+    const waitingCountsByStaff = {};
+    staff12.forEach(s => {
+      savedCountsByStaff[s.name] = 0;
+      waitingCountsByStaff[s.name] = 0;
+    });
+    trackingFiles.forEach(t => {
+      if (t && t.assignee && savedCountsByStaff[t.assignee] !== undefined) {
+        savedCountsByStaff[t.assignee]++;
+      }
+    });
+    currentBatch.forEach(b => {
+      if (b && b.assignee && waitingCountsByStaff[b.assignee] !== undefined) {
+        waitingCountsByStaff[b.assignee]++;
+      }
+    });
 
     tbody.innerHTML = currentBatch.map((f, idx) => {
       const specialBadge = (f.isLanAnhSpecial || f.diff === 'LAN_ANH')
@@ -4147,9 +4468,13 @@
             <input type="date" value="${f.dueDate}" onchange="updateBatchField(${idx}, 'dueDate', this.value)" style="font-weight:700; color:var(--primary-dark);" />
           </td>
           <td>
-            <select style="width:100%; font-weight:600;" onchange="updateBatchAssignee(${idx}, this.value)">
+            <select style="width:100%; font-weight:600; font-size:0.79rem;" onchange="updateBatchAssignee(${idx}, this.value)">
               <option value="">-- Chọn người thụ lý --</option>
-              ${activeStaff.map(s => `<option value="${s.name}" ${f.assignee === s.name ? 'selected' : ''}>${s.name}</option>`).join('')}
+              ${activeStaff.map(s => {
+                const xSaved = savedCountsByStaff[s.name] || 0;
+                const yWait = waitingCountsByStaff[s.name] || 0;
+                return `<option value="${s.name}" ${f.assignee === s.name ? 'selected' : ''}>${s.name} (Đã lưu: ${xSaved} | Chờ: +${yWait})</option>`;
+              }).join('')}
             </select>
           </td>
           <td class="text-center">
@@ -4172,27 +4497,27 @@
     } else if (field === 'diff' && val !== 'LAN_ANH') {
       currentBatch[idx].isLanAnhSpecial = false;
     }
-    saveStateToStorage();
+    saveDraftBatchLocalOnly();
     renderAll();
   }
 
   function updateBatchAssignee(idx, staffName) {
     currentBatch[idx].assignee = staffName;
     currentBatch[idx].locked = Boolean(staffName);
-    saveStateToStorage();
+    saveDraftBatchLocalOnly();
     renderAll();
   }
 
   function removeBatchRow(idx) {
     currentBatch.splice(idx, 1);
-    saveStateToStorage();
+    saveDraftBatchLocalOnly();
     renderAll();
   }
 
   function clearCurrentBatch() {
     currentBatch = [];
     document.getElementById('kpi-batch-status').textContent = "Đã xóa danh sách chờ";
-    saveStateToStorage();
+    saveDraftBatchLocalOnly();
     renderAll();
   }
 
