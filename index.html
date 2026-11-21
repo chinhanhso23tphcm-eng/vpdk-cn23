@@ -544,34 +544,28 @@
     </div>
 
     <div class="form-group">
-      <label for="login-user-select">1. Chọn Tài Khoản Đăng Nhập:</label>
-      <select id="login-user-select" onchange="onSelectQuickAccount(this.value)" style="font-weight:700; color:var(--primary-dark);">
-        <optgroup label="Quản Trị &amp; Điều Phối (Toàn quyền hệ thống)">
-          <option value="admin" selected>💻 Cán bộ Điều phối (Admin)</option>
-          <option value="trang.ntt">👩‍💼 Nguyễn Thị Thùy Trang — Tổ trưởng (Admin)</option>
-          <option value="minh.ntt">👩‍💼 Nguyễn Thị Thu Minh — Tổ phó (Admin)</option>
-        </optgroup>
-        <optgroup label="12 Chuyên Viên Thụ Lý Hồ Sơ">
-          <option value="thinh.nt">👤 1. Nguyễn Tiến Thịnh</option>
-          <option value="tu.hm">👤 2. Hoàng Minh Tú</option>
-          <option value="nhi.hta">👤 3. Huỳnh Thị Ái Nhi</option>
-          <option value="lam.tnh">👤 4. Trần Nguyễn Hoài Lam</option>
-          <option value="khanh.nv">👤 5. Nguyễn Văn Khánh</option>
-          <option value="trang.ttt">👤 6. Trần Thị Thùy Trang</option>
-          <option value="trang.tnb">👤 7. Tạ Nguyễn Bích Trang</option>
-          <option value="lananh.pn">👤 8. Phạm Nguyễn Lan Anh (Chuyên trách 3 mã)</option>
-          <option value="vy.ntt">👤 9. Nguyễn Trần Thảo Vy</option>
-          <option value="thanh.ls">👤 10. Lê Sơn Thanh</option>
-          <option value="thanh.nt">👤 11. Nguyễn Trung Thành</option>
-          <option value="lam.vt">👤 12. Võ Tường Lam</option>
-        </optgroup>
-      </select>
-      <input type="hidden" id="login-username-input" value="admin" />
+      <label for="login-username-input">1. Tài Khoản / Tên Đăng Nhập:</label>
+      <input
+        type="text"
+        id="login-username-input"
+        value=""
+        placeholder="Nhập tên đăng nhập (ví dụ: admin, thinh.nt...)"
+        autocomplete="username"
+        style="font-weight:700; color:var(--primary-dark);"
+        onkeydown="if(event.key==='Enter') document.getElementById('login-pass-input').focus()"
+      />
     </div>
 
     <div class="form-group">
-      <label for="login-pass-input">2. Mật khẩu (<span id="login-pass-hint" style="font-weight:500; color:var(--muted);">Mặc định Admin: <code>admin23</code> | 12 Chuyên viên: <code>cn23</code></span>):</label>
-      <input type="password" id="login-pass-input" value="admin23" placeholder="Nhập mật khẩu đăng nhập..." onkeydown="if(event.key==='Enter') handleLoginSubmit()" />
+      <label for="login-pass-input">2. Mật khẩu:</label>
+      <input
+        type="password"
+        id="login-pass-input"
+        value=""
+        placeholder="Nhập mật khẩu đăng nhập..."
+        autocomplete="current-password"
+        onkeydown="if(event.key==='Enter') handleLoginSubmit()"
+      />
     </div>
 
     <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; font-size:0.82rem; background:#f8fafc; padding:8px 10px; border-radius:7px; border:1px solid var(--border);">
@@ -587,20 +581,6 @@
     <button id="btn-login-submit" class="btn btn-primary" style="width:100%; justify-content:center; padding:11px; font-size:0.95rem;" onclick="handleLoginSubmit()">
       🔐 ĐĂNG NHẬP VÀO HỆ THỐNG
     </button>
-
-    <div class="quick-login-grid">
-      <button class="quick-role-btn" onclick="quickLogin('trang.ntt', getAdminPassword())">
-        👩‍💼 Cấp 1: Tổ trưởng (Admin)<br/><span style="font-weight:400; font-size:0.72rem;">Đầy đủ 6 Tab &amp; Báo cáo</span>
-      </button>
-      <button class="quick-role-btn" onclick="quickLogin('admin', getAdminPassword())">
-        💻 Cấp 1: Điều phối (Admin)<br/><span style="font-weight:400; font-size:0.72rem;">Chia Excel &amp; In Biên bản</span>
-      </button>
-    </div>
-    <div style="margin-top:10px; text-align:center;">
-      <button class="btn btn-outline" style="font-size:0.75rem; width:100%; justify-content:center; border-style:dashed;" onclick="openGoogleSheetsModal()">
-        🔗 Cấu hình đường link Google Sheets Web App API
-      </button>
-    </div>
   </div>
 </div>
 
@@ -731,8 +711,8 @@
     </div>
   </div>
   <div class="header-actions no-print">
-    <div class="user-pill" style="background:rgba(16,185,129,0.22); border-color:rgba(16,185,129,0.55); cursor:pointer;" onclick="openGoogleSheetsModal()" title="Bấm để xem hoặc cấu hình kết nối Google Sheets (Auto-sync mỗi 12 giây)">
-      <span id="cloud-sync-indicator">🟢 Đồng bộ Google Sheets: Tự động (12s)</span>
+    <div class="user-pill" style="background:rgba(16,185,129,0.22); border-color:rgba(16,185,129,0.55); cursor:pointer;" onclick="openGoogleSheetsModal()" title="Bấm để xem hoặc cấu hình kết nối Google Sheets (Auto-sync mỗi 5 giây)">
+      <span id="cloud-sync-indicator">🟢 Đồng bộ Google Sheets: Tự động (5s)</span>
     </div>
     <div class="user-pill">
       <span id="current-user-label">💻 Cán bộ Điều phối</span>
@@ -937,11 +917,10 @@
        ========================================================================= -->
   <div id="tab-balance" class="tab-content">
     <div class="card">
-      <div class="card-title">
+      <div class="card-title" style="flex-wrap:wrap; gap:8px;">
         <span>1. Bảng Cân Bằng Tải & Tổng Hợp Tiếp Nhận (12 Người Thụ Lý)</span>
-        <div style="display:flex; gap:6px;">
+        <div style="display:flex; gap:6px; flex-wrap:wrap; align-items:center;">
           <button class="btn btn-warning" onclick="syncAndSaveBatchToSystem(false)">💾 Bấm Lưu Đợt Đang Chờ Lên Hệ Thống</button>
-          <button class="btn btn-outline" onclick="exportBalanceExcel()">📥 Xuất Excel Bảng Cân Bằng Tải</button>
         </div>
       </div>
       <p style="font-size:0.8rem; color:var(--muted); margin-bottom:8px;">
@@ -955,6 +934,7 @@
               <th>Họ và Tên Người Thụ Lý</th>
               <th class="text-center">Tiếp Nhận Mới (Đã Lưu)</th>
               <th class="text-center">Tổng Nhận (Lũy Kế Đã Lưu)</th>
+              <th class="text-center">Cơ Cấu Thủ Tục Đã Nhận</th>
               <th class="text-center">Ngày Giờ Tiếp Nhận Mới</th>
               <th class="text-center" style="background:#fffbeb;">Đang Chờ Lưu (Ở Tab 1)</th>
               <th>Danh Sách Mã Hồ Sơ Tiếp Nhận Mới Gần Nhất (Có thể chỉnh sửa nếu gán nhầm)</th>
@@ -993,11 +973,8 @@
        ========================================================================= -->
   <div id="tab-tracking" class="tab-content">
     <div class="card" id="tracking-summary-card">
-      <div class="card-title">
+      <div class="card-title" style="flex-wrap:wrap; gap:8px;">
         <span>1. Bảng Tổng Hợp: 12 Người Thụ Lý Đang Giữ Bao Nhiêu Bộ & Tình Trạng Hạn Trả Kết Quả (Đã Lưu)</span>
-        <div style="display:flex; gap:6px;">
-          <button class="btn btn-outline" onclick="exportTrackingExcel()">📥 Xuất Excel Theo Dõi</button>
-        </div>
       </div>
       <div class="table-wrap">
         <table>
@@ -1087,12 +1064,61 @@
       </div>
     </div>
 
+    <!-- THANH XUẤT BÁO CÁO THỐNG KÊ ĐỊNH KỲ (ĐẶT DUY NHẤT TẠI TAB 4 PHÍA TRÊN KHU VỰC DANH SÁCH LƯU TRỮ) -->
+    <div class="periodic-report-bar no-print" style="background:#f0fdf4; border:1px solid #86efac; border-radius:8px; padding:10px 14px; margin-bottom:12px; display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:space-between; box-shadow:0 1px 3px rgba(0,0,0,0.04);">
+      <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center; font-size:0.81rem;">
+        <strong style="color:#166534;">📊 Kỳ báo cáo lãnh đạo:</strong>
+        <select class="rpt-period-mode" onchange="updateReportFilterControl('mode', this.value)" style="font-weight:700; color:#14532d; padding:4px 8px;">
+          <option value="MONTH">📅 Theo Tháng</option>
+          <option value="QUARTER">📊 Theo Quý (Quý 1 - Quý 4)</option>
+          <option value="CUSTOM">📆 Từ ngày ... Đến ngày ...</option>
+          <option value="ALL">🗂️ Tất cả thời gian</option>
+        </select>
+        <span class="rpt-ctrl-month" style="display:inline-flex; gap:4px; align-items:center;">
+          <select class="rpt-month-select" onchange="updateReportFilterControl('monthVal', this.value)" style="font-weight:700; padding:4px 8px;">
+            <option value="2026-11">Tháng 11/2026</option>
+            <option value="2026-12">Tháng 12/2026</option>
+            <option value="2026-10">Tháng 10/2026</option>
+            <option value="2026-09">Tháng 09/2026</option>
+            <option value="2026-08">Tháng 08/2026</option>
+            <option value="2026-07">Tháng 07/2026</option>
+            <option value="2026-06">Tháng 06/2026</option>
+            <option value="2026-05">Tháng 05/2026</option>
+            <option value="2026-04">Tháng 04/2026</option>
+            <option value="2026-03">Tháng 03/2026</option>
+            <option value="2026-02">Tháng 02/2026</option>
+            <option value="2026-01">Tháng 01/2026</option>
+          </select>
+        </span>
+        <span class="rpt-ctrl-quarter" style="display:none; gap:4px; align-items:center;">
+          <select class="rpt-quarter-select" onchange="updateReportFilterControl('quarterVal', this.value)" style="font-weight:700; padding:4px 8px;">
+            <option value="Q1">Quý 1 (Tháng 1 - 3)</option>
+            <option value="Q2">Quý 2 (Tháng 4 - 6)</option>
+            <option value="Q3">Quý 3 (Tháng 7 - 9)</option>
+            <option value="Q4" selected>Quý 4 (Tháng 10 - 12)</option>
+          </select>
+          <input type="number" class="rpt-year-input" value="2026" min="2020" max="2035" onchange="updateReportFilterControl('yearVal', this.value)" style="width:70px; font-weight:700; padding:3px 6px;" title="Năm báo cáo" />
+        </span>
+        <span class="rpt-ctrl-custom" style="display:none; gap:4px; align-items:center;">
+          <span>Từ:</span>
+          <input type="date" class="rpt-from-date" value="2026-11-01" onchange="updateReportFilterControl('fromDate', this.value)" style="padding:3px 6px; font-weight:600;" />
+          <span>Đến:</span>
+          <input type="date" class="rpt-to-date" value="2026-11-30" onchange="updateReportFilterControl('toDate', this.value)" style="padding:3px 6px; font-weight:600;" />
+        </span>
+        <select class="rpt-staff-select" onchange="updateReportFilterControl('staffName', this.value)" style="font-weight:600; padding:4px 8px;">
+          <option value="ALL">👥 Tất cả 12 cán bộ</option>
+        </select>
+      </div>
+      <button class="btn btn-success" onclick="exportPeriodicStatisticalReportExcel()" style="font-weight:700; white-space:nowrap;">
+        📥 Xuất Báo Cáo Thống Kê Excel (3 Sheet)
+      </button>
+    </div>
+
     <!-- KHỐI A: HIỆN TỔ TRƯỞNG & TỔ PHÓ CHUNG -->
     <div id="archive-section-leaders">
       <div class="card">
-        <div class="card-title">
+        <div class="card-title" style="flex-wrap:wrap; gap:8px;">
           <span>Khối Chung: Tổ Trưởng & Tổ Phó Kiểm Tra Hồ Sơ (Toàn Tổ Đăng Ký Và Cấp GCN)</span>
-          <button class="btn btn-outline" onclick="exportArchiveReportExcel()">📥 Xuất Excel Báo Cáo Lưu Trữ</button>
         </div>
 
         <div class="leader-grid">
@@ -1419,8 +1445,8 @@
   // =========================================================================
   const GOOGLE_SCRIPT_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwwMaiiSEkLp2852z-PjrFUxg1B_et6zZFEFcHkv-lemIc6nufMF0_bU8IdhgLtvUA_6w/exec";
 
-  // Chu kỳ tự động làm mới dữ liệu từ Google Sheets & Đám mây trực tuyến (8000ms = 8 giây liên tục)
-  const AUTO_SYNC_INTERVAL_MS = 8000;
+  // Chu kỳ tự động làm mới dữ liệu từ Google Sheets & Đám mây trực tuyến (5000ms = 5 giây liên tục)
+  const AUTO_SYNC_INTERVAL_MS = 5000;
 
   // Biểu tượng SVG dự phòng tự động nếu trình duyệt chưa tìm thấy file logo.png
   window.DEFAULT_CN23_LOGO_SVG = "data:image/svg+xml;utf8," + encodeURIComponent(`
@@ -2118,7 +2144,90 @@
     }
   }
 
+  let batchDropdownPausedUntilMs = 0;
+  let lastDraftEditTimeMs = 0;
+  let draftSyncTimerId = null;
+  const deletedDraftCodesSet = new Set();
+
+  function markBatchControlActive() {
+    batchDropdownPausedUntilMs = Date.now() + 10000;
+  }
+
+  function clearBatchControlActive() {
+    batchDropdownPausedUntilMs = 0;
+  }
+
+  function isDraftFileRecord(f) {
+    if (!f) return false;
+    const st = String(f.status || "").trim();
+    const bl = String(f.batchLabel || "").trim();
+    return st === "DRAFT_NHAP" || bl === "DRAFT_NHAP" || bl.startsWith("DRAFT_NHAP|");
+  }
+
+  function isDeletedDraftRecord(f) {
+    if (!f) return false;
+    const st = String(f.status || "").trim();
+    const bl = String(f.batchLabel || "").trim();
+    return st === "DRAFT_DELETED" || bl === "DRAFT_DELETED";
+  }
+
+  function encodeDraftForGoogleSheet(b) {
+    const rawP = String(b.rawProc || b.type || "").replace(/\|/g, " ");
+    return {
+      ...b,
+      status: "DRAFT_NHAP",
+      batchId: null,
+      batchLabel: `DRAFT_NHAP|${b.locked ? "1" : "0"}|${rawP}`
+    };
+  }
+
+  function decodeDraftFromGoogleSheet(f) {
+    const cloned = JSON.parse(JSON.stringify(f));
+    const bl = String(cloned.batchLabel || "").trim();
+    if (bl.startsWith("DRAFT_NHAP|")) {
+      const parts = bl.split("|");
+      cloned.locked = parts[1] === "1";
+      const rawP = parts.slice(2).join("|").trim();
+      if (rawP) cloned.rawProc = rawP;
+    }
+    if (!cloned.rawProc) cloned.rawProc = cloned.type || "";
+    if (typeof cleanProcName === "function") {
+      cloned.type = cleanProcName(cloned.rawProc || cloned.type);
+    }
+    cloned.status = "DRAFT_NHAP";
+    cloned.batchId = null;
+    cloned.batchLabel = "DRAFT_NHAP";
+    return cloned;
+  }
+
+  function getDraftQueueSignature(list) {
+    if (!Array.isArray(list) || list.length === 0) return "";
+    return list.map(b => `${b.code || ""}:${b.assignee || ""}:${b.ward || ""}:${b.owner || ""}:${b.dueDate || ""}:${b.locked ? 1 : 0}`).join("|");
+  }
+
+  function syncDraftBatchToCloud() {
+    if (isApplyingRemoteState) return;
+    currentBatch.forEach(b => {
+      if (!b) return;
+      b.status = "DRAFT_NHAP";
+      b.batchId = null;
+      if (b.code) deletedDraftCodesSet.delete(String(b.code).trim());
+    });
+    saveDraftBatchLocalOnly();
+    lastDraftEditTimeMs = Date.now();
+    lastKnownSyncVersion = Math.max(Date.now(), (Number(lastKnownSyncVersion) || 0) + 1000);
+    lastLocalSaveTimeMs = Date.now();
+    try { localStorage.setItem('cn23_v4_sync_ver', String(lastKnownSyncVersion)); } catch (e) {}
+
+    if (draftSyncTimerId) clearTimeout(draftSyncTimerId);
+    draftSyncTimerId = setTimeout(() => {
+      pushStateToCloud(false, true);
+      pushStateToGoogleSheets(false, false, true);
+    }, 250);
+  }
+
   function isUserActivelyEditingInput() {
+    if (Date.now() < batchDropdownPausedUntilMs) return true;
     const activeEl = document.activeElement;
     if (!activeEl) return false;
     const tag = activeEl.tagName;
@@ -2174,11 +2283,39 @@
   async function pushStateToGoogleSheets(isExplicitReset = false, showAlert = false, forceAllowEmpty = false) {
     const gsUrl = getActiveGoogleScriptUrl();
     if (!gsUrl && !IS_RUNNING_IN_GAS) return false;
-    if (!isExplicitReset && !forceAllowEmpty && trackingFiles.length === 0) {
+    if (!isExplicitReset && !forceAllowEmpty && trackingFiles.length === 0 && currentBatch.length === 0) {
       return false;
     }
     readAlgoSettingsFromInputs();
-    // Giữ dữ liệu nháp ở Tab 1 (currentBatch) độc lập trên từng máy, chỉ đồng bộ dữ liệu đã Lưu (trackingFiles, historyLogs, staff12)
+
+    // Tách biệt hoàn toàn hồ sơ chính thức (trackingFiles) và hàng chờ Bước 2 (DRAFT_NHAP, batchId = null)
+    const officialTracking = trackingFiles.filter(f => !isDraftFileRecord(f) && !isDeletedDraftRecord(f));
+    const draftQueueForCloud = currentBatch.map(encodeDraftForGoogleSheet);
+
+    const officialCodesSet = new Set(officialTracking.map(f => String(f.code || "").trim()));
+    const currentDraftCodesSet = new Set(draftQueueForCloud.map(f => String(f.code || "").trim()));
+    const deletedTombstones = [];
+    deletedDraftCodesSet.forEach(c => {
+      if (c && !officialCodesSet.has(c) && !currentDraftCodesSet.has(c)) {
+        deletedTombstones.push({
+          id: "DEL_" + c,
+          code: c,
+          fullCode: c,
+          ward: "TDM",
+          owner: "",
+          type: "",
+          diff: "NORM",
+          isLanAnhSpecial: false,
+          receiveDate: "",
+          dueDate: "",
+          assignee: "",
+          status: "DRAFT_DELETED",
+          batchId: null,
+          batchLabel: "DRAFT_DELETED"
+        });
+      }
+    });
+
     const payload = {
       action: "syncAll",
       syncVersion: lastKnownSyncVersion || Date.now(),
@@ -2187,8 +2324,8 @@
       isExplicitReset: Boolean(isExplicitReset),
       algoSettings,
       staff12,
-      trackingFiles,
-      currentBatch: [],
+      trackingFiles: officialTracking.concat(draftQueueForCloud).concat(deletedTombstones),
+      currentBatch: draftQueueForCloud,
       historyLogs
     };
 
@@ -2294,7 +2431,7 @@
   }
 
   async function pullStateFromGoogleSheets(isManual = false) {
-    if (!isManual && (isUserActivelyEditingInput() || isPushingToGoogleSheets || (Date.now() - lastLocalSaveTimeMs < 8000))) {
+    if (!isManual && (isUserActivelyEditingInput() || isPushingToGoogleSheets || (Date.now() - lastLocalSaveTimeMs < 3200))) {
       return false;
     }
 
@@ -2555,6 +2692,9 @@
   normalizeAndRenumberHistoryBatches();
 
   function recalculateStaffStatsFromTracking() {
+    if (Array.isArray(trackingFiles)) {
+      trackingFiles = trackingFiles.filter(f => !isDraftFileRecord(f) && !isDeletedDraftRecord(f));
+    }
     sanitizeAndFixAllFileDates();
     normalizeAndRenumberHistoryBatches();
 
@@ -2601,9 +2741,15 @@
       f.dueDate || "", f.syncedAt || "", f.batchLabel || "", f.status || "PROCESSING", f.locked ? 1 : 0,
       f.rawProc || f.type || ""
     ];
-    // Giữ dữ liệu nháp ở Tab 1 (currentBatch) độc lập trên từng máy, không gửi đè sang máy khác
-    const bArr = [];
-    const tArr = trackingFiles.map(packFile);
+    // Đồng bộ trực tiếp hàng chờ Bước 2 (currentBatch - gắn cờ DRAFT_NHAP, batchId = null) lên đám mây
+    const bArr = currentBatch.map(b => packFile({
+      ...b,
+      status: "DRAFT_NHAP",
+      batchId: null,
+      batchLabel: "DRAFT_NHAP"
+    }));
+    const officialTracking = trackingFiles.filter(f => !isDraftFileRecord(f) && !isDeletedDraftRecord(f));
+    const tArr = officialTracking.map(packFile);
     const hArr = historyLogs.slice(0, 15).map(h => [
       h.logId, h.seqNum, h.timestamp, h.batchNameOnly, h.docNoOnly, h.totalFiles, h.summaryText || "",
       Array.isArray(h.snapshotBatch) ? h.snapshotBatch.map(f => f.code) : []
@@ -2831,7 +2977,7 @@
   let hasReceivedInitialCloudRetain = false;
 
   async function pushStateToCloud(isExplicitReset = false, forceAllowEmpty = false) {
-    if (!isExplicitReset && !forceAllowEmpty && trackingFiles.length === 0) {
+    if (!isExplicitReset && !forceAllowEmpty && trackingFiles.length === 0 && currentBatch.length === 0) {
       return false;
     }
 
@@ -2889,8 +3035,33 @@
   async function applyRemoteCloudData(remote, forceApply = false) {
     if (!remote || !Array.isArray(remote.staff12)) return false;
 
-    const remoteTrackLen = Array.isArray(remote.trackingFiles) ? remote.trackingFiles.length : 0;
-    const remoteIsEmpty = (remoteTrackLen === 0);
+    // 1. Tách riêng hoàn toàn các dòng hàng chờ nháp (DRAFT_NHAP) ra khỏi danh sách hồ sơ chính thức (trackingFiles)
+    const rawRemoteTrack = Array.isArray(remote.trackingFiles) ? remote.trackingFiles : [];
+    const remoteOfficialTracking = rawRemoteTrack.filter(f => !isDraftFileRecord(f) && !isDeletedDraftRecord(f));
+    const remoteDraftFromHoSo = rawRemoteTrack.filter(isDraftFileRecord).map(decodeDraftFromGoogleSheet);
+    const remoteDraftFromMeta = (Array.isArray(remote.currentBatch) ? remote.currentBatch : [])
+      .filter(f => f && !isDeletedDraftRecord(f))
+      .map(decodeDraftFromGoogleSheet);
+
+    // Ưu tiên lấy hàng chờ DRAFT_NHAP từ HoSo hoặc currentBatchJSON, đồng thời loại bỏ mã đã được Lưu chính thức
+    const officialCodesOnCloud = new Set(remoteOfficialTracking.map(f => String(f.code || "").trim()));
+    const localOfficialCodes = new Set(trackingFiles.filter(f => !isDraftFileRecord(f) && !isDeletedDraftRecord(f)).map(f => String(f.code || "").trim()));
+
+    const rawDraftSource = remoteDraftFromHoSo.length > 0 ? remoteDraftFromHoSo : remoteDraftFromMeta;
+    const seenDraftCodes = new Set();
+    const remoteDraftQueue = [];
+    rawDraftSource.forEach(d => {
+      if (!d || !d.code) return;
+      const c = String(d.code).trim();
+      if (!c || seenDraftCodes.has(c) || officialCodesOnCloud.has(c) || localOfficialCodes.has(c)) return;
+      seenDraftCodes.add(c);
+      d.status = "DRAFT_NHAP";
+      d.batchId = null;
+      remoteDraftQueue.push(d);
+    });
+
+    const remoteTrackLen = remoteOfficialTracking.length;
+    const remoteIsEmpty = (remoteTrackLen === 0 && remoteDraftQueue.length === 0);
     const localHasData = (trackingFiles.length > 0);
     if (remoteIsEmpty && localHasData && !remote.isExplicitReset) {
       return false;
@@ -2904,6 +3075,7 @@
       if (remote.staff12.length > 0) staff12 = remote.staff12;
       trackingFiles = [];
       historyLogs = [];
+      currentBatch = [];
       lastKnownSyncVersion = Math.max(remoteVer, Date.now());
       saveStateToStorage(true, true);
       renderAll();
@@ -2912,17 +3084,23 @@
     }
 
     const preferRemote = Boolean(forceApply || remoteVer >= lastKnownSyncVersion);
+    const cleanLocalTracking = trackingFiles.filter(f => !isDraftFileRecord(f) && !isDeletedDraftRecord(f));
     const mergeRes = mergeCloudDataByCode(
-      trackingFiles,
-      remote.trackingFiles,
+      cleanLocalTracking,
+      remoteOfficialTracking,
       historyLogs,
       remote.historyLogs,
       preferRemote
     );
 
+    const localDraftSig = getDraftQueueSignature(currentBatch);
+    const remoteDraftSig = getDraftQueueSignature(remoteDraftQueue);
+    const draftQueueChanged = (localDraftSig !== remoteDraftSig) && (Date.now() - lastDraftEditTimeMs >= 3000);
+
     const shouldApply =
       forceApply ||
       remoteVer > lastKnownSyncVersion ||
+      draftQueueChanged ||
       mergeRes.addedFromRemote > 0 ||
       mergeRes.mergedHistory.length > historyLogs.length ||
       (isFreshBrowser && !remoteIsEmpty);
@@ -2937,7 +3115,7 @@
 
     const remoteNeedsCleanMigration =
       (Array.isArray(remote.historyLogs) && remote.historyLogs.length > 1 && remote.historyLogs.some(h => !String(h.batchNameOnly || "").includes(" - ") || Number(h.totalFiles) > 30)) ||
-      (Array.isArray(remote.trackingFiles) && remote.trackingFiles.some(f => String(f.type || "").includes("CNVPDK_") || String(f.type || "").includes("1.013") || String(f.type || "").includes("1.115")));
+      (remoteOfficialTracking.some(f => String(f.type || "").includes("CNVPDK_") || String(f.type || "").includes("1.013") || String(f.type || "").includes("1.115")));
 
     isApplyingRemoteState = true;
     if (remote.staff12.length > 0 && preferRemote) {
@@ -2949,12 +3127,16 @@
       syncAlgoInputsFromSettings();
     }
 
-    // TUYỆT ĐỐI GIỮ DỮ LIỆU NHÁP Ở TAB 1 (currentBatch) ĐỘC LẬP TRÊN TỪNG MÁY ĐỂ 2 ADMIN KHÔNG GHI ĐÈ NHAU
-    trackingFiles = mergeRes.mergedTracking;
+    // Hồ sơ chính thức (trackingFiles) tuyệt đối KHÔNG bao giờ chứa hồ sơ nháp DRAFT_NHAP
+    trackingFiles = mergeRes.mergedTracking.filter(f => !isDraftFileRecord(f) && !isDeletedDraftRecord(f));
     historyLogs = mergeRes.mergedHistory;
 
-    // Nếu máy đang có hồ sơ nháp ở Tab 1 trùng mã với hồ sơ vừa được Admin khác bấm Lưu, tự động lọc bỏ mã đã Lưu khỏi hàng chờ nháp
-    if (Array.isArray(currentBatch) && currentBatch.length > 0) {
+    // Đồng bộ tự động hàng chờ Bước 2 (DRAFT_NHAP) giữa máy nhân viên và máy Sếp (nếu không đang mở dropdown)
+    if (!isUserActivelyEditingInput() && (Date.now() - lastDraftEditTimeMs >= 3000)) {
+      const savedSet = new Set(trackingFiles.map(t => String(t.code || "").trim()));
+      currentBatch = remoteDraftQueue.filter(b => b && b.code && !savedSet.has(String(b.code).trim()));
+      saveDraftBatchLocalOnly();
+    } else if (Array.isArray(currentBatch) && currentBatch.length > 0) {
       const savedSet = new Set(trackingFiles.map(t => String(t.code || "").trim()));
       currentBatch = currentBatch.filter(b => b && b.code && !savedSet.has(String(b.code).trim()));
       saveDraftBatchLocalOnly();
@@ -2966,11 +3148,11 @@
     lastKnownSyncVersion = Math.max(remoteVer, lastKnownSyncVersion || 0);
     saveStateToStorage(true, false);
     renderAll();
-    setCloudStatusBadge(`🟢 Trực tuyến: Đã đồng bộ hợp nhất (${remote.updatedAt || getNowTimestampVN()})`);
+    setCloudStatusBadge(`🟢 Trực tuyến: Đã đồng bộ (${remote.updatedAt || getNowTimestampVN()})`);
     const statusEl = document.getElementById('kpi-batch-status');
     if (statusEl) {
       if (currentBatch.length > 0) {
-        statusEl.textContent = `Đang chờ bấm Lưu trên máy này (${currentBatch.length} bộ)`;
+        statusEl.textContent = `Đang chờ duyệt & bấm Lưu (${currentBatch.length} bộ đồng bộ đám mây)`;
       } else if (trackingFiles.length > 0) {
         statusEl.textContent = `Đã lưu & đồng bộ lúc: ${remote.updatedAt || getNowTimestampVN()}`;
       }
@@ -4382,9 +4564,15 @@
       if (ownerKey) ownerAssigneeMap[ownerKey] = bestName;
     });
 
-    // Giữ dữ liệu nháp ở Tab 1 độc lập trên từng máy, chỉ đồng bộ lên Google Sheets/Firebase khi bấm Lưu
+    // Tự động đẩy danh sách hàng chờ Bước 2 (gắn cờ DRAFT_NHAP, batchId = null) lên đám mây / Google Sheets
+    currentBatch.forEach(b => {
+      if (!b) return;
+      b.status = "DRAFT_NHAP";
+      b.batchId = null;
+    });
     saveDraftBatchLocalOnly();
     renderAll();
+    syncDraftBatchToCloud();
   }
 
   function populateSaveTargetBatchSelect() {
@@ -4512,13 +4700,14 @@
 
         window.lastSavedBatchForPrint = JSON.parse(JSON.stringify(targetHist.snapshotBatch));
         currentBatch = [];
+        deletedDraftCodesSet.clear();
         selectedPrintSource = `HIST_${targetIdx}`;
         if (saveTargetSel) saveTargetSel.value = 'NEW_BATCH';
 
         recalculateStaffStatsFromTracking();
         document.getElementById('kpi-batch-status').textContent = `Đã gộp bổ sung ${appendedRecords.length} hồ sơ vào ${targetFullLabel}`;
 
-        saveStateToStorage();
+        saveStateToStorage(false, false, true);
         renderAll();
 
         alert(`✅ Đã gộp bổ sung ${appendedRecords.length} hồ sơ vào ${targetBatchName} (${targetDocNo})!`);
@@ -4592,13 +4781,14 @@
 
     window.lastSavedBatchForPrint = JSON.parse(JSON.stringify(savedSnapshotForBatch));
     currentBatch = [];
+    deletedDraftCodesSet.clear();
     selectedPrintSource = "HIST_0";
     if (saveTargetSel) saveTargetSel.value = 'NEW_BATCH';
 
     recalculateStaffStatsFromTracking();
     document.getElementById('kpi-batch-status').textContent = `Đã lưu ${fullBatchLabel} lúc: ${nowStamp}`;
 
-    saveStateToStorage();
+    saveStateToStorage(false, false, true);
     renderAll();
 
     if (!silent) {
@@ -4790,7 +4980,7 @@
           <td class="text-center">${idx + 1}</td>
           <td><strong>${f.code}</strong></td>
           <td>
-            <select onchange="updateBatchField(${idx}, 'ward', this.value)" style="padding:3px 6px; font-weight:600;">
+            <select onmousedown="markBatchControlActive()" onfocus="markBatchControlActive()" onblur="clearBatchControlActive()" onchange="updateBatchField(${idx}, 'ward', this.value)" style="padding:3px 6px; font-weight:600;">
               <option value="TDM" ${f.ward==='TDM'?'selected':''}>TDM (Minh KT)</option>
               <option value="PL" ${f.ward==='PL'?'selected':''}>PL (Minh KT)</option>
               <option value="PA" ${f.ward==='PA'?'selected':''}>PA (Trang KT)</option>
@@ -4798,14 +4988,14 @@
               <option value="BD" ${f.ward==='BD'?'selected':''}>BD (Trang KT)</option>
             </select>
           </td>
-          <td><input type="text" value="${f.owner}" onchange="updateBatchField(${idx}, 'owner', this.value)" style="width:100%;" /></td>
+          <td><input type="text" value="${f.owner}" onfocus="markBatchControlActive()" onblur="clearBatchControlActive()" onchange="updateBatchField(${idx}, 'owner', this.value)" style="width:100%;" /></td>
           <td title="${escapeHtmlAttr(f.rawProc || f.type)}" style="cursor:help;">${cleanProcName(f.rawProc || f.type)} ${specialBadge}</td>
           <td class="text-center">${formatDateVN(f.receiveDate)}</td>
           <td class="text-center">
-            <input type="date" value="${f.dueDate}" onchange="updateBatchField(${idx}, 'dueDate', this.value)" style="font-weight:700; color:var(--primary-dark);" />
+            <input type="date" value="${f.dueDate}" onfocus="markBatchControlActive()" onblur="clearBatchControlActive()" onchange="updateBatchField(${idx}, 'dueDate', this.value)" style="font-weight:700; color:var(--primary-dark);" />
           </td>
           <td>
-            <select style="width:100%; font-weight:600; font-size:0.79rem;" onchange="updateBatchAssignee(${idx}, this.value)">
+            <select style="width:100%; font-weight:600; font-size:0.79rem;" onmousedown="markBatchControlActive()" onfocus="markBatchControlActive()" onblur="clearBatchControlActive()" onchange="updateBatchAssignee(${idx}, this.value)">
               <option value="">-- Chọn người thụ lý --</option>
               ${activeStaff.map(s => {
                 const xSaved = savedCountsByStaff[s.name] || 0;
@@ -4826,6 +5016,7 @@
   }
 
   function updateBatchField(idx, field, val) {
+    clearBatchControlActive();
     currentBatch[idx][field] = val;
     if (field === 'diff' && val === 'LAN_ANH') {
       currentBatch[idx].isLanAnhSpecial = true;
@@ -4836,26 +5027,40 @@
     }
     saveDraftBatchLocalOnly();
     renderAll();
+    syncDraftBatchToCloud();
   }
 
   function updateBatchAssignee(idx, staffName) {
+    clearBatchControlActive();
     currentBatch[idx].assignee = staffName;
     currentBatch[idx].locked = Boolean(staffName);
     saveDraftBatchLocalOnly();
     renderAll();
+    syncDraftBatchToCloud();
   }
 
   function removeBatchRow(idx) {
+    clearBatchControlActive();
+    const removed = currentBatch[idx];
+    if (removed && removed.code) {
+      deletedDraftCodesSet.add(String(removed.code).trim());
+    }
     currentBatch.splice(idx, 1);
     saveDraftBatchLocalOnly();
     renderAll();
+    syncDraftBatchToCloud();
   }
 
   function clearCurrentBatch() {
+    clearBatchControlActive();
+    currentBatch.forEach(b => {
+      if (b && b.code) deletedDraftCodesSet.add(String(b.code).trim());
+    });
     currentBatch = [];
     document.getElementById('kpi-batch-status').textContent = "Đã xóa danh sách chờ";
     saveDraftBatchLocalOnly();
     renderAll();
+    syncDraftBatchToCloud();
   }
 
   function renderBalanceAndHistoryTab() {
@@ -4864,12 +5069,32 @@
       const st = getStaffStatsSynced(s.name);
       const pendingInTab1 = currentBatch.filter(f => f.assignee === s.name).length;
 
+      let cBienDong = 0, cCapDoi = 0, cTachThua = 0, cKhac = 0;
+      (st.allMine || []).forEach(f => {
+        const grp = classifyProcedureGroupForReport(f);
+        if (grp === "DANG_KY_BIEN_DONG") cBienDong++;
+        else if (grp === "CAP_DOI_GCN") cCapDoi++;
+        else if (grp === "TACH_HOP_THUA") cTachThua++;
+        else cKhac++;
+      });
+
       return `
         <tr style="${!s.active ? 'opacity:0.45; background:#f1f5f9;' : ''}">
           <td class="text-center">${idx + 1}</td>
-          <td><strong>${s.name}</strong> ${s.name === LAN_ANH_NAME ? '<span class="badge badge-lananh">Chuyên trách 3 mã</span>' : ''}</td>
+          <td><strong>${s.name}</strong> ${s.name === LAN_ANH_NAME ? '<span class="badge badge-lananh">Chuyên trách</span>' : ''}</td>
           <td class="text-center"><strong style="color:var(--success); font-size:0.92rem;">+${st.newReceived} bộ</strong></td>
           <td class="text-center"><strong style="color:var(--primary-dark); font-size:0.95rem;">${st.totalReceived} bộ</strong></td>
+          <td class="text-center" style="white-space:nowrap; font-size:0.76rem;">
+            <span style="display:inline-block; background:#f8fafc; border:1px solid #cbd5e1; border-radius:6px; padding:3px 8px; color:#334155;">
+              Biến động: <strong style="color:#1e40af;">${cBienDong}</strong>
+              <span style="color:#cbd5e1; margin:0 3px;">|</span>
+              Cấp đổi: <strong style="color:#0f766e;">${cCapDoi}</strong>
+              <span style="color:#cbd5e1; margin:0 3px;">|</span>
+              Tách thửa: <strong style="color:#b45309;">${cTachThua}</strong>
+              <span style="color:#cbd5e1; margin:0 3px;">|</span>
+              Khác: <strong style="color:#6d28d9;">${cKhac}</strong>
+            </span>
+          </td>
           <td class="text-center" style="font-weight:600;">${st.lastDate}</td>
           <td class="text-center" style="background:#fffbeb;">
             ${pendingInTab1 > 0 ? `<span class="badge badge-soon">Chờ lưu: +${pendingInTab1} bộ</span>` : '<span style="color:#94a3b8;">0 bộ</span>'}
@@ -5566,8 +5791,495 @@
   }
 
   // =========================================================================
-  // 9. XUẤT EXCEL & SAO LƯU DỮ LIỆU
+  // 9. HỆ THỐNG XUẤT BÁO CÁO THỐNG KÊ ĐỊNH KỲ (THÁNG / QUÝ / NGÀY - 3 SHEET EXCEL)
   // =========================================================================
+  let reportExportConfig = {
+    mode: "MONTH",
+    monthVal: "2026-11",
+    quarterVal: "Q4",
+    yearVal: "2026",
+    fromDate: "2026-11-01",
+    toDate: "2026-11-30",
+    staffName: "ALL"
+  };
+
+  function populateReportStaffFilterDropdowns() {
+    document.querySelectorAll('.rpt-staff-select').forEach(sel => {
+      const currentVal = reportExportConfig.staffName || "ALL";
+      sel.innerHTML = `<option value="ALL">👥 Tất cả 12 cán bộ</option>` +
+        staff12.map(s => `<option value="${s.name}" ${s.name === currentVal ? 'selected' : ''}>👤 ${s.name}</option>`).join('');
+      sel.value = currentVal;
+    });
+  }
+
+  function updateReportFilterControl(field, val) {
+    reportExportConfig[field] = val;
+    const m = reportExportConfig.mode;
+
+    document.querySelectorAll('.rpt-period-mode').forEach(el => { el.value = m; });
+    document.querySelectorAll('.rpt-month-select').forEach(el => { el.value = reportExportConfig.monthVal; });
+    document.querySelectorAll('.rpt-quarter-select').forEach(el => { el.value = reportExportConfig.quarterVal; });
+    document.querySelectorAll('.rpt-year-input').forEach(el => { el.value = reportExportConfig.yearVal; });
+    document.querySelectorAll('.rpt-from-date').forEach(el => { el.value = reportExportConfig.fromDate; });
+    document.querySelectorAll('.rpt-to-date').forEach(el => { el.value = reportExportConfig.toDate; });
+    document.querySelectorAll('.rpt-staff-select').forEach(el => { el.value = reportExportConfig.staffName; });
+
+    document.querySelectorAll('.rpt-ctrl-month').forEach(el => {
+      el.style.display = (m === 'MONTH') ? 'inline-flex' : 'none';
+    });
+    document.querySelectorAll('.rpt-ctrl-quarter').forEach(el => {
+      el.style.display = (m === 'QUARTER') ? 'inline-flex' : 'none';
+    });
+    document.querySelectorAll('.rpt-ctrl-custom').forEach(el => {
+      el.style.display = (m === 'CUSTOM') ? 'inline-flex' : 'none';
+    });
+  }
+
+  function getFileReceiveDateIso(t) {
+    if (!t) return "";
+    const d1 = parseExcelDateExact(t.receiveDate);
+    if (d1) return d1;
+    const d2 = parseExcelDateExact(t.syncedAt);
+    if (d2) return d2;
+    return "";
+  }
+
+  function formatWardFullName(wardCode) {
+    const w = String(wardCode || "").toUpperCase().trim();
+    if (w === "PA") return "Phường Phú An (PA)";
+    if (w === "PL") return "Phường Phú Lợi (PL)";
+    if (w === "BD") return "Phường Bình Dương (BD)";
+    if (w === "CH") return "Phường Chánh Hiệp (CH)";
+    if (w === "TDM") return "Phường Thủ Dầu Một (TDM)";
+    return w || "Thủ Dầu Một (TDM)";
+  }
+
+  // Phân nhóm từng hồ sơ vào đúng 1 trong 5 nhóm thành phần thủ tục của bảng báo cáo
+  function classifyProcedureGroupForReport(fileObj) {
+    const raw = String((fileObj && (fileObj.rawProc || fileObj.type)) || "");
+    const norm = normalizeText(raw);
+
+    // 1. Tách thửa / Hợp thửa
+    if (norm.includes("TACH THUA") || norm.includes("HOP THUA")) {
+      return "TACH_HOP_THUA";
+    }
+
+    // 2. Xóa nợ / Đính chính / Gia hạn
+    if (
+      norm.includes("XOA GHI NO") || norm.includes("GHI NO TIEN SU DUNG DAT") ||
+      norm.includes("1.012795") || /\bCNVPDK[\s_\-]*33\b/.test(norm) || norm.includes("1.115929") || norm.includes("1.013988") ||
+      norm.includes("DINH CHINH") || /\bCNVPDK[\s_\-]*26\b/.test(norm) || /\b26\b/.test(norm) || norm.includes("1.012790") || norm.includes("1.012796") ||
+      norm.includes("GIA HAN") || /\bCNVPDK[\s_\-]*35B\b/.test(norm) || norm.includes("QT20B") ||
+      norm.includes("1.012810") || norm.includes("1.013949") || norm.includes("1.013995") ||
+      norm.includes("DANG KY TAI SAN GAN LIEN VOI THUA DAT DA DUOC CAP")
+    ) {
+      return "XOA_NO_DINH_CHINH_GIA_HAN";
+    }
+
+    // 3. Cấp đổi GCN
+    if (norm.includes("CAP DOI") || norm.includes("23A") || norm.includes("23B")) {
+      return "CAP_DOI_GCN";
+    }
+
+    // 4. Đăng ký biến động
+    if (
+      norm.includes("DANG KY BIEN DONG") || norm.includes("DKBD") ||
+      norm.includes("30A") || norm.includes("31A") || norm.includes("32A") ||
+      norm.includes("QT16A") || norm.includes("1.012768") || norm.includes("1.013833") ||
+      norm.includes("DOI TEN") || norm.includes("THOA THUAN HO GIA DINH")
+    ) {
+      return "DANG_KY_BIEN_DONG";
+    }
+
+    // 5. Thủ tục khác (Cấp lại do mất 25, Điều chỉnh QĐ 1.012778, Giao đất ở 1.012780...)
+    return "THU_TUC_KHAC";
+  }
+
+  function getFilteredReportFilesAndMeta() {
+    const cfg = reportExportConfig;
+    let startIso = "";
+    let endIso = "";
+    let periodLabel = "";
+    let fileSuffix = "";
+
+    if (cfg.mode === "MONTH") {
+      const [yStr, mStr] = (cfg.monthVal || "2026-11").split("-");
+      const y = Number(yStr) || 2026;
+      const m = Number(mStr) || 11;
+      const mm = String(m).padStart(2, '0');
+      const lastDay = new Date(y, m, 0).getDate();
+      startIso = `${y}-${mm}-01`;
+      endIso = `${y}-${mm}-${String(lastDay).padStart(2, '0')}`;
+      periodLabel = `Tháng ${mm}/${y} (Từ 01/${mm}/${y} đến ${String(lastDay).padStart(2, '0')}/${mm}/${y})`;
+      fileSuffix = `Thang_${mm}_${y}`;
+    } else if (cfg.mode === "QUARTER") {
+      const y = Number(cfg.yearVal) || 2026;
+      const q = cfg.quarterVal || "Q4";
+      if (q === "Q1") {
+        startIso = `${y}-01-01`; endIso = `${y}-03-31`;
+        periodLabel = `Quý 1/${y} (Từ 01/01/${y} đến 31/03/${y})`;
+        fileSuffix = `Quy_1_${y}`;
+      } else if (q === "Q2") {
+        startIso = `${y}-04-01`; endIso = `${y}-06-30`;
+        periodLabel = `Quý 2/${y} (Từ 01/04/${y} đến 30/06/${y})`;
+        fileSuffix = `Quy_2_${y}`;
+      } else if (q === "Q3") {
+        startIso = `${y}-07-01`; endIso = `${y}-09-30`;
+        periodLabel = `Quý 3/${y} (Từ 01/07/${y} đến 30/09/${y})`;
+        fileSuffix = `Quy_3_${y}`;
+      } else {
+        startIso = `${y}-10-01`; endIso = `${y}-12-31`;
+        periodLabel = `Quý 4/${y} (Từ 01/10/${y} đến 31/12/${y})`;
+        fileSuffix = `Quy_4_${y}`;
+      }
+    } else if (cfg.mode === "CUSTOM") {
+      startIso = cfg.fromDate || "2026-01-01";
+      endIso = cfg.toDate || "2026-12-31";
+      if (startIso > endIso) {
+        const tmp = startIso; startIso = endIso; endIso = tmp;
+      }
+      periodLabel = `Từ ngày ${formatDateVN(startIso)} đến ngày ${formatDateVN(endIso)}`;
+      fileSuffix = `Tu_${formatDateVN(startIso).replace(/\//g, '_')}_Den_${formatDateVN(endIso).replace(/\//g, '_')}`;
+    } else {
+      periodLabel = "Toàn bộ thời gian (Tất cả các đợt đã lưu)";
+      fileSuffix = `Toan_Ky_${new Date().toISOString().slice(0, 10)}`;
+    }
+
+    const filteredFiles = trackingFiles.filter(t => {
+      if (cfg.staffName && cfg.staffName !== "ALL" && t.assignee !== cfg.staffName) {
+        return false;
+      }
+      if (cfg.mode !== "ALL") {
+        const recIso = getFileReceiveDateIso(t);
+        if (recIso && (recIso < startIso || recIso > endIso)) {
+          return false;
+        }
+      }
+      return true;
+    });
+
+    const staffLabel = (cfg.staffName && cfg.staffName !== "ALL")
+      ? `Chuyên viên: ${cfg.staffName}`
+      : "Tất cả 12 chuyên viên thụ lý";
+
+    return {
+      files: filteredFiles,
+      periodLabel,
+      staffLabel,
+      fileName: `Bao_Cao_Ket_Qua_Giai_Quyet_Ho_So_${fileSuffix}.xlsx`
+    };
+  }
+
+  function exportPeriodicStatisticalReportExcel() {
+    if (typeof XLSX === "undefined") {
+      alert("Thư viện xuất Excel (SheetJS) chưa sẵn sàng. Vui lòng kiểm tra kết nối mạng!");
+      return;
+    }
+
+    const { files, periodLabel, staffLabel, fileName } = getFilteredReportFilesAndMeta();
+    const nowStr = getNowTimestampVN();
+    const targetStaffList = (reportExportConfig.staffName && reportExportConfig.staffName !== "ALL")
+      ? staff12.filter(s => s.name === reportExportConfig.staffName)
+      : staff12;
+
+    // =========================================================================
+    // SHEET 1: TỔNG HỢP THEO CÁN BỘ (MA TRẬN 12 CHUYÊN VIÊN & CÁC NHÓM THỦ TỤC)
+    // =========================================================================
+    const sheet1Rows = [
+      ["VĂN PHÒNG ĐĂNG KÝ ĐẤT ĐAI TP.HCM - CHI NHÁNH SỐ 23"],
+      ["BÁO CÁO TỔNG HỢP KẾT QUẢ GIẢI QUYẾT HỒ SƠ THEO CÁN BỘ THỤ LÝ"],
+      [`Kỳ báo cáo: ${periodLabel} | Phạm vi: ${staffLabel} | Thời điểm xuất: ${nowStr}`],
+      [],
+      [
+        "STT",
+        "Họ và Tên Cán Bộ",
+        "Đăng ký biến động",
+        "Cấp đổi GCN",
+        "Tách thửa / Hợp thửa",
+        "Xóa nợ / Đính chính / Gia hạn",
+        "Thủ tục khác",
+        "Số lượng Hồ sơ khó",
+        "Tổng Tiếp Nhận",
+        "Đã Giải Quyết Xong",
+        "Đang Thụ Lý"
+      ]
+    ];
+
+    let sumDkbd = 0, sumCapDoi = 0, sumTachHop = 0, sumXoaNo = 0, sumKhac = 0;
+    let sumHard = 0, sumTotal = 0, sumResolved = 0, sumProcessing = 0;
+
+    targetStaffList.forEach((s, idx) => {
+      const mine = files.filter(f => f.assignee === s.name);
+      let cDkbd = 0, cCapDoi = 0, cTachHop = 0, cXoaNo = 0, cKhac = 0;
+      let cHard = 0, cResolved = 0, cProcessing = 0;
+
+      mine.forEach(f => {
+        const grp = classifyProcedureGroupForReport(f);
+        if (grp === "DANG_KY_BIEN_DONG") cDkbd++;
+        else if (grp === "CAP_DOI_GCN") cCapDoi++;
+        else if (grp === "TACH_HOP_THUA") cTachHop++;
+        else if (grp === "XOA_NO_DINH_CHINH_GIA_HAN") cXoaNo++;
+        else cKhac++;
+
+        if (f.diff === "HARD") cHard++;
+        if (f.status === "ARCHIVED") cResolved++;
+        else cProcessing++;
+      });
+
+      const cTotal = mine.length;
+      sumDkbd += cDkbd;
+      sumCapDoi += cCapDoi;
+      sumTachHop += cTachHop;
+      sumXoaNo += cXoaNo;
+      sumKhac += cKhac;
+      sumHard += cHard;
+      sumTotal += cTotal;
+      sumResolved += cResolved;
+      sumProcessing += cProcessing;
+
+      sheet1Rows.push([
+        idx + 1,
+        s.name,
+        cDkbd,
+        cCapDoi,
+        cTachHop,
+        cXoaNo,
+        cKhac,
+        cHard,
+        cTotal,
+        cResolved,
+        cProcessing
+      ]);
+    });
+
+    sheet1Rows.push([
+      "",
+      "TỔNG CỘNG",
+      sumDkbd,
+      sumCapDoi,
+      sumTachHop,
+      sumXoaNo,
+      sumKhac,
+      sumHard,
+      sumTotal,
+      sumResolved,
+      sumProcessing
+    ]);
+
+    const ws1 = XLSX.utils.aoa_to_sheet(sheet1Rows);
+    ws1['!cols'] = [
+      { wch: 6 },   // STT
+      { wch: 26 },  // Họ và Tên Cán Bộ
+      { wch: 19 },  // Đăng ký biến động
+      { wch: 15 },  // Cấp đổi GCN
+      { wch: 21 },  // Tách thửa / Hợp thửa
+      { wch: 28 },  // Xóa nợ / Đính chính / Gia hạn
+      { wch: 15 },  // Thủ tục khác
+      { wch: 19 },  // Số lượng Hồ sơ khó
+      { wch: 16 },  // Tổng Tiếp Nhận
+      { wch: 20 },  // Đã Giải Quyết Xong
+      { wch: 15 }   // Đang Thụ Lý
+    ];
+
+    // =========================================================================
+    // SHEET 2: CHI TIẾT HỒ SƠ TỪNG CÁ NHÂN (GOM NHÓM THEO CHUYÊN VIÊN THỤ LÝ)
+    // =========================================================================
+    const sheet2Rows = [
+      ["VĂN PHÒNG ĐĂNG KÝ ĐẤT ĐAI TP.HCM - CHI NHÁNH SỐ 23"],
+      ["DANH SÁCH CHI TIẾT HỒ SƠ THEO TỪNG CHUYÊN VIÊN THỤ LÝ"],
+      [`Kỳ báo cáo: ${periodLabel} | Phạm vi: ${staffLabel} | Tổng số: ${files.length} bộ hồ sơ`],
+      [],
+      [
+        "STT",
+        "Chuyên Viên Thụ Lý",
+        "Số Biên Nhận",
+        "Đợt Tiếp Nhận",
+        "Phường/Xã",
+        "Người Nộp Đơn",
+        "Tên Thủ Tục Hành Chính",
+        "Phân Loại (Thường/Khó)",
+        "Ngày Tiếp Nhận",
+        "Ngày Hẹn Trả Kết Quả",
+        "Trạng Thái Giải Quyết"
+      ]
+    ];
+
+    const staffOrderMap = {};
+    staff12.forEach((s, idx) => { staffOrderMap[s.name] = idx + 1; });
+
+    const sortedFiles = [...files].sort((a, b) => {
+      const ordA = staffOrderMap[a.assignee] || 99;
+      const ordB = staffOrderMap[b.assignee] || 99;
+      if (ordA !== ordB) return ordA - ordB;
+      const recA = getFileReceiveDateIso(a) || "";
+      const recB = getFileReceiveDateIso(b) || "";
+      if (recA !== recB) return recA.localeCompare(recB);
+      return String(a.code || "").localeCompare(String(b.code || ""));
+    });
+
+    sortedFiles.forEach((t, idx) => {
+      const recDateVN = formatDateVN(getFileReceiveDateIso(t));
+      const dueDateVN = formatDateVN(t.dueDate);
+      const diffText = t.diff === "HARD"
+        ? "Hồ sơ Khó"
+        : ((t.isLanAnhSpecial || t.diff === "LAN_ANH") ? "Thủ tục thường (Chuyên trách)" : "Thủ tục thường");
+      const statusText = t.status === "ARCHIVED"
+        ? "Đã giải quyết xong"
+        : (t.status === "HOLD" ? "Chờ bổ sung / Tạm dừng" : "Đang thụ lý");
+
+      sheet2Rows.push([
+        idx + 1,
+        t.assignee || "Chưa phân công",
+        t.code || t.fullCode || "",
+        t.batchLabel || "Đợt đã lưu",
+        formatWardFullName(t.ward),
+        t.owner || "Theo HS 1 cửa",
+        cleanProcName(t.rawProc || t.type),
+        diffText,
+        recDateVN,
+        dueDateVN,
+        statusText
+      ]);
+    });
+
+    const ws2 = XLSX.utils.aoa_to_sheet(sheet2Rows);
+    ws2['!cols'] = [
+      { wch: 6 },   // STT
+      { wch: 25 },  // Chuyên Viên Thụ Lý
+      { wch: 16 },  // Số Biên Nhận
+      { wch: 33 },  // Đợt Tiếp Nhận
+      { wch: 22 },  // Phường/Xã
+      { wch: 28 },  // Người Nộp Đơn
+      { wch: 46 },  // Tên Thủ Tục Hành Chính
+      { wch: 24 },  // Phân Loại (Thường/Khó)
+      { wch: 18 },  // Ngày Tiếp Nhận (Đủ rộng không bị ###)
+      { wch: 20 },  // Ngày Hẹn Trả Kết Quả (Đủ rộng không bị ###)
+      { wch: 22 }   // Trạng Thái Giải Quyết
+    ];
+
+    // =========================================================================
+    // SHEET 3: THỐNG KÊ THEO THÀNH PHẦN HỒ SƠ (KÈM TỶ LỆ %)
+    // =========================================================================
+    const groupDefs = [
+      { key: "DANG_KY_BIEN_DONG",         name: "Đăng ký biến động QSDĐ",             note: "CNVPDK_30A, 31A, 32A, 1.012768, 1.013833..." },
+      { key: "CAP_DOI_GCN",               name: "Cấp đổi Giấy chứng nhận (GCN)",      note: "CNVPDK_23A (5 ngày), CNVPDK_23B (10 ngày)..." },
+      { key: "TACH_HOP_THUA",             name: "Tách thửa / Hợp thửa QSDĐ",          note: "Thủ tục tách thửa, hợp thửa quyền sử dụng đất" },
+      { key: "XOA_NO_DINH_CHINH_GIA_HAN", name: "Xóa nợ / Đính chính / Gia hạn",      note: "CNVPDK_33, 1.012795, CNVPDK_26, 1.012790, CNVPDK_35B, 1.012810..." },
+      { key: "THU_TUC_KHAC",              name: "Thủ tục hành chính khác",            note: "CNVPDK_25 (Cấp lại do mất), 1.012778 (Điều chỉnh), 1.012780 (Giao đất)..." }
+    ];
+
+    const sheet3Rows = [
+      ["VĂN PHÒNG ĐĂNG KÝ ĐẤT ĐAI TP.HCM - CHI NHÁNH SỐ 23"],
+      ["BÁO CÁO THỐNG KÊ SỐ LƯỢNG & TỶ LỆ (%) THEO THÀNH PHẦN HỒ SƠ"],
+      [`Kỳ báo cáo: ${periodLabel} | Phạm vi: ${staffLabel} | Tổng số: ${files.length} bộ hồ sơ`],
+      [],
+      [
+        "STT",
+        "Nhóm Thành Phần Thủ Tục Hành Chính",
+        "Số Lượng Hồ Sơ (Bộ)",
+        "Tỷ Lệ (%)",
+        "Đã Giải Quyết Xong (Bộ)",
+        "Đang Thụ Lý (Bộ)",
+        "Số Hồ Sơ Khó (Bộ)",
+        "Ghi Chú Các Mã Quy Trình Thuộc Nhóm"
+      ]
+    ];
+
+    const totalDenom = files.length || 1;
+    groupDefs.forEach((g, idx) => {
+      const grpFiles = files.filter(f => classifyProcedureGroupForReport(f) === g.key);
+      const count = grpFiles.length;
+      const pct = files.length > 0 ? ((count / totalDenom) * 100).toFixed(2) + "%" : "0.00%";
+      const resolved = grpFiles.filter(f => f.status === "ARCHIVED").length;
+      const processing = grpFiles.filter(f => f.status !== "ARCHIVED").length;
+      const hard = grpFiles.filter(f => f.diff === "HARD").length;
+
+      sheet3Rows.push([
+        idx + 1,
+        g.name,
+        count,
+        pct,
+        resolved,
+        processing,
+        hard,
+        g.note
+      ]);
+    });
+
+    sheet3Rows.push([
+      "",
+      "TỔNG CỘNG TOÀN TỔ",
+      files.length,
+      files.length > 0 ? "100.00%" : "0.00%",
+      sumResolved,
+      sumProcessing,
+      sumHard,
+      ""
+    ]);
+
+    // Bảng phụ chi tiết theo từng tên thủ tục rút gọn thực tế phát sinh trong kỳ
+    sheet3Rows.push([]);
+    sheet3Rows.push(["CHI TIẾT THEO TỪNG TÊN THỦ TỤC HÀNH CHÍNH PHÁT SINH TRONG KỲ BÁO CÁO"]);
+    sheet3Rows.push([
+      "STT",
+      "Tên Thủ Tục Hành Chính (Đã rút gọn chuẩn)",
+      "Số Lượng Hồ Sơ (Bộ)",
+      "Tỷ Lệ (%)",
+      "Đã Giải Quyết Xong (Bộ)",
+      "Đang Thụ Lý (Bộ)",
+      "Số Hồ Sơ Khó (Bộ)",
+      "Phân Nhóm"
+    ]);
+
+    const bySpecificProc = {};
+    files.forEach(f => {
+      const pName = cleanProcName(f.rawProc || f.type);
+      if (!bySpecificProc[pName]) {
+        bySpecificProc[pName] = { count: 0, resolved: 0, processing: 0, hard: 0, groupKey: classifyProcedureGroupForReport(f) };
+      }
+      bySpecificProc[pName].count++;
+      if (f.status === "ARCHIVED") bySpecificProc[pName].resolved++;
+      else bySpecificProc[pName].processing++;
+      if (f.diff === "HARD") bySpecificProc[pName].hard++;
+    });
+
+    Object.entries(bySpecificProc)
+      .sort((a, b) => b[1].count - a[1].count)
+      .forEach(([pName, st], i) => {
+        const gObj = groupDefs.find(g => g.key === st.groupKey);
+        const pct = files.length > 0 ? ((st.count / totalDenom) * 100).toFixed(2) + "%" : "0.00%";
+        sheet3Rows.push([
+          i + 1,
+          pName,
+          st.count,
+          pct,
+          st.resolved,
+          st.processing,
+          st.hard,
+          gObj ? gObj.name : "Thủ tục khác"
+        ]);
+      });
+
+    const ws3 = XLSX.utils.aoa_to_sheet(sheet3Rows);
+    ws3['!cols'] = [
+      { wch: 6 },   // STT
+      { wch: 46 },  // Nhóm / Tên Thủ Tục Hành Chính
+      { wch: 22 },  // Số Lượng Hồ Sơ (Bộ)
+      { wch: 15 },  // Tỷ Lệ (%)
+      { wch: 24 },  // Đã Giải Quyết Xong (Bộ)
+      { wch: 18 },  // Đang Thụ Lý (Bộ)
+      { wch: 18 },  // Số Hồ Sơ Khó (Bộ)
+      { wch: 48 }   // Ghi Chú Mã Quy Trình
+    ];
+
+    // Đóng gói Workbook 3 Sheet và tải xuống
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws1, "Tong_Hop_Theo_Can_Bo");
+    XLSX.utils.book_append_sheet(wb, ws2, "Chi_Tiet_Ho_So_Ca_Nhan");
+    XLSX.utils.book_append_sheet(wb, ws3, "Thong_Ke_Thanh_Phan_HS");
+    XLSX.writeFile(wb, fileName);
+  }
+
   function exportBatchExcel() {
     const printBatch = (window.currentDisplayedPrintBatch && window.currentDisplayedPrintBatch.length > 0)
       ? window.currentDisplayedPrintBatch
@@ -5582,6 +6294,9 @@
     });
     if (typeof XLSX !== "undefined") {
       const ws = XLSX.utils.aoa_to_sheet(rows);
+      ws['!cols'] = [
+        { wch: 6 }, { wch: 16 }, { wch: 10 }, { wch: 15 }, { wch: 28 }, { wch: 42 }, { wch: 16 }, { wch: 18 }, { wch: 25 }, { wch: 16 }
+      ];
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, ws, "Phan_Cong");
       XLSX.writeFile(wb, `Phan_Cong_Ho_So_CN23_${new Date().toISOString().slice(0,10)}.xlsx`);
@@ -5589,58 +6304,15 @@
   }
 
   function exportBalanceExcel() {
-    const rows = [
-      ["STT", "Họ và Tên Người Thụ Lý", "Tiếp Nhận Mới (Đã Lưu)", "Tổng Nhận (Lũy Kế Đã Lưu)", "Ngày Giờ Tiếp Nhận Mới", "Danh Sách Mã Hồ Sơ Nhận Mới"]
-    ];
-    staff12.forEach((s, i) => {
-      const st = getStaffStatsSynced(s.name);
-      rows.push([
-        i + 1, s.name, st.newReceived, st.totalReceived, st.lastDate, s.lastCodesList || ""
-      ]);
-    });
-    if (typeof XLSX !== "undefined") {
-      const ws = XLSX.utils.aoa_to_sheet(rows);
-      const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, "Can_Bang_Tai");
-      XLSX.writeFile(wb, `Bang_Can_Bang_Tai_12_Thu_Ly.xlsx`);
-    }
+    exportPeriodicStatisticalReportExcel();
   }
 
   function exportTrackingExcel() {
-    const rows = [
-      ["STT", "Mã Biên Nhận", "Phường", "Người Kiểm Tra", "Tên Tổ Chức Cá Nhân", "Thủ Tục", "Người Thụ Lý", "Ngày Tiếp Nhận Mới", "Hẹn Trả Kết Quả", "Trạng Thái"]
-    ];
-    trackingFiles.forEach((t, i) => {
-      rows.push([
-        i + 1, t.code, t.ward, getCheckerByWard(t.ward), t.owner, t.type, t.assignee,
-        t.syncedAt || formatDateVN(t.receiveDate), formatDateVN(t.dueDate),
-        t.status === "ARCHIVED" ? "Đã lưu trữ" : (t.status === "HOLD" ? "Chờ bổ sung" : "Đang thụ lý")
-      ]);
-    });
-    if (typeof XLSX !== "undefined") {
-      const ws = XLSX.utils.aoa_to_sheet(rows);
-      const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, "Theo_Doi_Han_Tra");
-      XLSX.writeFile(wb, `So_Theo_Doi_Han_Tra_12_Chuyen_Vien.xlsx`);
-    }
+    exportPeriodicStatisticalReportExcel();
   }
 
   function exportArchiveReportExcel() {
-    const rows = [
-      ["STT", "Họ và Tên Chuyên Viên", "Tiếp Nhận Mới", "Tổng Nhận", "Ngày Tiếp Nhận Mới", "Đang Thụ Lý", "Đã Hoàn Thành Lưu Trữ"]
-    ];
-    staff12.forEach((s, i) => {
-      const st = getStaffStatsSynced(s.name);
-      rows.push([
-        i + 1, s.name, st.newReceived, st.totalReceived, st.lastDate, st.holding, st.archived
-      ]);
-    });
-    if (typeof XLSX !== "undefined") {
-      const ws = XLSX.utils.aoa_to_sheet(rows);
-      const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, "Luu_Tru_12_Nhan_Su");
-      XLSX.writeFile(wb, `Bao_Cao_Luu_Tru_CN23.xlsx`);
-    }
+    exportPeriodicStatisticalReportExcel();
   }
 
   function exportBackupJson() {
@@ -5709,6 +6381,8 @@
     localStorage.setItem('cn23_v4_history', JSON.stringify(historyLogs));
   } catch (e) {}
   renderAll();
+  populateReportStaffFilterDropdowns();
+  updateReportFilterControl('mode', reportExportConfig.mode);
   startRealtimeCloudSyncEngine();
   if (localStorage.getItem('cn23_cleaned_batches_v9') !== '1') {
     localStorage.setItem('cn23_cleaned_batches_v9', '1');
